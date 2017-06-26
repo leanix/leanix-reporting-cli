@@ -1,0 +1,27 @@
+{
+  "name": "@leanix/leanix-reporting-cli",
+  "version": "1.0.0-beta.1",
+  "description": "Command line interface to develop custom reports for LeanIX EAM",
+  "main": "lib/app.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "keywords": [
+    "leanix",
+    "pathfinder",
+    "eam",
+    "custom-report",
+    "reporting",
+    "reporting-cli"
+  ],
+  "author": "LeanIX GmbH",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/commander": "^2.9.1",
+    "@types/node": "^6.0.0",
+    "typescript": "^2.3.4"
+  },
+  "dependencies": {
+    "commander": "^2.9.1"
+  }
+}
