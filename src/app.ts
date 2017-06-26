@@ -1,14 +1,34 @@
 import * as program from 'commander';
+import { Initializer } from './initializer';
+import { DevStarter } from './dev-starter';
+import { Uploader } from './uploader';
+
 const pkg = require('../package.json');
 
-console.log(`This is @leanix/reporting-cli ${pkg.version}`);
+program
+  .version(pkg.version);
 
 program
-  .version(pkg.version)
   .command('init')
-  .description('initialize new project')
+  .description('Initializes a new project')
   .action(() => {
-    console.log('Initializing...');
+    new Initializer().init();
+  });
+
+
+program
+  .command('start')
+  .description('Start developing and testing your report')
+  .action(() => {
+    new DevStarter().start();
+  });
+
+
+program
+  .command('upload')
+  .description('Upload your report')
+  .action(() => {
+    new Uploader().upload();
   });
 
 program.parse(process.argv);
