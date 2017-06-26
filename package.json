@@ -1,10 +1,15 @@
 {
-  "name": "@leanix/leanix-reporting-cli",
+  "name": "@leanix/reporting-cli",
   "version": "1.0.0-beta.1",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
-  "main": "lib/app.js",
+  "preferGlobal": true,
+  "main": "./lib/app.js",
+  "bin": {
+    "lxr": "./bin/lxr"
+  },
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test-install": "npm run build && npm -g install ."
   },
   "keywords": [
     "leanix",
@@ -15,15 +20,15 @@
     "reporting-cli"
   ],
   "author": "LeanIX GmbH",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/chalk": "^0.4.31",
     "@types/commander": "^2.9.1",
     "@types/node": "^6.0.0",
-    "chalk": "^1.1.3",
     "typescript": "^2.3.4"
   },
   "dependencies": {
+    "chalk": "^1.1.3",
     "commander": "^2.9.1"
   }
 }
