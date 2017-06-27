@@ -10,6 +10,10 @@ export class PathHelper {
     return process.cwd();
   }
 
+  public getTemplateDirectory() {
+    return path.resolve(__dirname, '../template');
+  }
+
   public getTemplateSourcePath(templateFileName: string) {
     const sourceDir = this.getSourceDirectory();
     return path.resolve(sourceDir, 'template', templateFileName);

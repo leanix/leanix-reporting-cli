@@ -1,43 +1,23 @@
 import * as chalk from 'chalk';
-import * as varReplace from 'variable-replacer';
 import * as path from 'path';
 import * as process from 'process';
-import { PathHelper } from './path-helper';
 import * as inquirer from 'inquirer';
 import { spawn } from 'child_process';
+import { TemplateExtractor } from './template-extractor';
 
 export class Initializer {
-  private pathHelper = new PathHelper();
+
+  private extractor = new TemplateExtractor();
 
   public init(): Promise<any> {
     console.log(chalk.green('Initializing new project...'));
 
     return inquirer.prompt(this.getInquirerQuestions())
     .then(answers => {
-      this.extractTemplateFiles(answers);
+      this.extractor.extractTemplateFiles(answers);
       return this.installViaNpm();
     });
 
-  }
-
-  private extractTemplateFiles(answers: any) {
-    console.log(chalk.green('Extracting template files...'));
-    this.extractTemplateFile('package.json', answers);
-    this.extractTemplateFile('index.html', answers);
-  }
-
-  private extractTemplateFile(filename: string, answers: any) {
-    const source = this.pathHelper.getTemplateSourcePath(filename);
-    const dest = this.pathHelper.getTargetFolderPath(filename);
-
-    console.log(source, dest);
-
-    varReplace({
-      source,
-      dest,
-      inlineData: answers,
-      logLevel: 'info' // none
-    });
   }
 
   private getInquirerQuestions(): inquirer.Questions {
