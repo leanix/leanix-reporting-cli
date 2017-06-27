@@ -15,7 +15,7 @@ export class Initializer {
     return inquirer.prompt(this.getInquirerQuestions())
     .then(answers => {
       this.extractor.extractTemplateFiles(answers);
-      return this.installViaNpm();
+      // return this.installViaNpm();
     });
 
   }
