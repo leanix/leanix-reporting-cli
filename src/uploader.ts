@@ -72,7 +72,7 @@ export class Uploader {
   private executeUpload() {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
     console.log(chalk.green(`Uploading to ${lxrConfig.host} ...`));
-    const host = lxrConfig.host;
+    const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
     return ApiTokenResolver.getAccessToken(host, apitoken)

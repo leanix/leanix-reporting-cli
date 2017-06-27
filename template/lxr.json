@@ -1,5 +1,5 @@
 {
-  "host": "https://app.leanix.net",
-  "workspace": "myworkspace",
-  "apitoken": ""
+  "host": "%host%",
+  "workspace": "%workspace%",
+  "apitoken": "%apitoken%"
 }

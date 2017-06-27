@@ -4,6 +4,7 @@ import * as process from 'process';
 import * as inquirer from 'inquirer';
 import { spawn } from 'child_process';
 import { TemplateExtractor } from './template-extractor';
+import { UserInitInput } from "./interfaces";
 
 export class Initializer {
 
@@ -14,7 +15,7 @@ export class Initializer {
 
     return inquirer.prompt(this.getInquirerQuestions())
     .then(answers => {
-      this.extractor.extractTemplateFiles(answers);
+      this.extractor.extractTemplateFiles(answers as UserInitInput);
       // return this.installViaNpm();
     });
 
@@ -47,6 +48,21 @@ export class Initializer {
         type: 'input',
         name: 'description',
         message: 'Description of your project'
+      },
+      {
+        type: 'input',
+        name: 'host',
+        message: 'Which host do you want to work with? (Default: app.leanix.net)'
+      },
+      {
+        type: 'input',
+        name: 'workspace',
+        message: 'Which is the workspace you want to test your report in?'
+      },
+      {
+        type: 'input',
+        name: 'apitoken',
+        message: 'API-Token for Authentication (see: https://dev.leanix.net/docs/authentication#section-generate-api-tokens)'
       }
     ];
   }
