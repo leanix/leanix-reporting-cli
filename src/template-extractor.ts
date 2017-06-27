@@ -28,7 +28,7 @@ export class TemplateExtractor {
   }
 
   private extractTemplateFile(source: string, answers: any) {
-    const dest = source.replace(this.pathHelper.getTemplateDirectory(), this.pathHelper.getTargetDirectory());
+    const dest = source.replace(this.pathHelper.getTemplateDirectory(), this.pathHelper.getProjectDirectory());
 
     console.log(source, dest);
 

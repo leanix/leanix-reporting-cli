@@ -6,8 +6,12 @@ export class PathHelper {
     return path.resolve(__dirname, '..');
   }
 
-  public getTargetDirectory() {
+  public getProjectDirectory() {
     return process.cwd();
+  }
+
+  public getLxrConfigPath() {
+    return path.resolve(this.getProjectDirectory(), 'lxr.json');
   }
 
   public getTemplateDirectory() {
@@ -20,7 +24,7 @@ export class PathHelper {
   }
 
   public getTargetFolderPath(filename: string) {
-    const targetDir = this.getTargetDirectory();
+    const targetDir = this.getProjectDirectory();
     return path.resolve(targetDir, filename);
   }
 }

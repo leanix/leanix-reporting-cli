@@ -9,8 +9,8 @@
     "defaultConfig": {}
   },
   "scripts": {
+    "start": "lxr start",
     "build": "rm -rf dist && webpack",
-    "start": "npm run build && node ./launch.js",
     "upload": "node ./upload.js"
   },
   "keywords": [
