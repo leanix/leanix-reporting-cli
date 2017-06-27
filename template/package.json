@@ -10,8 +10,7 @@
   },
   "scripts": {
     "start": "lxr start",
-    "build": "rm -rf dist && webpack",
-    "upload": "node ./upload.js"
+    "upload": "lxr upload"
   },
   "keywords": [
     "leanix",

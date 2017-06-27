@@ -38,4 +38,23 @@ You could either allow connections to this host anyways, or create your own self
 certificate: https://www.tonyerwin.com/2014/09/generating-self-signed-ssl-certificates.html#MacKeyChainAccess
 
 If you have created your certificate you can add the certificate and private key files to the
-`lxr.json` configuration file of your generated project.
+`lxr.json` configuration file of your generated project:
+
+```
+{
+  "host": "https://app.leanix.net",
+  "workspace": "myworkspace",
+  "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL",
+  "ssl": {
+    "cert": "/path/to/cert",
+    "key": "/path/to/key"
+  }
+}
+```
+
+## Uploading to LeanIX workspace
+In order to upload your report to a LeanIX workspace you can simply run the following command:
+
+```
+npm upload
+```
