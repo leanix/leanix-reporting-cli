@@ -1,0 +1,39 @@
+{
+  "name": "%name%",
+  "version": "1.0.0",
+  "description": "%description%",
+  "main": "index.js",
+  "leanixReport": {
+    "id": "%id%",
+    "title": "%title%",
+    "defaultConfig": {}
+  },
+  "scripts": {
+    "build": "rm -rf dist && webpack",
+    "start": "npm run build && node ./launch.js",
+    "upload": "node ./upload.js",
+    "prepublish": "npm run build"
+  },
+  "keywords": [
+    "leanix",
+    "custom-report"
+  ],
+  "author": "%author%",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "6.25.0",
+    "babel-loader": "7.1.0",
+    "babel-preset-env": "1.5.2",
+    "copy-webpack-plugin": "4.0.1",
+    "fstream": "1.0.11",
+    "html-webpack-plugin": "2.28.0",
+    "http-proxy": "1.16.2",
+    "request": "2.81.0",
+    "tar": "3.1.5",
+    "webpack": "3.0.0",
+    "webpack-dev-server": "2.5.0"
+  },
+  "dependencies": {
+    "@leanix/reporting": "^0.1.1"
+  }
+}

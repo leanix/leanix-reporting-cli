@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "chalk": "^1.1.3",
-    "commander": "^2.9.1"
+    "commander": "^2.9.1",
+    "variable-replacer": "^1.5.1"
   }
 }
