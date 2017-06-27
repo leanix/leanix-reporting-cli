@@ -10,8 +10,11 @@ export class DevStarter {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
     const port = 8080;
 
-    const urlEncoded = encodeURIComponent(`https://localhost:${port}`);
-    const launchUrl = `${lxrConfig.host}/${lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
+    const localhostUrl = `https://localhost:${port}`;
+    const urlEncoded = encodeURIComponent(localhostUrl);
+
+    const host = 'https://' + lxrConfig.host;
+    const launchUrl = `${host}/${lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
     console.log(chalk.green('Starting development server...'));
 
     const args = ['--https', '--port', '' + port]; //, '--cert=' + certFile, '--key=' + keyFile];
@@ -22,6 +25,7 @@ export class DevStarter {
     });
 
     const serverPromise = new Promise((resolve) => {
+      let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
       });
@@ -29,6 +33,9 @@ export class DevStarter {
       serverProcess.stdout.on('data', (data) => {
         const output = data.toString();
         if (output.indexOf('Project is running') >= 0) {
+          projectRunning = true;
+        }
+        if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
           resolve();
         }
       });
@@ -37,6 +44,7 @@ export class DevStarter {
     serverPromise.then(() => {
       exec('open ' + launchUrl);
       console.log(chalk.green(`Open the following url to test your report: ${launchUrl}`));
+      console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url: ${localhostUrl}`));
     });
   }
 }

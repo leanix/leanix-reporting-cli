@@ -16,11 +16,9 @@ export class Uploader {
     console.log(chalk.green('Bundling and uploading your project...'));
 
     return this.buildWithWebpack()
-    .then(() => {
-      this.writeMetadataFile();
-      return this.createTarFromDistFolder()
-      .then(() => this.executeUpload());
-    });
+    .then(() => this.writeMetadataFile())
+    .then(() => this.createTarFromDistFolder())
+    .then(() => this.executeUpload());
   }
 
   private buildWithWebpack() {
@@ -78,7 +76,7 @@ export class Uploader {
     return ApiTokenResolver.getAccessToken(host, apitoken)
     .then(accessToken => {
       const options = {
-        url: lxrConfig.host + '/services/pathfinder/v1/reports/upload',
+        url: host + '/services/pathfinder/v1/reports/upload',
         headers: {
           'Authorization': 'Bearer ' + accessToken
         },

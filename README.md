@@ -56,5 +56,5 @@ If you have created your certificate you can add the certificate and private key
 In order to upload your report to a LeanIX workspace you can simply run the following command:
 
 ```
-npm upload
+npm run upload
 ```
