@@ -17,6 +17,7 @@ export class Uploader {
 
     return this.buildWithWebpack()
     .then(() => this.writeMetadataFile())
+    .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
     .then(() => this.executeUpload());
   }
@@ -64,9 +65,14 @@ export class Uploader {
     });
   }
 
+  private createTarFromSrcFolderAndAddToDist() {
+    const files = fs.readdirSync(path.resolve(this.projectDir, 'src'));
+    return tar.c({ gzip: true, cwd: 'src', file: 'dist/src.tgz' }, files);
+  }
+
   private createTarFromDistFolder() {
     const files = fs.readdirSync(path.resolve(this.projectDir, 'dist'));
-    return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files)
+    return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
   }
 
   private executeUpload() {
