@@ -48,7 +48,9 @@ export class Uploader {
       const metadata = Object.assign({}, {
         name: packageJson.name,
         version: packageJson.version,
-        description: packageJson.description
+        author: packageJson.author,
+        description: packageJson.description,
+        documentationLink: packageJson.documentationLink
       }, packageJson.leanixReport);
 
       fs.writeFile(metadataFile, JSON.stringify(metadata), function(err) {

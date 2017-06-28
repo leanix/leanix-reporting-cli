@@ -2,6 +2,10 @@
 
 Command line interface to initialise, develop and publish custom reports for LeanIX EAM Tool.
 
+## Prerequisites
+* Node.js >= 6.9 (check with `node -v`)
+* npm >= 4 (check with `npm -v`)
+
 ## Getting started
 Install the package globally via npm:
 ```
@@ -58,3 +62,27 @@ In order to upload your report to a LeanIX workspace you can simply run the foll
 ```
 npm run upload
 ```
+
+## Important files
+
+### package.json
+This file contains information about your project. Most importantly a name and a version.
+
+There is a section "leanixReport" where you can add additional information for your report.
+There must be a "id" field in that section which is used to uniquely identify the report among all reports that are developed for LeanIX.
+
+```
+{
+  "name": "my-report",
+  "version": "1.0.0",
+  "leanixReport": {
+    "id": "net.leanix.quality-chart"
+  }
+}
+```
+
+### src/index.html
+This file is initially loaded by the LeanIX reporting framework and is hence the starting point for the execution of your report within the users browser.
+
+### src/index.js
+This file is the starting point for bundling JavaScript into one file. You can use the `import` statement (https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/import) in order to split up your project into multiple files. We use webpack 3.x under the hood to bundle your project.
