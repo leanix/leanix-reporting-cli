@@ -17,8 +17,13 @@ export class DevStarter {
     const launchUrl = `${host}/${lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
     console.log(chalk.green('Starting development server...'));
 
-    const args = ['--https', '--port', '' + port]; //, '--cert=' + certFile, '--key=' + keyFile];
-//    console.log('' + args.join(' '));
+    const args = ['--https', '--port', '' + port];
+    if (lxrConfig.ssl && lxrConfig.ssl.cert && lxrConfig.ssl.key) {
+      args.push('--cert=' + lxrConfig.ssl.cert);
+      args.push('--key=' + lxrConfig.ssl.key);
+    }
+
+    console.log('' + args.join(' '));
     const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
