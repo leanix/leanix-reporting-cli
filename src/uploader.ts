@@ -77,7 +77,7 @@ export class Uploader {
 
   private executeUpload() {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    console.log(chalk.green(`Uploading to ${lxrConfig.host} ...`));
+    console.log(chalk.italic(`Uploading to ${lxrConfig.host} ...`));
     const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
@@ -95,9 +95,23 @@ export class Uploader {
 
       return rp.post(options)
       .then(response => {
-        console.log('RESPONSE: ', response);
-        console.log(chalk.green('\u2713 \u2713 Project successfully uploaded!'));
-        return true;
+        const responseJson = JSON.parse(response);
+        if (responseJson.status === 'OK') {
+          console.log(chalk.green('\u2713 Project successfully uploaded!'));
+          return true;
+        } else if (responseJson.status === 'ERROR') {
+          console.log(chalk.red('ERROR: ' + responseJson.errorMessage));
+          return false;
+        }
+      }).catch(err => {
+        const responseBody = err.response.toJSON().body;
+        const errorJson = JSON.parse(responseBody);
+        if (errorJson.errorMessage) {
+          console.log(chalk.red('ERROR: ' + errorJson.errorMessage));
+        } else {
+          console.log(chalk.red('ERROR: ' + responseBody));
+        }
+        return false;
       });
     });
   }
