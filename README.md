@@ -66,20 +66,36 @@ npm run upload
 ## Important files
 
 ### package.json
-This file contains information about your project. Most importantly a name and a version.
+This file contains information about your project. When uploading the report into LeanIX some of the information is used when displaying your report to the user.
 
-There is a section "leanixReport" where you can add additional information for your report.
-There must be a "id" field in that section which is used to uniquely identify the report among all reports that are developed for LeanIX.
-
+Example `package.json`:
 ```
 {
-  "name": "my-report",
+  "name": "leanix-quality-chart-report",
   "version": "1.0.0",
+  "author": "LeanIX GmbH",
+  "description": "This report shows the overall quality of your Fact Sheets per Fact Sheet type",
   "leanixReport": {
-    "id": "net.leanix.quality-chart"
+    "id": "net.leanix.quality-chart",
+    "title": "Quality Chart",
+    "documentationLink": "https://dev.leanix.net/example-docs",
+    "defaultConfig": {
+      "factSheetTypes": ["Application"]
+    }
   }
 }
 ```
+
+Description of the properties that we extract from `package.json` when uploading your report to LeanIX:
+* `name`: Name for your report project
+* `version`: Version of your report
+* `author`: Creator of the report (optional)
+* `description`: Description of your reports use case (optional)
+* `leanixReport`: Additional properties used by LeanIX
+  * `id`: Unique ID for your report, we encourage you to follow Java package naming convention to force uniqueness(https://docs.oracle.com/javase/tutorial/java/package/namingpkgs.html)
+  * `title`: Title for your report that is displayed in the GUI (optional)
+  * `documentationLink`: Link to a documentation of your report (optional)
+  * `defaultConfig`: Default configuration object, that can be adapted by the user (optional if your report is not configurable)
 
 ### src/index.html
 This file is initially loaded by the LeanIX reporting framework and is hence the starting point for the execution of your report within the users browser.

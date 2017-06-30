@@ -1,6 +1,6 @@
 {
   "name": "@leanix/reporting-cli",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.0",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
   "preferGlobal": true,
   "main": "./lib/app.js",
@@ -21,6 +21,10 @@
   ],
   "author": "LeanIX GmbH",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leanix/leanix-reporting-cli.git"
+  },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
     "@types/commander": "^2.9.1",
