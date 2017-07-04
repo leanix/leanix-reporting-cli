@@ -32,6 +32,7 @@
     "webpack-dev-server": "2.5.0"
   },
   "dependencies": {
-    "@leanix/reporting": "^0.1.1"
+    "@leanix/reporting": "^0.1.1",
+    "jquery": "^3.2.1"
   }
 }
