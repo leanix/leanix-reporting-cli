@@ -42,7 +42,7 @@ export class TemplateExtractor {
       source,
       dest,
       inlineData: answers,
-      logLevel: 'info' // info
+      logLevel: 'none' // info
     });
   }
 

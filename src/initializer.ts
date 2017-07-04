@@ -16,6 +16,8 @@ export class Initializer {
     return inquirer.prompt(this.getInquirerQuestions())
     .then(answers => {
       this.extractor.extractTemplateFiles(answers as UserInitInput);
+      console.log(chalk.green('\u2713 Your project is ready!'));
+      console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
       // return this.installViaNpm();
     });
 
