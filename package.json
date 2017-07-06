@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "test-install": "npm run build && npm -g install ."
+    "test-install": "npm run build && npm -g install .",
+    "prepublish": "npm run build"
   },
   "keywords": [
     "leanix",

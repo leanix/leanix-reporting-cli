@@ -102,3 +102,11 @@ This file is initially loaded by the LeanIX reporting framework and is hence the
 
 ### src/index.js
 This file is the starting point for bundling JavaScript into one file. You can use the `import` statement (https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/import) in order to split up your project into multiple files. We use webpack 3.x under the hood to bundle your project.
+
+
+# For reporting-cli developer
+
+## Publish new version
+* Bump version in `package.json`
+* Make sure you have logged in to publish to npm registry in scope `@leanix`
+* Execute `npm publish --access public`
