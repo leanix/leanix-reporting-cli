@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+
+process.title = '@leanix/reporting-cli';
+
+require('../lib/app.js');
+
