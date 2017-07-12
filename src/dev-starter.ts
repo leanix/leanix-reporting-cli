@@ -1,26 +1,47 @@
 import * as chalk from 'chalk';
 import { exec, spawn } from 'child_process';
 import { PathHelper } from './path-helper';
+import { ApiTokenResolver } from './api-token-resolver';
+
+interface DevServerStartResult {
+  launchUrl: string;
+  localhostUrl: string;
+}
 
 export class DevStarter {
 
   private pathHelper = new PathHelper();
+  private lxrConfig = require(this.pathHelper.getLxrConfigPath());
 
   public start() {
-    const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    const port = lxrConfig.localPort || 8080;
+    this.getApiToken()
+    .then(accessToken => {
+      const serverPromise = this.startLocalServer(accessToken);
+      serverPromise.then(startResult => {
+        exec('open ' + startResult.launchUrl);
+        console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
+        console.log('');
+        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
+      });
+    })
+  }
+
+  private startLocalServer(accessToken?: string): Promise<DevServerStartResult> {
+    const port = this.lxrConfig.localPort || 8080;
 
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
 
-    const host = 'https://' + lxrConfig.host;
-    const launchUrl = `${host}/${lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
-    console.log(chalk.green('Starting development server and launching with url: ' + launchUrl));
+    const host = 'https://' + this.lxrConfig.host;
+    const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
+    const baseLaunchUrl = `${host}/${this.lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
+    const launchUrl = baseLaunchUrl + accessTokenHash;
+    console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
     const args = ['--https', '--port', '' + port];
-    if (lxrConfig.ssl && lxrConfig.ssl.cert && lxrConfig.ssl.key) {
-      args.push('--cert=' + lxrConfig.ssl.cert);
-      args.push('--key=' + lxrConfig.ssl.key);
+    if (this.lxrConfig.ssl && this.lxrConfig.ssl.cert && this.lxrConfig.ssl.key) {
+      args.push('--cert=' + this.lxrConfig.ssl.cert);
+      args.push('--key=' + this.lxrConfig.ssl.key);
     }
 
     console.log('' + args.join(' '));
@@ -29,7 +50,7 @@ export class DevStarter {
       console.log(data.toString());
     });
 
-    const serverPromise = new Promise((resolve) => {
+    return new Promise((resolve) => {
       let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
@@ -41,15 +62,17 @@ export class DevStarter {
           projectRunning = true;
         }
         if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
-          resolve();
+          resolve({ launchUrl, localhostUrl });
         }
       });
     });
+  }
 
-    serverPromise.then(() => {
-      exec('open ' + launchUrl);
-      console.log(chalk.green(`Open the following url to test your report: ${launchUrl}`));
-      console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url: ${localhostUrl}`));
-    });
+  private getApiToken(): Promise<string> {
+    if (this.lxrConfig.apitoken) {
+      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken);
+    } else {
+      return Promise.resolve(null);
+    }
   }
 }
