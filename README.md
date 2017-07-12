@@ -56,6 +56,16 @@ If you have created your certificate you can add the certificate and private key
 }
 ```
 
+### Port of local dev server
+By default the local dev server is hosted on port 8080. You can change that in your `lxr.json` via the `"localPort"` setting:
+```
+{
+  "host": "app.leanix.net",
+  ...
+  "localPort": "4200"
+}
+```
+
 ## Uploading to LeanIX workspace
 In order to upload your report to a LeanIX workspace you can simply run the following command:
 

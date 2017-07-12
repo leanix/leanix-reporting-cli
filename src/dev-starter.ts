@@ -8,14 +8,14 @@ export class DevStarter {
 
   public start() {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    const port = 8080;
+    const port = lxrConfig.localPort || 8080;
 
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
 
     const host = 'https://' + lxrConfig.host;
     const launchUrl = `${host}/${lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
-    console.log(chalk.green('Starting development server...'));
+    console.log(chalk.green('Starting development server and launching with url: ' + launchUrl));
 
     const args = ['--https', '--port', '' + port];
     if (lxrConfig.ssl && lxrConfig.ssl.cert && lxrConfig.ssl.key) {
