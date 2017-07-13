@@ -29,7 +29,11 @@ export class TemplateExtractor {
   }
 
   private extractTemplateFile(source: string, answers: UserInitInput) {
-    const dest = source.replace(this.pathHelper.getTemplateDirectory(), this.pathHelper.getProjectDirectory());
+    let dest = source.replace(this.pathHelper.getTemplateDirectory(), this.pathHelper.getProjectDirectory());
+
+    if (path.basename(source) === 'gitignore') {
+      dest = path.resolve(this.pathHelper.getProjectDirectory(), '.gitignore');
+    }
 
     console.log(source, dest);
 
