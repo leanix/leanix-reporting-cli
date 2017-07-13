@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { exec } from 'child_process';
+import * as opn from 'opn';
 import { spawn } from 'cross-spawn';
 import { PathHelper } from './path-helper';
 import { ApiTokenResolver } from './api-token-resolver';
@@ -19,7 +19,7 @@ export class DevStarter {
     .then(accessToken => {
       const serverPromise = this.startLocalServer(accessToken);
       serverPromise.then(startResult => {
-        exec('open ' + startResult.launchUrl);
+        this.openUrlInBrowser(startResult.launchUrl);
         console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
         console.log('');
         console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
@@ -74,6 +74,14 @@ export class DevStarter {
       return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken);
     } else {
       return Promise.resolve(null);
+    }
+  }
+
+  private openUrlInBrowser(url: string) {
+    try {
+      opn(url);
+    } catch (err) {
+      console.error('Unable to open your browser: ' + err);
     }
   }
 }
