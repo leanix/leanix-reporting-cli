@@ -4,7 +4,7 @@ Command line interface to initialise, develop and publish custom reports for Lea
 
 ## Prerequisites
 * Node.js >= 6.9 (check with `node -v`)
-* npm >= 4 (check with `npm -v`)
+* npm >= 3 (check with `npm -v`)
 
 ## Getting started
 Install the package globally via npm:
@@ -16,13 +16,13 @@ Initialize a new project:
 ```
 mkdir myreport
 cd myreport
-lxr init myreport
+lxr init
 ```
 
 Configure your environment in `lxr.json`:
 ```
 {
-  "host": "https://app.leanix.net",
+  "host": "app.leanix.net",
   "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
 }
@@ -46,7 +46,7 @@ If you have created your certificate you can add the certificate and private key
 
 ```
 {
-  "host": "https://app.leanix.net",
+  "host": "app.leanix.net",
   "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL",
   "ssl": {
@@ -56,12 +56,36 @@ If you have created your certificate you can add the certificate and private key
 }
 ```
 
+### Port of local dev server
+By default the local dev server is hosted on port 8080. You can change that in your `lxr.json` via the `"localPort"` setting:
+```
+{
+  "host": "app.leanix.net",
+  ...
+  "localPort": "4200"
+}
+```
+
 ## Uploading to LeanIX workspace
 In order to upload your report to a LeanIX workspace you can simply run the following command:
 
 ```
 npm run upload
 ```
+
+This command will build your project, bundle everything into an archive, add some meta information about your report and upload the whole package to the host server configured in `lxr.json`.
+Now your report is hosted on that host for the workspace that you have configured in `lxr.json` and can be made available to users of that workspace.
+
+The files that will be uploaded are:
+* `src/index.html`
+* The results of bundling the JavaScript files
+* Everything in `src/assets`
+* A metadata file, containing information about your project that is extracted from your `package.json`
+
+## Making your report available for other users (Not yet available in LeanIX)
+If you have uploaded your report for a certain workspace, a new entry should be available in that workspace under `Administration - Reports`.
+If you open the details of that report by clicking on the report name you should be able to view the report via the `<Open>` link.
+This link can also be shared with other users (e.g. to get their feedback) without being publicly visible within the workspace.
 
 ## Important files
 
@@ -104,7 +128,7 @@ This file is initially loaded by the LeanIX reporting framework and is hence the
 This file is the starting point for bundling JavaScript into one file. You can use the `import` statement (https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/import) in order to split up your project into multiple files. We use webpack 3.x under the hood to bundle your project.
 
 
-# For reporting-cli developer
+# For reporting-cli developers
 
 ## Publish new version
 * Bump version in `package.json`

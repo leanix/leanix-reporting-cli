@@ -2,7 +2,8 @@ import * as chalk from 'chalk';
 import * as path from 'path';
 import * as process from 'process';
 import * as inquirer from 'inquirer';
-import { spawn } from 'child_process';
+import * as _ from 'lodash';
+import { spawn } from 'cross-spawn';
 import { TemplateExtractor } from './template-extractor';
 import { UserInitInput } from "./interfaces";
 
@@ -15,6 +16,7 @@ export class Initializer {
 
     return inquirer.prompt(this.getInquirerQuestions())
     .then(answers => {
+      answers = this.handleDefaultAnswers(answers);
       this.extractor.extractTemplateFiles(answers as UserInitInput);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
@@ -67,6 +69,13 @@ export class Initializer {
         message: 'API-Token for Authentication (see: https://dev.leanix.net/docs/authentication#section-generate-api-tokens)'
       }
     ];
+  }
+
+  private handleDefaultAnswers(answers: inquirer.Answers) {
+    answers = _.mapValues(answers, (val) => val === '' ? undefined : val);
+    return _.defaults(answers, {
+      host: 'app.leanix.net'
+    });
   }
 
   private installViaNpm(): Promise<any> {
