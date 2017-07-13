@@ -1,5 +1,6 @@
 import * as chalk from 'chalk';
-import { exec, spawn } from 'child_process';
+import { exec } from 'child_process';
+import { spawn } from 'cross-spawn';
 import { PathHelper } from './path-helper';
 import { ApiTokenResolver } from './api-token-resolver';
 
