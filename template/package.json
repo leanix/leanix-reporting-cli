@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@leanix/reporting": "^0.1.1",
-    "jquery": "^3.2.1"
+    "jquery": "2.2.4",
+    "lodash": "4.14.2"
   }
 }

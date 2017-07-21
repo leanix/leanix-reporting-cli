@@ -1,4 +1,5 @@
 var path = require('path');
+var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -23,6 +24,12 @@ module.exports = {
     ]
   },
   plugins: [
+    // Make jquery and lodash globally available (required for report library)
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      '_': 'lodash'
+    }),
     new CopyWebpackPlugin([
       { from: 'src/assets', to: 'assets' }
     ]),
