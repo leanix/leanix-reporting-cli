@@ -17,7 +17,8 @@
     "custom-report"
   ],
   "author": "%author%",
-  "license": "MIT",
+  "private": true,
+  "license": "%licence%",
   "devDependencies": {
     "babel-core": "6.25.0",
     "babel-loader": "7.1.0",

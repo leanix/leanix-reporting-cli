@@ -10,6 +10,7 @@ export interface UserInitInput {
   author: string;
   title: string;
   description: string;
+  licence: string;
   host: string;
   workspace: string;
   apitoken: string;
