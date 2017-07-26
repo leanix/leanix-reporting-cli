@@ -37,5 +37,10 @@ module.exports = {
       inject: true,
       template: 'src/index.html'
     })
-  ]
+  ],
+	devServer: {
+		headers: {
+			'Access-Control-Allow-Origin': '*'
+		}
+	}
 }
