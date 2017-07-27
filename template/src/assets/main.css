@@ -14,12 +14,9 @@ tr td:nth-child(1) {
   padding-right: 15px;
 }
 
-.bar {
-  height: 30px;
-  margin-bottom: 5px;
-}
-
 #clickOutput h6 {
   margin-top: 20px;
   margin-bottom: 5px;
 }
+
+@import "bar.css";

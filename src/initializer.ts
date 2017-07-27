@@ -55,6 +55,11 @@ export class Initializer {
       },
       {
         type: 'input',
+        name: 'licence',
+        message: 'Which licence do you want to use for this project? (Default: UNLICENSED)'
+      },
+      {
+        type: 'input',
         name: 'host',
         message: 'Which host do you want to work with? (Default: app.leanix.net)'
       },
@@ -74,7 +79,9 @@ export class Initializer {
   private handleDefaultAnswers(answers: inquirer.Answers) {
     answers = _.mapValues(answers, (val) => val === '' ? undefined : val);
     return _.defaults(answers, {
-      host: 'app.leanix.net'
+      licence: 'UNLICENSED',
+      host: 'app.leanix.net',
+      'readme_title': answers.title || answers.name
     });
   }
 
