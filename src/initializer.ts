@@ -42,7 +42,7 @@ export class Initializer {
       {
         type: 'input',
         name: 'author',
-        message: 'Who is the author of this report (e.g. LeanIX GmbH)'
+        message: 'Who is the author of this report (e.g. LeanIX GmbH <support@leanix.net>)'
       },
       {
         type: 'input',
