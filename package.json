@@ -1,6 +1,6 @@
 {
   "name": "@leanix/reporting-cli",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
   "preferGlobal": true,
   "main": "./lib/app.js",
@@ -20,7 +20,7 @@
     "reporting",
     "reporting-cli"
   ],
-  "author": "LeanIX GmbH",
+  "author": "LeanIX GmbH <support@leanix.net>",
   "license": "Apache-2.0",
   "engines": {
     "node": ">=6.9"
