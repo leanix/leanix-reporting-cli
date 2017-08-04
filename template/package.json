@@ -2,7 +2,9 @@
   "name": "%name%",
   "version": "1.0.0",
   "description": "%description%",
-  "main": "index.js",
+  "engines": {
+    "node": ">=%node_version%"
+  },
   "leanixReport": {
     "id": "%id%",
     "title": "%title%",
@@ -35,6 +37,6 @@
     "webpack-dev-server": "2.5.0"
   },
   "dependencies": {
-    "@leanix/reporting": "^0.1.5"
+    "@leanix/reporting": "^0.2.0"
   }
 }

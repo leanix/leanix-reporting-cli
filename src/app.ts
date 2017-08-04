@@ -35,3 +35,14 @@ program
   });
 
 program.parse(process.argv);
+
+// no commands specified
+if (process.argv.length === 2) {
+  console.log(chalk.cyan('  LeanIX Reporting CLI'));
+  console.log(chalk.cyan('  ===================='));
+  console.log('');
+  console.log(chalk.cyan('  version: ' + pkg.version));
+  console.log(chalk.cyan('  github: https://github.com/leanix/leanix-reporting-cli'));
+  console.log('');
+  program.outputHelp();
+}

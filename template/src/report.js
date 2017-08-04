@@ -86,7 +86,7 @@ export class Report {
   }
 
   getHtmlForFsTypeBar(type) {
-    var fsVm = _.find(this.setup.config.viewModel.factSheets, { type });
+    var fsVm = _.find(this.setup.settings.viewModel.factSheets, { type });
     var groupCount = this.groups[type].length;
     var width = groupCount / this.data.length * 100;
     var barStyles = `width: ${width}%; background-color: ${fsVm.bgColor};`;

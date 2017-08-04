@@ -121,6 +121,10 @@ Description of the properties that we extract from `package.json` when uploading
   * `documentationLink`: Link to a documentation of your report (optional)
   * `defaultConfig`: Default configuration object, that can be adapted by the user (optional if your report is not configurable)
 
+### lxr.json
+This file contains specific configuration for developing, testing and uploading your report. It is not meant to be tracked by version control, since
+it may contain user specific API Tokens. The file should be encoded in `utf-8` to be processable by the reporting-cli.
+
 ### src/index.html
 This file is initially loaded by the LeanIX reporting framework and is hence the starting point for the execution of your report within the users browser.
 
