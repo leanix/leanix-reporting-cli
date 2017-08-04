@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "%description%",
   "main": "index.js",
+  "engines": {
+    "node": ">=%node_version%"
+  },
   "leanixReport": {
     "id": "%id%",
     "title": "%title%",
