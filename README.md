@@ -1,6 +1,8 @@
 # leanix-reporting-cli
+[![npm version](https://badge.fury.io/js/%40leanix%2Freporting-cli.svg)](https://badge.fury.io/js/%40leanix%2Freporting-cli)
 
 Command line interface to initialise, develop and publish custom reports for LeanIX EAM Tool.
+Please also have a look at the corresponding reporting library: https://github.com/leanix/leanix-reporting
 
 ## Prerequisites
 * Node.js >= 6.9 (check with `node -v`)
