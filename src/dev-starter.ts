@@ -51,6 +51,11 @@ export class DevStarter {
       console.log(data.toString());
     });
 
+    // output errors from webpack
+    serverProcess.stderr.on('data', (data) => {
+      console.error(chalk.red(data.toString()));
+    });
+
     return new Promise((resolve) => {
       let projectRunning = false;
       serverProcess.on('error', (err) => {
