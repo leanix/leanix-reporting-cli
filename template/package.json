@@ -12,7 +12,8 @@
   },
   "scripts": {
     "start": "lxr start",
-    "upload": "lxr upload"
+    "upload": "lxr upload",
+    "webpack": "webpack"
   },
   "keywords": [
     "leanix",
