@@ -19,6 +19,7 @@ Initialize a new project:
 mkdir myreport
 cd myreport
 lxr init
+npm install
 ```
 
 Configure your environment in `lxr.json`:
