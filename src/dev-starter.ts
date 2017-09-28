@@ -15,16 +15,14 @@ export class DevStarter {
   private lxrConfig = require(this.pathHelper.getLxrConfigPath());
 
   public start() {
-    this.getApiToken()
-    .then(accessToken => {
-      const serverPromise = this.startLocalServer(accessToken);
-      serverPromise.then(startResult => {
-        this.openUrlInBrowser(startResult.launchUrl);
-        console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
-        console.log('');
-        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
-      });
-    })
+    return this.getApiToken()
+    .then(accessToken => this.startLocalServer(accessToken))
+    .then(startResult => {
+      this.openUrlInBrowser(startResult.launchUrl);
+      console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
+      console.log('');
+      console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
+    });
   }
 
   private startLocalServer(accessToken?: string): Promise<DevServerStartResult> {
