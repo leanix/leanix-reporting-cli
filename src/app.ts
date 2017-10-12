@@ -13,7 +13,7 @@ program
   .command('init')
   .description('Initializes a new project')
   .action(() => {
-    new Initializer().init();
+    new Initializer().init().catch(handleError);
   });
 
 
@@ -21,7 +21,7 @@ program
   .command('start')
   .description('Start developing and testing your report')
   .action(() => {
-    new DevStarter().start();
+    new DevStarter().start().catch(handleError);
   });
 
 
@@ -29,9 +29,7 @@ program
   .command('upload')
   .description('Upload your report')
   .action(() => {
-    new Uploader().upload().catch(err => {
-      console.error(chalk.red(err));
-    });
+    new Uploader().upload().catch(handleError);
   });
 
 program.parse(process.argv);
@@ -45,4 +43,8 @@ if (process.argv.length === 2) {
   console.log(chalk.cyan('  github: https://github.com/leanix/leanix-reporting-cli'));
   console.log('');
   program.outputHelp();
+}
+
+function handleError(err: Error) {
+  console.error(chalk.red(err));
 }
