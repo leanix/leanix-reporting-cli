@@ -27,7 +27,7 @@ program
 
 program
   .command('upload')
-  .description('Upload your report')
+  .description('Bundles and uploads your report to the configured workspace')
   .action(() => {
     new Uploader().upload().catch(err => {
       console.error(chalk.red(err));
