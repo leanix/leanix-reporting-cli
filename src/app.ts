@@ -1,8 +1,9 @@
 import * as program from 'commander';
+import * as chalk from 'chalk';
 import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
-import * as chalk from 'chalk';
+import { Builder } from './builder';
 
 const pkg = require('../package.json');
 
@@ -26,8 +27,18 @@ program
 
 
 program
+  .command('build')
+  .description('Builds the report into a folder named "dist"')
+  .action(() => {
+    new Builder().build().catch(err => {
+      console.error(chalk.red(err));
+    });
+  });
+
+
+program
   .command('upload')
-  .description('Bundles and uploads your report to the configured workspace')
+  .description('Bundles and uploads the report to the configured workspace')
   .action(() => {
     new Uploader().upload().catch(err => {
       console.error(chalk.red(err));
