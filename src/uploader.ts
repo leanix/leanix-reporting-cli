@@ -6,39 +6,24 @@ import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';
 import { ApiTokenResolver } from './api-token-resolver';
+import { Builder } from './builder';
 
+/**
+ * Builds and uploads the project.
+ */
 export class Uploader {
 
   private pathHelper = new PathHelper();
   private projectDir = new PathHelper().getProjectDirectory();
+  private builder = new Builder();
 
   public upload() {
-    console.log(chalk.green('Bundling and uploading your project...'));
-
-    return this.buildWithWebpack()
+    console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
+    return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
     .then(() => this.executeUpload());
-  }
-
-  private buildWithWebpack() {
-    return new Promise((resolve, reject) => {
-      // remove dist folder
-      execSync('rm -rf ' + path.resolve(this.projectDir, 'dist'));
-
-      const webpackCmd = path.resolve(this.projectDir, 'node_modules/.bin/webpack');
-      exec(webpackCmd, (err, stdout) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          console.log(stdout);
-          console.log(chalk.green('\u2713 Project successfully build!'));
-          resolve();
-        }
-      });
-    });
   }
 
   private writeMetadataFile() {
@@ -77,7 +62,7 @@ export class Uploader {
 
   private executeUpload() {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    console.log(chalk.italic(`Uploading to ${lxrConfig.host} ...`));
+    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ...`)));
     const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
