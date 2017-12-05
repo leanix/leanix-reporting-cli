@@ -1,5 +1,6 @@
 import * as program from 'commander';
 import * as chalk from 'chalk';
+import * as _ from 'lodash';
 import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
@@ -57,5 +58,5 @@ if (process.argv.length === 2) {
 }
 
 function handleError(err: Error) {
-  console.error(chalk.red(err));
+  console.error(chalk.red(err.message));
 }
