@@ -1,8 +1,9 @@
 import * as program from 'commander';
+import * as chalk from 'chalk';
 import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
-import * as chalk from 'chalk';
+import { Builder } from './builder';
 
 const pkg = require('../package.json');
 
@@ -13,7 +14,7 @@ program
   .command('init')
   .description('Initializes a new project')
   .action(() => {
-    new Initializer().init();
+    new Initializer().init().catch(handleError);
   });
 
 
@@ -21,17 +22,25 @@ program
   .command('start')
   .description('Start developing and testing your report')
   .action(() => {
-    new DevStarter().start();
+    new DevStarter().start().catch(handleError);
+  });
+
+
+program
+  .command('build')
+  .description('Builds the report into a folder named "dist"')
+  .action(() => {
+    new Builder().build().catch(err => {
+      console.error(chalk.red(err));
+    });
   });
 
 
 program
   .command('upload')
-  .description('Upload your report')
+  .description('Bundles and uploads the report to the configured workspace')
   .action(() => {
-    new Uploader().upload().catch(err => {
-      console.error(chalk.red(err));
-    });
+    new Uploader().upload().catch(handleError);
   });
 
 program.parse(process.argv);
@@ -45,4 +54,8 @@ if (process.argv.length === 2) {
   console.log(chalk.cyan('  github: https://github.com/leanix/leanix-reporting-cli'));
   console.log('');
   program.outputHelp();
+}
+
+function handleError(err: Error) {
+  console.error(chalk.red(err));
 }
