@@ -24,6 +24,11 @@ In the project directory, one can run:
 This command will start the local development server. Please make sure you have properly configured `lxr.json` first.
 It will take the specified API Token from `lxr.json` and automatically do a login to the workspace.
 
+`npm run build`
+
+Builds the report and outputs the build result into `dist` folder.
+
+
 `npm run upload`
 
 Uploads the report to the workspace configured in `lxr.json`.

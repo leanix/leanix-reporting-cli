@@ -11,6 +11,7 @@
     "defaultConfig": {}
   },
   "scripts": {
+    "build": "lxr build",
     "start": "lxr start",
     "upload": "lxr upload",
     "webpack": "webpack"
