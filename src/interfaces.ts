@@ -13,7 +13,6 @@ export interface UserInitInput {
   description: string;
   licence: string;
   host: string;
-  workspace: string;
   apitoken: string;
   proxyURL?: string;
 }

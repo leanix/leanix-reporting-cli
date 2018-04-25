@@ -66,11 +66,6 @@ export class Initializer {
       },
       {
         type: 'input',
-        name: 'workspace',
-        message: 'Which is the workspace you want to test your report in?'
-      },
-      {
-        type: 'input',
         name: 'apitoken',
         message: 'API-Token for Authentication (see: https://dev.leanix.net/docs/authentication#section-generate-api-tokens)'
       },

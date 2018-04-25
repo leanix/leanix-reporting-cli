@@ -1,5 +1,6 @@
 import * as chalk from 'chalk';
 import * as opn from 'opn';
+import * as jwtDecode from 'jwt-decode';
 import { spawn } from 'cross-spawn';
 import { PathHelper } from './path-helper';
 import { ApiTokenResolver } from './api-token-resolver';
@@ -33,7 +34,13 @@ export class DevStarter {
 
     const host = 'https://' + this.lxrConfig.host;
     const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    const baseLaunchUrl = `${host}/${this.lxrConfig.workspace}/reporting/dev?url=${urlEncoded}`;
+    let workspace = this.lxrConfig.workspace
+    if (accessToken) {
+      const claims = jwtDecode(accessToken);
+      workspace = claims && claims.principal && claims.principal.permission ? claims.principal.permission.workspaceName : workspace
+      console.log(chalk.green(`Your workspace is ${workspace}`));
+    }
+    const baseLaunchUrl = `${host}/${workspace}/reporting/dev?url=${urlEncoded}`;
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
