@@ -73,6 +73,10 @@ export class DevStarter {
   }
 
   private getApiToken(): Promise<string> {
+    if (this.lxrConfig && this.lxrConfig.hasOwnProperty('proxyURL')) {
+      // Set the PROXY_URL envvar
+      process.env.PROXY_URL = this.lxrConfig.proxyURL
+    }
     if (this.lxrConfig.apitoken) {
       return ApiTokenResolver.getAccessToken(this.lxrConfig.apitoken);
     } else {

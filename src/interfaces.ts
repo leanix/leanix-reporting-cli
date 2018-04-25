@@ -2,6 +2,7 @@ export interface LxrConfig {
   host: string;
   workspace: string;
   apitoken: string;
+  proxyURL?: string;
 }
 
 export interface UserInitInput {
@@ -14,4 +15,5 @@ export interface UserInitInput {
   host: string;
   workspace: string;
   apitoken: string;
+  proxyURL?: string;
 }
