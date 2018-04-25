@@ -36,6 +36,17 @@ Start developing:
 npm start
 ```
 
+### Operating behind a proxy server
+If you are operating behind a proxy simply add the "proxyURL" attribute to the `lxr.json` file as follows:
+```
+{
+  "host": "app.leanix.net",
+  "workspace": "myworkspace",
+  "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
+  "proxyURL" "<add your proxy url here>"
+}
+```
+
 ### Security hint
 When you run `npm start` a local webserver is hosted on localhost:8080
 that allows connections via HTTPS. But since just a development SSL certificate is created
