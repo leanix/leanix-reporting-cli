@@ -74,7 +74,7 @@ export class DevStarter {
 
   private getApiToken(): Promise<string> {
     if (this.lxrConfig.apitoken) {
-      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken);
+      return ApiTokenResolver.getAccessToken(this.lxrConfig.apitoken);
     } else {
       return Promise.resolve(null);
     }
