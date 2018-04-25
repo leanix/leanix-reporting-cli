@@ -85,6 +85,15 @@ The files that will be uploaded are:
 * Everything in `src/assets`
 * A metadata file, containing information about your project that is extracted from your `package.json`
 
+## Building your report
+To build your report and distribute the result via some other way (instead of uploading it) you can run the following command:
+
+```
+npm run build
+```
+
+It will build your project and output the result into a `dist` folder.
+
 ## Making your report available for other users (Not yet available in LeanIX)
 If you have uploaded your report for a certain workspace, a new entry should be available in that workspace under `Administration - Reports`.
 If you open the details of that report by clicking on the report name you should be able to view the report via the `<Open>` link.
