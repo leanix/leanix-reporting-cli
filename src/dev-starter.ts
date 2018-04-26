@@ -26,7 +26,7 @@ export class DevStarter {
     });
   }
 
-  private startLocalServer(accessToken?: string): Promise<DevServerStartResult> {
+  private startLocalServer(accessToken: string): Promise<DevServerStartResult> {
     const port = this.lxrConfig.localPort || 8080;
 
     const localhostUrl = `https://localhost:${port}`;
@@ -34,12 +34,9 @@ export class DevStarter {
 
     const host = 'https://' + this.lxrConfig.host;
     const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    let workspace = this.lxrConfig.workspace
-    if (accessToken) {
-      const claims = jwtDecode(accessToken);
-      workspace = claims && claims.principal && claims.principal.permission ? claims.principal.permission.workspaceName : workspace
-      console.log(chalk.green(`Your workspace is ${workspace}`));
-    }
+    const claims = jwtDecode(accessToken);
+    const workspace = claims.principal.permission.workspaceName;
+    console.log(chalk.green(`Your workspace is ${workspace}`));
     const baseLaunchUrl = `${host}/${workspace}/reporting/dev?url=${urlEncoded}`;
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
@@ -80,12 +77,8 @@ export class DevStarter {
   }
 
   private getApiToken(): Promise<string> {
-    if (this.lxrConfig && this.lxrConfig.hasOwnProperty('proxyURL')) {
-      // Set the PROXY_URL envvar
-      process.env.PROXY_URL = this.lxrConfig.proxyURL
-    }
     if (this.lxrConfig.apitoken) {
-      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken);
+      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken, this.lxrConfig.proxyURL);
     } else {
       return Promise.resolve(null);
     }

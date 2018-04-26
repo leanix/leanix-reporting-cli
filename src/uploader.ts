@@ -62,15 +62,11 @@ export class Uploader {
 
   private executeUpload() {
     const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    if (lxrConfig && lxrConfig.hasOwnProperty('proxyURL')) {
-      // Set the PROXY_URL envvar
-      process.env.PROXY_URL = lxrConfig.proxyURL
-    }
-    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ${process.env.PROXY_URL ? `through a proxy` : ``}...`)));
+    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ${lxrConfig.proxyURL ? `through a proxy` : ``}...`)));
     const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
-    return ApiTokenResolver.getAccessToken(host, apitoken)
+    return ApiTokenResolver.getAccessToken(host, apitoken, lxrConfig.proxyURL)
     .then(accessToken => {
       const options = {
         url: host + '/services/pathfinder/v1/reports/upload',
@@ -82,11 +78,7 @@ export class Uploader {
         }
       };
 
-      if (process.env.PROXY_URL) {
-        Object.assign(options, {proxy: process.env.PROXY_URL})
-      }
-
-      return rp.post(options)
+      return rp.post({ ...options, proxy: lxrConfig.proxyURL })
       .then(response => {
         const responseJson = JSON.parse(response);
         if (responseJson.status === 'OK') {
