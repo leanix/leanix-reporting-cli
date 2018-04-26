@@ -85,7 +85,7 @@ export class DevStarter {
       process.env.PROXY_URL = this.lxrConfig.proxyURL
     }
     if (this.lxrConfig.apitoken) {
-      return ApiTokenResolver.getAccessToken(this.lxrConfig.apitoken);
+      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken);
     } else {
       return Promise.resolve(null);
     }

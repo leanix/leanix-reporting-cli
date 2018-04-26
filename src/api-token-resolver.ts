@@ -2,8 +2,7 @@ import * as rp from 'request-promise-native';
 
 export class ApiTokenResolver {
 
-  public static getAccessToken(apiToken: string) {
-  const host = 'https://svc.leanix.net';
+  public static getAccessToken(host: string, apiToken: string) {
   const base64ApiToken = new Buffer('apitoken:' + apiToken).toString('base64');
   let options = {
     url: host + '/services/mtm/v1/oauth2/token',

@@ -26,7 +26,6 @@ Configure your environment in `lxr.json`:
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
 }
 ```
@@ -41,7 +40,6 @@ If you are operating behind a proxy simply add the "proxyURL" attribute to the `
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
   "proxyURL" "<add your proxy url here>"
 }
@@ -61,7 +59,6 @@ If you have created your certificate you can add the certificate and private key
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL",
   "ssl": {
     "cert": "/path/to/cert",

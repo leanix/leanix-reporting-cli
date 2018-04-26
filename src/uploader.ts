@@ -70,7 +70,7 @@ export class Uploader {
     const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
-    return ApiTokenResolver.getAccessToken(apitoken)
+    return ApiTokenResolver.getAccessToken(host, apitoken)
     .then(accessToken => {
       const options = {
         url: host + '/services/pathfinder/v1/reports/upload',
