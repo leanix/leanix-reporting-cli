@@ -26,7 +26,6 @@ Configure your environment in `lxr.json`:
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
 }
 ```
@@ -34,6 +33,16 @@ Configure your environment in `lxr.json`:
 Start developing:
 ```
 npm start
+```
+
+### Operating behind a proxy server
+If you are operating behind a proxy simply add the "proxyURL" attribute to the `lxr.json` file as follows:
+```
+{
+  "host": "app.leanix.net",
+  "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
+  "proxyURL" "<add your proxy url here>"
+}
 ```
 
 ### Security hint
@@ -50,7 +59,6 @@ If you have created your certificate you can add the certificate and private key
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL",
   "ssl": {
     "cert": "/path/to/cert",
