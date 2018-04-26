@@ -66,7 +66,7 @@ export class Uploader {
       // Set the PROXY_URL envvar
       process.env.PROXY_URL = lxrConfig.proxyURL
     }
-    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ${process.env.PROXY_URL ? `through proxy ${process.env.PROXY_URL}` : ``}...`)));
+    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ${process.env.PROXY_URL ? `through a proxy` : ``}...`)));
     const host = 'https://' + lxrConfig.host;
     const apitoken = lxrConfig.apitoken;
 
