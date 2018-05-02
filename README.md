@@ -26,7 +26,6 @@ Configure your environment in `lxr.json`:
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
 }
 ```
@@ -34,6 +33,16 @@ Configure your environment in `lxr.json`:
 Start developing:
 ```
 npm start
+```
+
+### Operating behind a proxy server
+If you are operating behind a proxy simply add the "proxyURL" attribute to the `lxr.json` file as follows:
+```
+{
+  "host": "app.leanix.net",
+  "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL"
+  "proxyURL" "<add your proxy url here>"
+}
 ```
 
 ### Security hint
@@ -50,7 +59,6 @@ If you have created your certificate you can add the certificate and private key
 ```
 {
   "host": "app.leanix.net",
-  "workspace": "myworkspace",
   "apitoken": "Jw8MfCqEXDDubry64H95SKYPjJTBKNFhkYD8kSCL",
   "ssl": {
     "cert": "/path/to/cert",
@@ -84,6 +92,15 @@ The files that will be uploaded are:
 * The results of bundling the JavaScript files
 * Everything in `src/assets`
 * A metadata file, containing information about your project that is extracted from your `package.json`
+
+## Building your report
+To build your report and distribute the result via some other way (instead of uploading it) you can run the following command:
+
+```
+npm run build
+```
+
+It will build your project and output the result into a `dist` folder.
 
 ## Making your report available for other users (Not yet available in LeanIX)
 If you have uploaded your report for a certain workspace, a new entry should be available in that workspace under `Administration - Reports`.

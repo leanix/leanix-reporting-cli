@@ -5,6 +5,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';
+import * as rimraf from 'rimraf';
 import { ApiTokenResolver } from './api-token-resolver';
 
 /**
@@ -23,19 +24,19 @@ export class Builder {
   private buildWithWebpack() {
     return new Promise((resolve, reject) => {
       // remove dist folder
-      execSync('rm -rf ' + path.resolve(this.projectDir, 'dist'));
-
-      const webpackCmd = path.resolve(this.projectDir, 'node_modules/.bin/webpack');
-      exec(webpackCmd, (err, stdout) => {
-        if (err) {
-          console.error(err);
-          reject(err);
-        } else {
-          console.log(stdout);
-          console.log(chalk.green('\u2713 Project successfully build!'));
-          resolve();
-        }
-      });
+      rimraf(path.resolve(this.projectDir, 'dist'), () => {
+        const webpackCmd = path.resolve(this.projectDir, 'node_modules/.bin/webpack');
+        exec(webpackCmd, (err, stdout) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            console.log(stdout);
+            console.log(chalk.green('\u2713 Project successfully build!'));
+            resolve();
+          }
+        });
+      })
     });
   }
 
