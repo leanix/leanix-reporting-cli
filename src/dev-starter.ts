@@ -18,7 +18,7 @@ export class DevStarter {
   private lxrConfig: LxrConfig = require(this.pathHelper.getLxrConfigPath());
 
   public start() {
-    return this.getApiToken()
+    return this.getAccessToken(this.lxrConfig)
     .then(accessToken => this.startLocalServer(accessToken))
     .then(startResult => {
       if (startResult) {
@@ -30,7 +30,7 @@ export class DevStarter {
     });
   }
 
-  private startLocalServer(accessToken: string): Promise<DevServerStartResult> {
+  private startLocalServer(accessToken?: string): Promise<DevServerStartResult> {
     const port = this.lxrConfig.localPort || 8080;
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
@@ -92,9 +92,9 @@ export class DevStarter {
     });
   }
 
-  private getApiToken(): Promise<string> {
-    if (!_.isEmpty(this.lxrConfig.apitoken)) {
-      return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken, this.lxrConfig.proxyURL);
+  private getAccessToken(config: LxrConfig): Promise<string> {
+    if (!_.isEmpty(config.apitoken)) {
+      return ApiTokenResolver.getAccessToken('https://' + config.host, config.apitoken, config.proxyURL);
     } else {
       return Promise.resolve(null);
     }
