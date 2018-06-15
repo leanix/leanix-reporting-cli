@@ -4,6 +4,7 @@ import * as jwtDecode from 'jwt-decode';
 import { spawn } from 'cross-spawn';
 import { PathHelper } from './path-helper';
 import { ApiTokenResolver } from './api-token-resolver';
+import { LxrConfig } from './interfaces';
 
 interface DevServerStartResult {
   launchUrl: string;
@@ -13,7 +14,7 @@ interface DevServerStartResult {
 export class DevStarter {
 
   private pathHelper = new PathHelper();
-  private lxrConfig = require(this.pathHelper.getLxrConfigPath());
+  private lxrConfig: LxrConfig = require(this.pathHelper.getLxrConfigPath());
 
   public start() {
     return this.getApiToken()
