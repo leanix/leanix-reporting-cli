@@ -30,6 +30,14 @@ Configure your environment in `lxr.json`:
 }
 ```
 
+If an API token is not available, you can also specify a workspace and log in with your workspace user:
+```
+{
+  "host": "app.leanix.net",
+  "apitoken": "myworkspace"
+}
+```
+
 Start developing:
 ```
 npm start
