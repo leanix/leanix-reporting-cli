@@ -164,5 +164,5 @@ This file is the starting point for bundling JavaScript into one file. You can u
 
 ## Publish new version
 * Bump version in `package.json`
-* Make sure you have logged in to publish to npm registry in scope `@leanix`
+* Make sure you have logged in to publish to npm registry in scope `@leanix` (`npm login` - see: https://docs.npmjs.com/cli/adduser)
 * Execute `npm publish --access public`
