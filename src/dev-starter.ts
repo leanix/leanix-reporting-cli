@@ -20,12 +20,11 @@ export class DevStarter {
   public start() {
     return this.getAccessToken(this.lxrConfig)
     .then(accessToken => this.startLocalServer(accessToken))
-    .then(startResult => {
-      if (startResult) {
-        this.openUrlInBrowser(startResult.launchUrl);
-        console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
-        console.log('');
-        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
+    .then(result => {
+      if (result) {
+        this.openUrlInBrowser(result.launchUrl);
+        console.log(chalk.green(`Open the following url to test your report:\n${result.launchUrl}`) + '\n');
+        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${result.localhostUrl}`));
       }
     });
   }
@@ -35,17 +34,9 @@ export class DevStarter {
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
     const host = 'https://' + this.lxrConfig.host;
-    let accessTokenHash = '';
-    let workspace: string;
 
-    if (!accessToken) {
-      workspace = this.lxrConfig.workspace;
-    } else {
-      accessTokenHash = `#access_token=${accessToken}`;
-
-      const claims = jwtDecode(accessToken);
-      workspace = claims.principal.permission.workspaceName;
-    }
+    let accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
+    let workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  this.lxrConfig.workspace;
 
     if (_.isEmpty(workspace)) {
       console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
@@ -90,6 +81,11 @@ export class DevStarter {
         }
       });
     });
+  }
+
+  private getWorkspaceFromAccesToken(accessToken: string) {
+    const claims = jwtDecode(accessToken);
+    return claims.principal.permission.workspaceName;
   }
 
   private getAccessToken(config: LxrConfig): Promise<string> {
