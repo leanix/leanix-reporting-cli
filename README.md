@@ -34,7 +34,7 @@ If an API token is not available, you can also specify a workspace and log in wi
 ```
 {
   "host": "app.leanix.net",
-  "apitoken": "myworkspace"
+  "workspace": "myworkspace"
 }
 ```
 
