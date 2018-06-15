@@ -66,6 +66,11 @@ export class Initializer {
       },
       {
         type: 'input',
+        name: 'workspace',
+        message: 'Which is the workspace you want to test your report in?'
+      },
+      {
+        type: 'input',
         name: 'apitoken',
         message: 'API-Token for Authentication (see: https://dev.leanix.net/docs/authentication#section-generate-api-tokens)'
       },
@@ -89,6 +94,9 @@ export class Initializer {
     return _.defaults(answers, {
       licence: 'UNLICENSED',
       host: 'app.leanix.net',
+      apitoken: '',
+      workspace: '',
+      proxyURL: '',
       'readme_title': answers.title || answers.name
     });
   }

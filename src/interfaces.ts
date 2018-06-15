@@ -2,7 +2,12 @@ export interface LxrConfig {
   host: string;
   workspace: string;
   apitoken: string;
+  localPort?: string;
   proxyURL?: string;
+  ssl?: {
+    cert: string;
+    key: string;
+  };
 }
 
 export interface UserInitInput {
