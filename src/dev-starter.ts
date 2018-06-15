@@ -19,24 +19,38 @@ export class DevStarter {
     return this.getApiToken()
     .then(accessToken => this.startLocalServer(accessToken))
     .then(startResult => {
-      this.openUrlInBrowser(startResult.launchUrl);
-      console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
-      console.log('');
-      console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
+      if (startResult) {
+        this.openUrlInBrowser(startResult.launchUrl);
+        console.log(chalk.green(`Open the following url to test your report:\n${startResult.launchUrl}`));
+        console.log('');
+        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${startResult.localhostUrl}`));
+      }
     });
   }
 
   private startLocalServer(accessToken: string): Promise<DevServerStartResult> {
     const port = this.lxrConfig.localPort || 8080;
-
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
-
     const host = 'https://' + this.lxrConfig.host;
-    const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    const claims = jwtDecode(accessToken);
-    const workspace = claims.principal.permission.workspaceName;
+    let accessTokenHash = '';
+    let workspace: string;
+
+    if (!accessToken) {
+      workspace = this.lxrConfig.workspace;
+    } else {
+      accessTokenHash = `#access_token=${accessToken}`;
+
+      const claims = jwtDecode(accessToken);
+      workspace = claims.principal.permission.workspaceName;
+    }
+
+    if (!workspace) {
+      console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
+      return new Promise(null);
+    }
     console.log(chalk.green(`Your workspace is ${workspace}`));
+
     const baseLaunchUrl = `${host}/${workspace}/reporting/dev?url=${urlEncoded}`;
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
