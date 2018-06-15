@@ -15,11 +15,11 @@ interface DevServerStartResult {
 export class DevStarter {
 
   private pathHelper = new PathHelper();
-  private lxrConfig: LxrConfig = require(this.pathHelper.getLxrConfigPath());
 
   public start() {
-    return this.getAccessToken(this.lxrConfig)
-    .then(accessToken => this.startLocalServer(accessToken))
+    const config: LxrConfig = require(this.pathHelper.getLxrConfigPath());
+    return this.getAccessToken(config)
+    .then(accessToken => this.startLocalServer(config, accessToken))
     .then(result => {
       if (result) {
         this.openUrlInBrowser(result.launchUrl);
@@ -29,14 +29,14 @@ export class DevStarter {
     });
   }
 
-  private startLocalServer(accessToken?: string): Promise<DevServerStartResult> {
-    const port = this.lxrConfig.localPort || 8080;
+  private startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
+    const port = config.localPort || 8080;
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
-    const host = 'https://' + this.lxrConfig.host;
+    const host = 'https://' + config.host;
 
     let accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    let workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  this.lxrConfig.workspace;
+    let workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
 
     if (_.isEmpty(workspace)) {
       console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
@@ -49,9 +49,9 @@ export class DevStarter {
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
     const args = ['--https', '--port', '' + port];
-    if (this.lxrConfig.ssl && this.lxrConfig.ssl.cert && this.lxrConfig.ssl.key) {
-      args.push('--cert=' + this.lxrConfig.ssl.cert);
-      args.push('--key=' + this.lxrConfig.ssl.key);
+    if (config.ssl && config.ssl.cert && config.ssl.key) {
+      args.push('--cert=' + config.ssl.cert);
+      args.push('--key=' + config.ssl.key);
     }
 
     console.log('' + args.join(' '));
