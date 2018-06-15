@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import * as opn from 'opn';
 import * as jwtDecode from 'jwt-decode';
+import * as _ from 'lodash';
 import { spawn } from 'cross-spawn';
 import { PathHelper } from './path-helper';
 import { ApiTokenResolver } from './api-token-resolver';
@@ -46,7 +47,7 @@ export class DevStarter {
       workspace = claims.principal.permission.workspaceName;
     }
 
-    if (!workspace) {
+    if (_.isEmpty(workspace)) {
       console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
       return new Promise(null);
     }
@@ -92,7 +93,7 @@ export class DevStarter {
   }
 
   private getApiToken(): Promise<string> {
-    if (this.lxrConfig.apitoken) {
+    if (!_.isEmpty(this.lxrConfig.apitoken)) {
       return ApiTokenResolver.getAccessToken('https://' + this.lxrConfig.host, this.lxrConfig.apitoken, this.lxrConfig.proxyURL);
     } else {
       return Promise.resolve(null);
