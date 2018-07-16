@@ -75,7 +75,7 @@ If you have created your certificate you can add the certificate and private key
 }
 ```
 
-For Windows users using IE11 or Edge, follow [this instructions](docs/WinSSL.md).
+For Windows users using IE11 or Microsoft Edge, follow [these instructions](docs/WinSSL.md).
 
 ### Port of local dev server
 By default the local dev server is hosted on port 8080. You can change that in your `lxr.json` via the `"localPort"` setting:
