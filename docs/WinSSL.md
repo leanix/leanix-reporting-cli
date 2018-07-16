@@ -1,6 +1,6 @@
 # Install self-signed SSL Certificate in IE 11 and Edge
 
-> First of all, keep in mind that even if you only need to support the Edge browser, you should perform the following steps in IE11 - the > changes will be applied to both Edge and IE11.
+> First of all, keep in mind that even if you only need to support the Edge browser, you should perform the following steps in IE11 - the changes will be applied to both Edge and IE11.
 
 After executing `npm start`, open the IE 11 browser to the defined URL direction (e.g. `https://localhost:8080`). You will see that the browser will block the current page for security reasons, because no SSL certificate is defined for this URL.
 
