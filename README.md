@@ -75,6 +75,8 @@ If you have created your certificate you can add the certificate and private key
 }
 ```
 
+For Windows users using IE11 or Microsoft Edge, follow [these instructions](docs/WinSSL.md).
+
 ### Port of local dev server
 By default the local dev server is hosted on port 8080. You can change that in your `lxr.json` via the `"localPort"` setting:
 ```
@@ -158,7 +160,6 @@ This file is initially loaded by the LeanIX reporting framework and is hence the
 
 ### src/index.js
 This file is the starting point for bundling JavaScript into one file. You can use the `import` statement (https://developer.mozilla.org/de/docs/Web/JavaScript/Reference/Statements/import) in order to split up your project into multiple files. We use webpack 3.x under the hood to bundle your project.
-
 
 # For reporting-cli developers
 
