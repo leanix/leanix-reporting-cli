@@ -19,11 +19,13 @@ export class Uploader {
 
   public upload() {
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
+    const lxrConfig = require(this.pathHelper.getLxrConfigPath());
+
     return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
-    .then(() => this.executeUpload());
+    .then(() => this.executeUpload(lxrConfig.host, lxrConfig.apitoken, lxrConfig.proxyUrl));
   }
 
   private writeMetadataFile() {
@@ -60,16 +62,12 @@ export class Uploader {
     return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
   }
 
-  private executeUpload() {
-    const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-    console.log(chalk.yellow(chalk.italic(`Uploading to ${lxrConfig.host} ${lxrConfig.proxyURL ? `through a proxy` : ``}...`)));
-    const host = 'https://' + lxrConfig.host;
-    const apitoken = lxrConfig.apitoken;
-
-    return ApiTokenResolver.getAccessToken(host, apitoken, lxrConfig.proxyURL)
+  private executeUpload(host: string, apitoken: string, proxy?: string) {
+    console.log(chalk.yellow(chalk.italic(`Uploading to ${host} ${proxy ? `through a proxy` : ``}...`)));
+    return ApiTokenResolver.getAccessToken(`https://${host}`, apitoken, proxy)
     .then(accessToken => {
       const options = {
-        url: host + '/services/pathfinder/v1/reports/upload',
+        url: `https://${host}/services/pathfinder/v1/reports/upload`,
         headers: {
           'Authorization': 'Bearer ' + accessToken
         },
@@ -78,7 +76,7 @@ export class Uploader {
         }
       };
 
-      return rp.post({ ...options, proxy: lxrConfig.proxyURL })
+      return rp.post({ ...options, proxy })
       .then(response => {
         const responseJson = JSON.parse(response);
         if (responseJson.status === 'OK') {
