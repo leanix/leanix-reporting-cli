@@ -44,8 +44,9 @@ program
   .action(() => {
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
     const lxrConfig = require(new PathHelper().getLxrConfigPath());
+    const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
     new Uploader()
-      .upload(lxrConfig.host, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
+      .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
       .catch(handleError);
   });
   });

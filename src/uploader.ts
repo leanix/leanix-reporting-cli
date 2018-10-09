@@ -17,13 +17,13 @@ export class Uploader {
   private projectDir = new PathHelper().getProjectDirectory();
   private builder = new Builder();
 
-  public upload(host: string, apitoken: string, tokenhost = host, proxy?: string) {
+  public upload(url: string, apitoken: string, tokenhost, proxy?: string) {
     return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
     .then(() => ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy))
-    .then(accessToken => this.executeUpload(host, accessToken, proxy));
+    .then(accessToken => this.executeUpload(url, accessToken, proxy));
   }
 
   private writeMetadataFile() {
@@ -60,10 +60,10 @@ export class Uploader {
     return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
   }
 
-  private executeUpload(host: string, accessToken: string, proxy?: string) {
-    console.log(chalk.yellow(chalk.italic(`Uploading to ${host} ${proxy ? `through a proxy` : ``}...`)));
+  private executeUpload(url: string, accessToken: string, proxy?: string) {
+    console.log(chalk.yellow(chalk.italic(`Uploading to ${url} ${proxy ? `through a proxy` : ``}...`)));
     const options = {
-      url: `https://${host}/services/pathfinder/v1/reports/upload`,
+      url,
       headers: {
         'Authorization': 'Bearer ' + accessToken
       },
