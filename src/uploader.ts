@@ -17,15 +17,13 @@ export class Uploader {
   private projectDir = new PathHelper().getProjectDirectory();
   private builder = new Builder();
 
-  public upload() {
-    console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
-    const lxrConfig = require(this.pathHelper.getLxrConfigPath());
-
+  public upload(host: string, apitoken: string, tokenhost = host, proxy?: string) {
     return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
-    .then(() => this.executeUpload(lxrConfig.host, lxrConfig.apitoken, lxrConfig.proxyUrl));
+    .then(() => ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy))
+    .then(accessToken => this.executeUpload(host, accessToken, proxy));
   }
 
   private writeMetadataFile() {
@@ -62,40 +60,37 @@ export class Uploader {
     return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
   }
 
-  private executeUpload(host: string, apitoken: string, proxy?: string) {
+  private executeUpload(host: string, accessToken: string, proxy?: string) {
     console.log(chalk.yellow(chalk.italic(`Uploading to ${host} ${proxy ? `through a proxy` : ``}...`)));
-    return ApiTokenResolver.getAccessToken(`https://${host}`, apitoken, proxy)
-    .then(accessToken => {
-      const options = {
-        url: `https://${host}/services/pathfinder/v1/reports/upload`,
-        headers: {
-          'Authorization': 'Bearer ' + accessToken
-        },
-        formData: {
-          file: fs.createReadStream(path.resolve(this.projectDir, 'bundle.tgz'))
-        }
-      };
+    const options = {
+      url: `https://${host}/services/pathfinder/v1/reports/upload`,
+      headers: {
+        'Authorization': 'Bearer ' + accessToken
+      },
+      formData: {
+        file: fs.createReadStream(path.resolve(this.projectDir, 'bundle.tgz'))
+      }
+    };
 
-      return rp.post({ ...options, proxy })
-      .then(response => {
-        const responseJson = JSON.parse(response);
-        if (responseJson.status === 'OK') {
-          console.log(chalk.green('\u2713 Project successfully uploaded!'));
-          return true;
-        } else if (responseJson.status === 'ERROR') {
-          console.log(chalk.red('ERROR: ' + responseJson.errorMessage));
-          return false;
-        }
-      }).catch(err => {
-        const responseBody = err.response.toJSON().body;
-        const errorJson = JSON.parse(responseBody);
-        if (errorJson.errorMessage) {
-          console.log(chalk.red('ERROR: ' + errorJson.errorMessage));
-        } else {
-          console.log(chalk.red('ERROR: ' + responseBody));
-        }
+    return rp.post({ ...options, proxy })
+    .then(response => {
+      const responseJson = JSON.parse(response);
+      if (responseJson.status === 'OK') {
+        console.log(chalk.green('\u2713 Project successfully uploaded!'));
+        return true;
+      } else if (responseJson.status === 'ERROR') {
+        console.log(chalk.red('ERROR: ' + responseJson.errorMessage));
         return false;
-      });
+      }
+    }).catch(err => {
+      const responseBody = err.response.toJSON().body;
+      const errorJson = JSON.parse(responseBody);
+      if (errorJson.errorMessage) {
+        console.log(chalk.red('ERROR: ' + errorJson.errorMessage));
+      } else {
+        console.log(chalk.red('ERROR: ' + responseBody));
+      }
+      return false;
     });
   }
 }
