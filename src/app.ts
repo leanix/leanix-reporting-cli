@@ -49,6 +49,23 @@ program
       .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
       .catch(handleError);
   });
+
+
+program
+  .command('store-upload [id] [apitoken]')
+  .description('Bundles and uploads the report to the LeanIX Store')
+  .option('--host [host]', 'Which store to use (default: store.leanix.net)')
+  .option('--tokenhost [tokenhost]', 'Where to resolve the apitoken (default: app.leanix.net)')
+  .action((id: string, apitoken: string, options: { host: string, tokenhost: string }) => {
+    const host = options.host || 'store.leanix.net';
+    const tokenhost = options.tokenhost || 'app.leanix.net';
+    const msg = `Bundling and uploading your project to the LeanIX Store (${host})...`;
+    console.log(chalk.yellow(chalk.italic(msg)));
+
+    const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
+    new Uploader()
+      .upload(url, apitoken, tokenhost)
+      .catch(handleError);
   });
 
 program.parse(process.argv);
