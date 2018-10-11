@@ -52,10 +52,10 @@ program
 
 
 program
-  .command('store-upload [id] [apitoken]')
+  .command('store-upload <id> <apitoken>')
   .description('Bundles and uploads the report to the LeanIX Store')
-  .option('--host [host]', 'Which store to use (default: store.leanix.net)')
-  .option('--tokenhost [tokenhost]', 'Where to resolve the apitoken (default: app.leanix.net)')
+  .option('--host <host>', 'Which store to use (default: store.leanix.net)')
+  .option('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
   .action((id: string, apitoken: string, options: { host: string, tokenhost: string }) => {
     const host = options.host || 'store.leanix.net';
     const tokenhost = options.tokenhost || 'app.leanix.net';
