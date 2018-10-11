@@ -17,7 +17,7 @@ export class Uploader {
   private projectDir = new PathHelper().getProjectDirectory();
   private builder = new Builder();
 
-  public upload(url: string, apitoken: string, tokenhost, proxy?: string) {
+  public upload(url: string, apitoken: string, tokenhost: string, proxy?: string) {
     return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
