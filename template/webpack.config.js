@@ -20,7 +20,7 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['env']
+            presets: ['@babel/preset-env']
           }
         }
       },
@@ -28,18 +28,10 @@ module.exports = {
       /**
        * Bundle CSS, images and fonts
        */
-      {
-        test: /\.css$/,
-        use: [
-          require.resolve('style-loader'),
-          {
-            loader: require.resolve('css-loader')
-          }
-        ]
-      },
-      { test: /\.(otf|ttf|woff|woff2)$/, use: { loader: 'url-loader?limit=10000' } },
-      { test: /\.(jpg|png|gif)$/, use: { loader: 'url-loader?limit=10000' } },
-      { test: /\.(eot|svg)$/, use: { loader: 'file-loader' } }
+      { test: /\.css$/, use: ['style-loader', 'css-loader'] },
+      { test: /\.(otf|ttf|woff|woff2)$/, use: ['url-loader?limit=10000'] },
+      { test: /\.(jpg|png|gif)$/, use: ['url-loader?limit=10000'] },
+      { test: /\.(eot|svg)$/, use: ['file-loader'] }
     ]
   },
   plugins: [
