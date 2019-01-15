@@ -63,12 +63,12 @@ module.exports = {
     })
   ],
 
-	devServer: {
+  devServer: {
     // "disableHostCheck" added due to issue: https://github.com/webpack/webpack-dev-server/issues/1604
     // Fix should be done with: https://github.com/webpack/webpack-dev-server/pull/1608
     disableHostCheck: true,
-		headers: {
-			'Access-Control-Allow-Origin': '*'
-		}
-	}
+    headers: {
+      'Access-Control-Allow-Origin': '*'
+    }
+  }
 }
