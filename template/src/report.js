@@ -1,4 +1,3 @@
-import $ from 'jquery';
 import factSheetMapper from './fact-sheet-mapper';
 
 const ID_SORTING_DROPDOWN = 'SORTING_DROPDOWN';
@@ -47,9 +46,12 @@ export class Report {
 
     document.getElementById('report').innerHTML = html;
 
-    $('.bar').on('click', (event) => {
-      this.handleBarClick(event);
-    });
+    const bars = Array.from(document.querySelectorAll('.bar'));
+    for (const bar of bars) {
+      bar.addEventListener('click', (event) => {
+        this.handleBarClick(event);
+      });
+    }
   }
 
   createDropdownConfig() {
@@ -102,7 +104,7 @@ export class Report {
   }
 
   handleBarClick(event) {
-    var clickedType = $(event.target).attr('data-type');
+    var clickedType = event.target.getAttribute('data-type');
     var factSheets = this.groups[clickedType];
     var fsHtml = factSheets.map(factSheetMapper).join('');
     document.getElementById('clickOutput').innerHTML = `<h4>${clickedType}</h4>${fsHtml}`;
