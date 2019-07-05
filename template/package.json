@@ -38,8 +38,6 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
-    "@leanix/reporting": "^0.3.0",
-    "jquery": "^3.3.1",
-    "lodash": "^4.17.11"
+    "@leanix/reporting": "^0.3.3"
   }
 }
