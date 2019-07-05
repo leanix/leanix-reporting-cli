@@ -1,3 +1,6 @@
+import groupBy from 'lodash/groupBy';
+import keys from 'lodash/keys';
+import find from 'lodash/find';
 import factSheetMapper from './fact-sheet-mapper';
 
 const ID_SORTING_DROPDOWN = 'SORTING_DROPDOWN';
@@ -28,7 +31,7 @@ export class Report {
         attributes: ['displayName', 'type', 'description'],
         callback: function (data) {
           this.data = data;
-          this.groups = _.groupBy(data, 'type');
+          this.groups = groupBy(data, 'type');
           this.render();
         }.bind(this)
       }]
@@ -36,7 +39,7 @@ export class Report {
   }
 
   render() {
-    var fsTypes = _.keys(this.groups).sort(this.getSortComparer());
+    var fsTypes = keys(this.groups).sort(this.getSortComparer());
     var html = '<table>';
     for (var i = 0; i < fsTypes.length; i++) {
       html += this.getHtmlForFsTypeBar(fsTypes[i])
@@ -88,7 +91,7 @@ export class Report {
   }
 
   getHtmlForFsTypeBar(type) {
-    var fsVm = _.find(this.setup.settings.viewModel.factSheets, { type });
+    var fsVm = find(this.setup.settings.viewModel.factSheets, { type });
     var groupCount = this.groups[type].length;
     var width = groupCount / this.data.length * 100;
     var barStyles = `width: ${width}%; background-color: ${fsVm.bgColor};`;
