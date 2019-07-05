@@ -37,16 +37,6 @@ module.exports = {
   },
   plugins: [
     /**
-     * Make jquery and lodash globally available
-     * (dependencies of @leanix/reporting library)
-     */
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      '_': 'lodash'
-    }),
-
-    /**
      * Copy assets into dist folder.
      */
     new CopyWebpackPlugin([
