@@ -1,6 +1,6 @@
 {
-  "name": "@leanix/reporting-cli",
-  "version": "1.0.0-beta.17",
+  "name": "@yellek/reporting-cli",
+  "version": "1.0.0-beta.18",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
   "preferGlobal": true,
   "main": "./lib/app.js",
@@ -27,7 +27,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/leanix/leanix-reporting-cli.git"
+    "url": "https://github.com/yellek/leanix-reporting-cli.git"
   },
   "devDependencies": {
     "@types/chalk": "^0.4.31",
