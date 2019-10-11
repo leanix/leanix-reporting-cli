@@ -31,7 +31,7 @@ export class DevStarter {
 
   private startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
     const port = config.localPort || 8080;
-    const localhostUrl = `https://localhost:${port}`;
+    const localhostUrl = config.hostUrl || `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
     const host = 'https://' + config.host;
 
@@ -55,7 +55,7 @@ export class DevStarter {
     }
 
     console.log('' + args.join(' '));
-    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
+    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args, {shell: true});
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
     });

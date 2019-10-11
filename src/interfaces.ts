@@ -3,6 +3,7 @@ export interface LxrConfig {
   workspace: string;
   apitoken: string;
   localPort?: string;
+  hostUrl?: string;
   proxyURL?: string;
   ssl?: {
     cert: string;
