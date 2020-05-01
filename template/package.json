@@ -14,7 +14,9 @@
     "build": "lxr build",
     "start": "lxr start",
     "upload": "lxr upload",
-    "webpack": "webpack"
+    "webpack": "webpack",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "keywords": [
     "leanix",
@@ -39,6 +41,8 @@
   },
   "dependencies": {
     "@leanix/reporting": "^0.3.3",
-    "lodash": "^4.17.11"
-  }
+    "lodash": "^4.17.11",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
