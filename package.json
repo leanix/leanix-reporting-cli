@@ -10,7 +10,8 @@
   "scripts": {
     "build": "tsc",
     "test-install": "npm run build && npm -g install .",
-    "prepublish": "npm run build"
+    "prepublish": "npm run snyk-protect && npm run build",
+    "snyk-protect": "snyk protect"
   },
   "keywords": [
     "leanix",
@@ -51,6 +52,8 @@
     "request-promise-native": "^1.0.5",
     "rimraf": "^2.6.2",
     "tar": "^4.4.2",
-    "variable-replacer": "^1.5.1"
-  }
+    "variable-replacer": "^1.5.1",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
