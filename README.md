@@ -5,7 +5,7 @@ Command line interface to initialise, develop and publish custom reports for Lea
 Please also have a look at the corresponding reporting library: https://github.com/leanix/leanix-reporting
 
 ## Documentation
-For information on how to create a custom report, please refer to our [documentation](http://dev.leanix.net/docs/how-to-build-custom-reports).
+For information on how to create a custom report, please refer to our [documentation](https://dev.leanix.net/docs/build-a-custom-report).
 
 # For reporting-cli developers
 
