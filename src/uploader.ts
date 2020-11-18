@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { PathHelper } from './path-helper';
+import { getProjectDirectory } from './path-helper';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as tar from 'tar';
@@ -12,7 +12,7 @@ import { Builder } from './builder';
  */
 export class Uploader {
 
-  private projectDir = new PathHelper().getProjectDirectory();
+  private projectDir = getProjectDirectory();
   private builder = new Builder();
 
   public upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
