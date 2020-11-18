@@ -1,4 +1,4 @@
-import { resolve } from 'path';
+import { join, resolve } from 'path';
 
 export class PathHelper {
 
@@ -6,11 +6,12 @@ export class PathHelper {
     return getProjectDirectoryPath('lxr.json');
   }
 
-  public getTemplateDirectory(): string {
-    return resolve(__dirname, '../template');
-  }
 }
 
 export function getProjectDirectoryPath(path = ''): string {
   return resolve(process.cwd(), path);
+}
+
+export function getTemplateDirectoryPath(): string {
+  return join(__dirname, '../template');
 }

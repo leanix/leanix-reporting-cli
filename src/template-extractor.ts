@@ -2,16 +2,14 @@ import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as varReplace from 'variable-replacer';
-import { PathHelper, getProjectDirectoryPath } from './path-helper';
+import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path-helper';
 import { UserInitInput } from "./interfaces";
 
 export class TemplateExtractor {
 
-  private pathHelper = new PathHelper();
-
   public extractTemplateFiles(answers: UserInitInput): void {
     console.log(chalk.green('Extracting template files...'));
-    const templateDir = this.pathHelper.getTemplateDirectory();
+    const templateDir = getTemplateDirectoryPath();
     this.extractTemplateDir(templateDir, answers);
   }
 
@@ -29,7 +27,7 @@ export class TemplateExtractor {
   }
 
   private extractTemplateFile(source: string, answers: UserInitInput) {
-    let dest = source.replace(this.pathHelper.getTemplateDirectory(), getProjectDirectoryPath());
+    let dest = source.replace(getTemplateDirectoryPath(), getProjectDirectoryPath());
 
     if (path.basename(source) === 'gitignore') {
       dest = getProjectDirectoryPath('.gitignore');
