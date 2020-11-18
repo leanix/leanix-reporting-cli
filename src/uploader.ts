@@ -1,5 +1,4 @@
 import * as chalk from 'chalk';
-import { exec, execSync } from 'child_process';
 import { PathHelper } from './path-helper';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -13,7 +12,6 @@ import { Builder } from './builder';
  */
 export class Uploader {
 
-  private pathHelper = new PathHelper();
   private projectDir = new PathHelper().getProjectDirectory();
   private builder = new Builder();
 

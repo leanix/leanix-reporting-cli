@@ -1,9 +1,7 @@
 import * as chalk from 'chalk';
-import * as path from 'path';
 import * as process from 'process';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
-import { spawn } from 'cross-spawn';
 import { TemplateExtractor } from './template-extractor';
 import { UserInitInput } from "./interfaces";
 
