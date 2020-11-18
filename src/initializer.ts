@@ -21,7 +21,6 @@ export class Initializer {
       this.extractor.extractTemplateFiles(answers as UserInitInput);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
-      // return this.installViaNpm();
     });
 
   }
@@ -98,27 +97,6 @@ export class Initializer {
       workspace: '',
       proxyURL: '',
       'readme_title': answers.title || answers.name
-    });
-  }
-
-  private installViaNpm(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      console.log(chalk.green('Installing project dependencies via npm...'));
-      const installProc = spawn('npm', ['install']);
-/*
-      installProc.stdout.on('data', (data) => {
-        console.log(chalk.yellow(data.toString()));
-      });
-*/
-      installProc.on('close', (exitCode) => {
-        if (exitCode === 0) {
-          console.log(chalk.green('npm install successful!'));
-          resolve();
-        } else {
-          console.log(chalk.red('npm install failed!'));
-          reject();
-        }
-      });
     });
   }
 }
