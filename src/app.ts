@@ -4,7 +4,7 @@ import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
 import { Builder } from './builder';
-import { PathHelper } from './path.helpers';
+import { loadLxrConfig } from './file.helpers';
 
 import { version } from '../package.json';
 
@@ -42,7 +42,7 @@ program
   .description('Bundles and uploads the report to the configured workspace')
   .action(() => {
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
-    const lxrConfig = require(new PathHelper().getLxrConfigPath()); // eslint-disable-line @typescript-eslint/no-var-requires
+    const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
     new Uploader()
       .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
