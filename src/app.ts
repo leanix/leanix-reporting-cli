@@ -45,7 +45,7 @@ program
     const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
     new Uploader()
-      .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
+      .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL)
       .catch(handleError);
   });
 
