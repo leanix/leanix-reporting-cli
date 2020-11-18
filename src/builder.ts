@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
 import { exec } from 'child_process';
-import { getProjectDirectoryPath } from './path-helper';
+import { getProjectDirectoryPath } from './path.helpers';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
 

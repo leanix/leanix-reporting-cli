@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as varReplace from 'variable-replacer';
-import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path-helper';
+import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path.helpers';
 import { UserInitInput } from "./interfaces";
 
 export class TemplateExtractor {

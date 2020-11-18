@@ -4,7 +4,7 @@ import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
 import { Builder } from './builder';
-import { PathHelper } from './path-helper';
+import { PathHelper } from './path.helpers';
 
 import { version } from '../package.json';
 

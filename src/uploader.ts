@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import { getProjectDirectoryPath } from './path-helper';
+import { getProjectDirectoryPath } from './path.helpers';
 import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';

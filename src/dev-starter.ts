@@ -3,7 +3,7 @@ import * as opn from 'opn';
 import * as jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';
 import { spawn } from 'cross-spawn';
-import { PathHelper } from './path-helper';
+import { PathHelper } from './path.helpers';
 import { ApiTokenResolver } from './api-token-resolver';
 import { LxrConfig } from './interfaces';
 
