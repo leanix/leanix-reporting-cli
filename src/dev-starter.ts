@@ -17,7 +17,7 @@ export class DevStarter {
   private pathHelper = new PathHelper();
 
   public start(): Promise<void> {
-    const config: LxrConfig = require(this.pathHelper.getLxrConfigPath());
+    const config: LxrConfig = require(this.pathHelper.getLxrConfigPath()); // eslint-disable-line @typescript-eslint/no-var-requires
     return this.getAccessToken(config)
     .then(accessToken => this.startLocalServer(config, accessToken))
     .then(result => {

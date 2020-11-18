@@ -26,7 +26,7 @@ export class Uploader {
 
   private writeMetadataFile() {
     return new Promise((resolve, reject) => {
-      const packageJson = require(path.resolve(this.projectDir, 'package.json'));
+      const packageJson = require(path.resolve(this.projectDir, 'package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
       const metadataFile = path.resolve(this.projectDir, 'dist/lxreport.json');
 
       const metadata = Object.assign({}, {
