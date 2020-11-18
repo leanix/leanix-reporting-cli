@@ -16,7 +16,7 @@ export class DevStarter {
 
   private pathHelper = new PathHelper();
 
-  public start() {
+  public start(): Promise<void> {
     const config: LxrConfig = require(this.pathHelper.getLxrConfigPath());
     return this.getAccessToken(config)
     .then(accessToken => this.startLocalServer(config, accessToken))

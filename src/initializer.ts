@@ -9,7 +9,7 @@ export class Initializer {
 
   private extractor = new TemplateExtractor();
 
-  public init(): Promise<any> {
+  public init(): Promise<void> {
     console.log(chalk.green('Initializing new project...'));
 
     return inquirer.prompt(this.getInquirerQuestions())

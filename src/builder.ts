@@ -11,13 +11,13 @@ export class Builder {
 
   private projectDir = new PathHelper().getProjectDirectory();
 
-  public build() {
+  public build(): Promise<void> {
     console.log(chalk.yellow(chalk.italic('Building...')));
     return this.buildWithWebpack();
   }
 
   private buildWithWebpack() {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       // remove dist folder
       rimraf(path.resolve(this.projectDir, 'dist'), () => {
         const webpackCmd = path.resolve(this.projectDir, 'node_modules/.bin/webpack');
