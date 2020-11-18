@@ -1,5 +1,6 @@
 import * as chalk from 'chalk';
 import { getProjectDirectoryPath } from './path.helpers';
+import { loadPackageJson } from './file.helpers';
 import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';
@@ -24,7 +25,7 @@ export class Uploader {
 
   private writeMetadataFile() {
     return new Promise((resolve, reject) => {
-      const packageJson = require(getProjectDirectoryPath('package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
+      const packageJson = loadPackageJson();
       const metadataFile = getProjectDirectoryPath('dist/lxreport.json');
 
       const metadata = Object.assign({}, {

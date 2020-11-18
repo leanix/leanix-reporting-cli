@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import { exec } from 'child_process';
 import { getProjectDirectoryPath } from './path.helpers';
+import { loadPackageJson } from './file.helpers';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
 
@@ -26,7 +27,7 @@ export class Builder {
   }
 
   private getBuildConfig() {
-    const packageJson = require(getProjectDirectoryPath('package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
+    const packageJson = loadPackageJson();
     const leanixReportingCli = packageJson.leanixReportingCli || {};
 
     return {
