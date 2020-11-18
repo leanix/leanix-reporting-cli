@@ -35,8 +35,8 @@ export class DevStarter {
     const urlEncoded = encodeURIComponent(localhostUrl);
     const host = 'https://' + config.host;
 
-    let accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    let workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
+    const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
+    const workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
 
     if (_.isEmpty(workspace)) {
       console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
