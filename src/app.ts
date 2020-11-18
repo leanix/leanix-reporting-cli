@@ -7,10 +7,10 @@ import { Uploader } from './uploader';
 import { Builder } from './builder';
 import { PathHelper } from './path-helper';
 
-const pkg = require('../package.json');
+import { version } from '../package.json';
 
 program
-  .version(pkg.version);
+  .version(version);
 
 program
   .command('init')
@@ -75,7 +75,7 @@ if (process.argv.length === 2) {
   console.log(chalk.cyan('  LeanIX Reporting CLI'));
   console.log(chalk.cyan('  ===================='));
   console.log('');
-  console.log(chalk.cyan('  version: ' + pkg.version));
+  console.log(chalk.cyan('  version: ' + version));
   console.log(chalk.cyan('  github: https://github.com/leanix/leanix-reporting-cli'));
   console.log('');
   program.outputHelp();
