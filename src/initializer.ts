@@ -94,7 +94,7 @@ export class Initializer {
       apitoken: '',
       workspace: '',
       proxyURL: '',
-      'readme_title': answers.title || answers.name
+      'readme_title': answers.title || answers.name
     });
   }
 }
