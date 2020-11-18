@@ -25,7 +25,7 @@ export class Initializer {
 
   }
 
-  private getInquirerQuestions(): inquirer.Questions {
+  private getInquirerQuestions(): inquirer.QuestionCollection {
     // The name properties correspond to the variables in the package.json template file
     return [
       {
