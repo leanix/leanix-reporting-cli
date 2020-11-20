@@ -1,7 +1,6 @@
 import * as chalk from 'chalk';
 import { exec } from 'child_process';
-import { PathHelper } from './path-helper';
-import * as path from 'path';
+import { getProjectDirectoryPath } from './path-helper';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
 
@@ -9,8 +8,6 @@ const execAsync = promisify(exec);
 const rimrafAsync = promisify(rimraf);
 
 export class Builder {
-
-  private projectDir = new PathHelper().getProjectDirectory();
 
   public async build(): Promise<void> {
     console.log(chalk.yellow(chalk.italic('Building...')));
@@ -29,7 +26,7 @@ export class Builder {
   }
 
   private getBuildConfig() {
-    const packageJson = require(path.resolve(this.projectDir, 'package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
+    const packageJson = require(getProjectDirectoryPath('package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
     const leanixReportingCli = packageJson.leanixReportingCli || {};
 
     return {
@@ -39,12 +36,12 @@ export class Builder {
   }
 
   private removeDistDir(distPath: string) {
-    const distDir = path.resolve(this.projectDir, distPath);
+    const distDir = getProjectDirectoryPath(distPath);
     return rimrafAsync(distDir);
   }
 
   private doBuild(buildCommand: string) {
-    const webpackCmd = path.resolve(this.projectDir, buildCommand);
+    const webpackCmd = getProjectDirectoryPath(buildCommand);
     return execAsync(webpackCmd);
   }
 }

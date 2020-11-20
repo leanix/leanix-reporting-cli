@@ -2,7 +2,7 @@ import * as chalk from 'chalk';
 import * as path from 'path';
 import * as fs from 'fs';
 import * as varReplace from 'variable-replacer';
-import { PathHelper, getProjectDirectory } from './path-helper';
+import { PathHelper, getProjectDirectoryPath } from './path-helper';
 import { UserInitInput } from "./interfaces";
 
 export class TemplateExtractor {
@@ -29,10 +29,10 @@ export class TemplateExtractor {
   }
 
   private extractTemplateFile(source: string, answers: UserInitInput) {
-    let dest = source.replace(this.pathHelper.getTemplateDirectory(), getProjectDirectory());
+    let dest = source.replace(this.pathHelper.getTemplateDirectory(), getProjectDirectoryPath());
 
     if (path.basename(source) === 'gitignore') {
-      dest = path.resolve(getProjectDirectory(), '.gitignore');
+      dest = getProjectDirectoryPath('.gitignore');
     }
 
     console.log(source, dest);

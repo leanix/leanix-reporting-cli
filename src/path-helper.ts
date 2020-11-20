@@ -1,16 +1,16 @@
-import * as path from 'path';
+import { resolve } from 'path';
 
 export class PathHelper {
 
   public getLxrConfigPath(): string {
-    return path.resolve(getProjectDirectory(), 'lxr.json');
+    return getProjectDirectoryPath('lxr.json');
   }
 
   public getTemplateDirectory(): string {
-    return path.resolve(__dirname, '../template');
+    return resolve(__dirname, '../template');
   }
 }
 
-export function getProjectDirectory(): string {
-  return process.cwd();
+export function getProjectDirectoryPath(path = ''): string {
+  return resolve(process.cwd(), path);
 }
