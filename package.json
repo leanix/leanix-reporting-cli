@@ -24,7 +24,7 @@
   "author": "LeanIX GmbH <support@leanix.net>",
   "license": "Apache-2.0",
   "engines": {
-    "node": ">=6.9"
+    "node": ">=8"
   },
   "repository": {
     "type": "git",
