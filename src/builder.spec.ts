@@ -1,8 +1,6 @@
 import { Builder } from './builder';
 
 describe('Builder', () => {
-  const processCwd = jest.spyOn(process, 'cwd').mockReturnValue('/home/johndoe/my-report');
-
   const loadPackageJson = jest.fn();
   const rimraf = jest.fn().mockResolvedValue(undefined);
   const exec = jest.fn().mockResolvedValue({ stdout: 'stdout', stderr: 'stderr' });
@@ -15,24 +13,20 @@ describe('Builder', () => {
     exec.mockClear();
   });
 
-  afterAll(() => {
-    processCwd.mockRestore();
-  });
-
   it('builds with default configuration', async () => {
     loadPackageJson.mockReturnValueOnce({});
 
     await builder.build();
 
-    expect(rimraf).toHaveBeenCalledWith('/home/johndoe/my-report/dist');
-    expect(exec).toHaveBeenCalledWith('/home/johndoe/my-report/node_modules/.bin/webpack');
+    expect(rimraf).toHaveBeenCalledWith('./dist');
+    expect(exec).toHaveBeenCalledWith('./node_modules/.bin/webpack');
   });
 
   it.each([
-    ['public', '/home/johndoe/my-report/public'],
-    ['./public', '/home/johndoe/my-report/public'],
-    ['/tmp/dist', '/tmp/dist']
-  ])('removes custom dist path "%s"', async (distPath, expectedPath) => {
+    'public',
+    './public',
+    '/tmp/dist'
+  ])('removes custom dist path "%s"', async (distPath) => {
     loadPackageJson.mockReturnValueOnce({
       leanixReportingCli: {
         distPath
@@ -41,6 +35,24 @@ describe('Builder', () => {
 
     await builder.build();
 
-    expect(rimraf).toHaveBeenCalledWith(expectedPath);
+    expect(rimraf).toHaveBeenCalledWith(distPath);
+  });
+
+  it.each([
+    'parcel',
+    './build.sh',
+    '/usr/bin/make',
+    'node_modules/.bin/broccoli build',
+    'npx grunt'
+  ])('builds using custom command "%s"', async (buildCommand) => {
+    loadPackageJson.mockReturnValueOnce({
+      leanixReportingCli: {
+        buildCommand
+      }
+    });
+
+    await builder.build();
+
+    expect(exec).toHaveBeenCalledWith(buildCommand);
   });
 });

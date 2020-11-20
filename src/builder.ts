@@ -1,6 +1,5 @@
 import * as chalk from 'chalk';
 import { exec } from 'child_process';
-import { getProjectDirectoryPath } from './path.helpers';
 import { loadPackageJson } from './file.helpers';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
@@ -24,8 +23,8 @@ export class Builder {
     const buildConfig = this.getBuildConfig();
 
     try {
-      await this.removeDistDir(buildConfig.distPath);
-      const { stdout } = await this.doBuild(buildConfig.buildCommand);
+      await this.rimraf(buildConfig.distPath);
+      const { stdout } = await this.exec(buildConfig.buildCommand);
 
       console.log(stdout);
       console.log(chalk.green('\u2713 Project successfully build!'));
@@ -40,17 +39,7 @@ export class Builder {
 
     return {
       distPath: leanixReportingCli.distPath ?? './dist',
-      buildCommand: leanixReportingCli.buildCommand ?? 'node_modules/.bin/webpack'
+      buildCommand: leanixReportingCli.buildCommand ?? './node_modules/.bin/webpack'
     }
-  }
-
-  private removeDistDir(distPath: string) {
-    const distDir = getProjectDirectoryPath(distPath);
-    return this.rimraf(distDir);
-  }
-
-  private doBuild(buildCommand: string) {
-    const webpackCmd = getProjectDirectoryPath(buildCommand);
-    return this.exec(webpackCmd);
   }
 }
