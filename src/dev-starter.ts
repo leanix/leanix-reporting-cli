@@ -16,8 +16,8 @@ export class DevStarter {
 
   private pathHelper = new PathHelper();
 
-  public start() {
-    const config: LxrConfig = require(this.pathHelper.getLxrConfigPath());
+  public start(): Promise<void> {
+    const config: LxrConfig = require(this.pathHelper.getLxrConfigPath()); // eslint-disable-line @typescript-eslint/no-var-requires
     return this.getAccessToken(config)
     .then(accessToken => this.startLocalServer(config, accessToken))
     .then(result => {
@@ -35,8 +35,8 @@ export class DevStarter {
     const urlEncoded = encodeURIComponent(localhostUrl);
     const host = 'https://' + config.host;
 
-    let accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    let workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
+    const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
+    const workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
 
     if (_.isEmpty(workspace)) {
       console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));

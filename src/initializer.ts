@@ -1,9 +1,7 @@
 import * as chalk from 'chalk';
-import * as path from 'path';
 import * as process from 'process';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
-import { spawn } from 'cross-spawn';
 import { TemplateExtractor } from './template-extractor';
 import { UserInitInput } from "./interfaces";
 
@@ -11,7 +9,7 @@ export class Initializer {
 
   private extractor = new TemplateExtractor();
 
-  public init(): Promise<any> {
+  public init(): Promise<void> {
     console.log(chalk.green('Initializing new project...'));
 
     return inquirer.prompt(this.getInquirerQuestions())
@@ -21,12 +19,11 @@ export class Initializer {
       this.extractor.extractTemplateFiles(answers as UserInitInput);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
-      // return this.installViaNpm();
     });
 
   }
 
-  private getInquirerQuestions(): inquirer.Questions {
+  private getInquirerQuestions(): inquirer.QuestionCollection {
     // The name properties correspond to the variables in the package.json template file
     return [
       {
@@ -97,28 +94,7 @@ export class Initializer {
       apitoken: '',
       workspace: '',
       proxyURL: '',
-      'readme_title': answers.title || answers.name
-    });
-  }
-
-  private installViaNpm(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      console.log(chalk.green('Installing project dependencies via npm...'));
-      const installProc = spawn('npm', ['install']);
-/*
-      installProc.stdout.on('data', (data) => {
-        console.log(chalk.yellow(data.toString()));
-      });
-*/
-      installProc.on('close', (exitCode) => {
-        if (exitCode === 0) {
-          console.log(chalk.green('npm install successful!'));
-          resolve();
-        } else {
-          console.log(chalk.red('npm install failed!'));
-          reject();
-        }
-      });
+      'readme_title': answers.title || answers.name
     });
   }
 }

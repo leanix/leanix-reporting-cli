@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es5",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "sourceMap": false,
     "outDir": "lib"
   }

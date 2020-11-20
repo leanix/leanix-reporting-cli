@@ -1,16 +1,15 @@
 import * as program from 'commander';
 import * as chalk from 'chalk';
-import * as _ from 'lodash';
 import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
 import { Builder } from './builder';
 import { PathHelper } from './path-helper';
 
-const pkg = require('../package.json');
+import { version } from '../package.json';
 
 program
-  .version(pkg.version);
+  .version(version);
 
 program
   .command('init')
@@ -43,7 +42,7 @@ program
   .description('Bundles and uploads the report to the configured workspace')
   .action(() => {
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
-    const lxrConfig = require(new PathHelper().getLxrConfigPath());
+    const lxrConfig = require(new PathHelper().getLxrConfigPath()); // eslint-disable-line @typescript-eslint/no-var-requires
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
     new Uploader()
       .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyUrl)
@@ -75,7 +74,7 @@ if (process.argv.length === 2) {
   console.log(chalk.cyan('  LeanIX Reporting CLI'));
   console.log(chalk.cyan('  ===================='));
   console.log('');
-  console.log(chalk.cyan('  version: ' + pkg.version));
+  console.log(chalk.cyan('  version: ' + version));
   console.log(chalk.cyan('  github: https://github.com/leanix/leanix-reporting-cli'));
   console.log('');
   program.outputHelp();

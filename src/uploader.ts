@@ -1,5 +1,4 @@
 import * as chalk from 'chalk';
-import { exec, execSync } from 'child_process';
 import { PathHelper } from './path-helper';
 import * as path from 'path';
 import * as fs from 'fs';
@@ -13,11 +12,10 @@ import { Builder } from './builder';
  */
 export class Uploader {
 
-  private pathHelper = new PathHelper();
   private projectDir = new PathHelper().getProjectDirectory();
   private builder = new Builder();
 
-  public upload(url: string, apitoken: string, tokenhost: string, proxy?: string) {
+  public upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
     return this.builder.build()
     .then(() => this.writeMetadataFile())
     .then(() => this.createTarFromSrcFolderAndAddToDist())
@@ -28,7 +26,7 @@ export class Uploader {
 
   private writeMetadataFile() {
     return new Promise((resolve, reject) => {
-      const packageJson = require(path.resolve(this.projectDir, 'package.json'));
+      const packageJson = require(path.resolve(this.projectDir, 'package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
       const metadataFile = path.resolve(this.projectDir, 'dist/lxreport.json');
 
       const metadata = Object.assign({}, {

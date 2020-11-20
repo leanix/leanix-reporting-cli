@@ -9,7 +9,7 @@ export class TemplateExtractor {
 
   private pathHelper = new PathHelper();
 
-  public extractTemplateFiles(answers: UserInitInput) {
+  public extractTemplateFiles(answers: UserInitInput): void {
     console.log(chalk.green('Extracting template files...'));
     const templateDir = this.pathHelper.getTemplateDirectory();
     this.extractTemplateDir(templateDir, answers);
