@@ -5,8 +5,7 @@ import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
 import { Builder } from './builder';
 import { loadLxrConfig } from './file.helpers';
-
-import { version } from '../package.json';
+import { version } from './version';
 
 program
   .version(version);
