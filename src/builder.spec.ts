@@ -4,13 +4,19 @@ describe('Builder', () => {
   const loadPackageJson = jest.fn();
   const rimraf = jest.fn().mockResolvedValue(undefined);
   const exec = jest.fn().mockResolvedValue({ stdout: 'stdout', stderr: 'stderr' });
+  const console = {
+    log: jest.fn(),
+    error: jest.fn()
+  };
 
-  const builder = new Builder(loadPackageJson, rimraf, exec);
+  const builder = new Builder(loadPackageJson, rimraf, exec, console);
 
   afterEach(() => {
     loadPackageJson.mockClear();
     rimraf.mockClear();
     exec.mockClear();
+    console.log.mockClear();
+    console.error.mockClear();
   });
 
   it('builds with default configuration', async () => {
@@ -20,6 +26,7 @@ describe('Builder', () => {
 
     expect(rimraf).toHaveBeenCalledWith('./dist');
     expect(exec).toHaveBeenCalledWith('./node_modules/.bin/webpack');
+    expect(console.log).toHaveBeenCalledWith('stdout');
   });
 
   it.each([

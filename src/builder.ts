@@ -8,17 +8,18 @@ import { PackageJson } from './interfaces';
 export class Builder {
 
   public static create(): Builder {
-    return new Builder(loadPackageJson, promisify(rimraf), promisify(exec));
+    return new Builder(loadPackageJson, promisify(rimraf), promisify(exec), console);
   }
 
   constructor (
     private loadPackageJson: () => PackageJson,
     private rimraf: (path: string) => Promise<void>,
-    private exec: (command: string) => Promise<{ stdout: string, stderr: string }>
+    private exec: (command: string) => Promise<{ stdout: string, stderr: string }>,
+    private console: { log(string: string): void, error(string: string): void }
   ) {}
 
   public async build(): Promise<void> {
-    console.log(chalk.yellow(chalk.italic('Building...')));
+    this.console.log(chalk.yellow(chalk.italic('Building...')));
 
     const buildConfig = this.getBuildConfig();
 
@@ -26,10 +27,10 @@ export class Builder {
       await this.rimraf(buildConfig.distPath);
       const { stdout } = await this.exec(buildConfig.buildCommand);
 
-      console.log(stdout);
-      console.log(chalk.green('\u2713 Project successfully build!'));
+      this.console.log(stdout);
+      this.console.log(chalk.green('\u2713 Project successfully build!'));
     } catch (error) {
-      console.error(error);
+      this.console.error(error);
     }
   }
 
