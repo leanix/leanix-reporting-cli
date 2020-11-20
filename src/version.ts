@@ -1,5 +1,5 @@
-import { readFileSync } from 'fs';
 import { join } from 'path';
+import { readJsonFile } from './file.helpers';
 
-const packageJson = readFileSync(join(__dirname, '../package.json'));
-export const version = JSON.parse(packageJson.toString('utf-8')).version;
+const packageJson = readJsonFile(join(__dirname, '../package.json'));
+export const version = packageJson['version'];
