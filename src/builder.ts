@@ -4,11 +4,19 @@ import { getProjectDirectoryPath } from './path.helpers';
 import { loadPackageJson } from './file.helpers';
 import * as rimraf from 'rimraf';
 import { promisify } from 'util';
-
-const execAsync = promisify(exec);
-const rimrafAsync = promisify(rimraf);
+import { PackageJson } from './interfaces';
 
 export class Builder {
+
+  public static create(): Builder {
+    return new Builder(loadPackageJson, promisify(rimraf), promisify(exec));
+  }
+
+  constructor (
+    private loadPackageJson: () => PackageJson,
+    private rimraf: (path: string) => Promise<void>,
+    private exec: (command: string) => Promise<{ stdout: string, stderr: string }>
+  ) {}
 
   public async build(): Promise<void> {
     console.log(chalk.yellow(chalk.italic('Building...')));
@@ -27,7 +35,7 @@ export class Builder {
   }
 
   private getBuildConfig() {
-    const packageJson = loadPackageJson();
+    const packageJson = this.loadPackageJson();
     const leanixReportingCli = packageJson.leanixReportingCli || {};
 
     return {
@@ -38,11 +46,11 @@ export class Builder {
 
   private removeDistDir(distPath: string) {
     const distDir = getProjectDirectoryPath(distPath);
-    return rimrafAsync(distDir);
+    return this.rimraf(distDir);
   }
 
   private doBuild(buildCommand: string) {
     const webpackCmd = getProjectDirectoryPath(buildCommand);
-    return execAsync(webpackCmd);
+    return this.exec(webpackCmd);
   }
 }

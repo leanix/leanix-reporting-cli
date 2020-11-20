@@ -31,7 +31,7 @@ program
   .command('build')
   .description('Builds the report into a folder named "dist"')
   .action(() => {
-    new Builder().build().catch(err => {
+    Builder.create().build().catch(err => {
       console.error(chalk.red(err));
     });
   });

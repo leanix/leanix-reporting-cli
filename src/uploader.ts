@@ -12,7 +12,7 @@ import { Builder } from './builder';
  */
 export class Uploader {
 
-  private builder = new Builder();
+  private builder = Builder.create();
 
   public upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
     return this.builder.build()
