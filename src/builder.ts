@@ -3,10 +3,6 @@ import { execAsync, rimrafAsync } from './async.helpers';
 
 export class Builder {
 
-  public static create(): Builder {
-    return new Builder(console);
-  }
-
   constructor (private logger: { log(string: string): void, error(string: string): void }) {}
 
   public async build(distPath: string, buildCommand: string): Promise<void> {

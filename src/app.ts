@@ -31,7 +31,7 @@ program
   .description('Builds the report into a folder named "dist"')
   .action(() => {
     const cliConfig = loadCliConfig();
-    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand).catch(err => {
+    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand).catch(err => {
       console.error(chalk.red(err));
     });
   });
@@ -45,7 +45,7 @@ program
     const cliConfig = loadCliConfig();
     const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
-    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand)
+    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL))
       .catch(handleError);
   });
@@ -65,7 +65,7 @@ program
     console.log(chalk.yellow(chalk.italic(msg)));
 
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
-    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand)
+    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, apitoken, tokenhost))
       .catch(handleError);
   });
