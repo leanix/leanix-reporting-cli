@@ -1,18 +1,17 @@
 import { Builder } from './builder';
+import * as asyncHelpers from './async.helpers';
+
+jest.mock('./async.helpers');
 
 describe('Builder', () => {
-  const rimraf = jest.fn().mockResolvedValue(undefined);
-  const exec = jest.fn().mockResolvedValue({ stdout: 'stdout', stderr: 'stderr' });
   const logger = {
     log: jest.fn(),
     error: jest.fn()
   };
 
-  const builder = new Builder(rimraf, exec, logger);
+  const builder = new Builder(logger);
 
   afterEach(() => {
-    rimraf.mockClear();
-    exec.mockClear();
     logger.log.mockClear();
     logger.error.mockClear();
   });
@@ -22,10 +21,13 @@ describe('Builder', () => {
     ['./public', './build.sh'],
     ['/tmp/dist', '/usr/bin/make report']
   ])('builds with dist path "%s" and build command "%s"', async (distPath, buildCommand) => {
+    const rimrafAsync = jest.spyOn(asyncHelpers, 'rimrafAsync').mockResolvedValue(undefined);
+    const execAsync = jest.spyOn(asyncHelpers, 'execAsync').mockResolvedValue({ stdout: 'stdout', stderr: 'stderr' });
+
     await builder.build(distPath, buildCommand);
 
-    expect(rimraf).toHaveBeenCalledWith(distPath);
-    expect(exec).toHaveBeenCalledWith(buildCommand);
+    expect(rimrafAsync).toHaveBeenCalledWith(distPath);
+    expect(execAsync).toHaveBeenCalledWith(buildCommand);
     expect(logger.log).toHaveBeenCalledWith('stdout');
   });
 });
