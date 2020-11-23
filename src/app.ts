@@ -43,8 +43,8 @@ program
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
     const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
-    new Uploader()
-      .upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL)
+    Builder.create().build()
+      .then(() => new Uploader().upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL))
       .catch(handleError);
   });
 
@@ -61,8 +61,8 @@ program
     console.log(chalk.yellow(chalk.italic(msg)));
 
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
-    new Uploader()
-      .upload(url, apitoken, tokenhost)
+    Builder.create().build()
+      .then(() => new Uploader().upload(url, apitoken, tokenhost))
       .catch(handleError);
   });
 

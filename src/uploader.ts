@@ -5,18 +5,14 @@ import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';
 import { ApiTokenResolver } from './api-token-resolver';
-import { Builder } from './builder';
 
 /**
  * Builds and uploads the project.
  */
 export class Uploader {
 
-  private builder = Builder.create();
-
   public upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
-    return this.builder.build()
-    .then(() => this.writeMetadataFile())
+    return this.writeMetadataFile()
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
     .then(() => ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy))
