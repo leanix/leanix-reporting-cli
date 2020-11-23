@@ -3,18 +3,18 @@ import { Builder } from './builder';
 describe('Builder', () => {
   const rimraf = jest.fn().mockResolvedValue(undefined);
   const exec = jest.fn().mockResolvedValue({ stdout: 'stdout', stderr: 'stderr' });
-  const console = {
+  const logger = {
     log: jest.fn(),
     error: jest.fn()
   };
 
-  const builder = new Builder(rimraf, exec, console);
+  const builder = new Builder(rimraf, exec, logger);
 
   afterEach(() => {
     rimraf.mockClear();
     exec.mockClear();
-    console.log.mockClear();
-    console.error.mockClear();
+    logger.log.mockClear();
+    logger.error.mockClear();
   });
 
   it.each([
@@ -26,6 +26,6 @@ describe('Builder', () => {
 
     expect(rimraf).toHaveBeenCalledWith(distPath);
     expect(exec).toHaveBeenCalledWith(buildCommand);
-    expect(console.log).toHaveBeenCalledWith('stdout');
+    expect(logger.log).toHaveBeenCalledWith('stdout');
   });
 });
