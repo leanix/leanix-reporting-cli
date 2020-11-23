@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 
 import { getProjectDirectoryPath } from './path.helpers';
-import { LxrConfig, PackageJson } from './interfaces';
+import { CliConfig, LxrConfig, PackageJson } from './interfaces';
 
 export function readJsonFile<T>(path: string): T {
   const buffer = readFileSync(path);
@@ -16,4 +16,13 @@ export function loadLxrConfig(): LxrConfig {
 export function loadPackageJson(): PackageJson {
   const packageJsonPath = getProjectDirectoryPath('package.json')
   return readJsonFile(packageJsonPath);
+}
+
+export function loadCliConfig(packageJson = loadPackageJson()): CliConfig {
+  const leanixReportingCli = packageJson.leanixReportingCli || {};
+
+  return {
+    distPath: leanixReportingCli.distPath ?? './dist',
+    buildCommand: leanixReportingCli.buildCommand ?? './node_modules/.bin/webpack'
+  };
 }

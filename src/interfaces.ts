@@ -32,8 +32,10 @@ export interface PackageJson {
     id?: string;
     title?: string;
   };
-  leanixReportingCli?: {
-    distPath?: string;
-    buildCommand?: string;
-  }
+  leanixReportingCli?: Partial<CliConfig>;
+}
+
+export interface CliConfig {
+  distPath: string;
+  buildCommand: string;
 }
