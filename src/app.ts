@@ -4,7 +4,7 @@ import { Initializer } from './initializer';
 import { DevStarter } from './dev-starter';
 import { Uploader } from './uploader';
 import { Builder } from './builder';
-import { loadLxrConfig } from './file.helpers';
+import { loadCliConfig, loadLxrConfig } from './file.helpers';
 import { version } from './version';
 
 program
@@ -30,7 +30,8 @@ program
   .command('build')
   .description('Builds the report into a folder named "dist"')
   .action(() => {
-    Builder.create().build().catch(err => {
+    const cliConfig = loadCliConfig();
+    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand).catch(err => {
       console.error(chalk.red(err));
     });
   });
@@ -41,9 +42,10 @@ program
   .description('Bundles and uploads the report to the configured workspace')
   .action(() => {
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
+    const cliConfig = loadCliConfig();
     const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
-    Builder.create().build()
+    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL))
       .catch(handleError);
   });
@@ -55,13 +57,15 @@ program
   .option('--host <host>', 'Which store to use (default: store.leanix.net)')
   .option('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
   .action((id: string, apitoken: string, options: { host: string, tokenhost: string }) => {
+    const cliConfig = loadCliConfig();
+
     const host = options.host || 'store.leanix.net';
     const tokenhost = options.tokenhost || 'app.leanix.net';
     const msg = `Bundling and uploading your project to the LeanIX Store (${host})...`;
     console.log(chalk.yellow(chalk.italic(msg)));
 
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
-    Builder.create().build()
+    Builder.create().build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, apitoken, tokenhost))
       .catch(handleError);
   });

@@ -8,6 +8,8 @@ describe('Builder', () => {
     error: jest.fn()
   };
 
+  const builder = new Builder(rimraf, exec, console);
+
   afterEach(() => {
     rimraf.mockClear();
     exec.mockClear();
@@ -20,9 +22,7 @@ describe('Builder', () => {
     ['./public', './build.sh'],
     ['/tmp/dist', '/usr/bin/make report']
   ])('builds with dist path "%s" and build command "%s"', async (distPath, buildCommand) => {
-    const builder = new Builder({ distPath, buildCommand }, rimraf, exec, console);
-
-    await builder.build();
+    await builder.build(distPath, buildCommand);
 
     expect(rimraf).toHaveBeenCalledWith(distPath);
     expect(exec).toHaveBeenCalledWith(buildCommand);
