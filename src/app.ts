@@ -52,7 +52,7 @@ program
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await uploader.upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL);
+      await uploader.upload(cliConfig.srcPath, cliConfig.distPath, url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL);
     } catch (error) {
       handleError(error);
     }
@@ -78,7 +78,7 @@ program
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await uploader.upload(url, apitoken, tokenhost);
+      await uploader.upload(cliConfig.srcPath, cliConfig.distPath, url, apitoken, tokenhost);
     } catch (error) {
       handleError(error);
     }

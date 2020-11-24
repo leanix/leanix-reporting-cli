@@ -36,6 +36,7 @@ export interface PackageJson {
 }
 
 export interface CliConfig {
+  srcPath: string;
   distPath: string;
   buildCommand: string;
 }

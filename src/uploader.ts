@@ -2,6 +2,7 @@ import * as chalk from 'chalk';
 import * as rp from 'request-promise-native';
 import * as tar from 'tar';
 import * as fs from 'fs';
+import { join } from 'path';
 import { ApiTokenResolver } from './api-token-resolver';
 import { writeFileAsync } from './async.helpers';
 import { loadPackageJson } from './file.helpers';
@@ -11,17 +12,24 @@ import { getProjectDirectoryPath } from './path.helpers';
  * Builds and uploads the project.
  */
 export class Uploader {
-  public async upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
-    await this.writeMetadataFile();
-    await this.createTarFromSrcFolderAndAddToDist();
-    await this.createTarFromDistFolder();
+  public async upload(
+    srcPath: string,
+    distPath: string,
+    url: string,
+    apitoken: string,
+    tokenhost: string,
+    proxy?: string
+  ): Promise<boolean> {
+    await this.writeMetadataFile(distPath);
+    await this.createTarFromSrcFolderAndAddToDist(srcPath, distPath);
+    await this.createTarFromDistFolder(distPath);
     const accessToken = await ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy);
     return await this.executeUpload(url, accessToken, proxy);
   }
 
-  private writeMetadataFile() {
+  private writeMetadataFile(distPath: string) {
     const packageJson = loadPackageJson();
-    const metadataFile = getProjectDirectoryPath('dist/lxreport.json');
+    const metadataFile = join(distPath, 'lxreport.json');
 
     const metadata = Object.assign(
       {},
@@ -38,14 +46,14 @@ export class Uploader {
     return writeFileAsync(metadataFile, JSON.stringify(metadata));
   }
 
-  private createTarFromSrcFolderAndAddToDist() {
-    const files = fs.readdirSync(getProjectDirectoryPath('src'));
-    return tar.c({ gzip: true, cwd: 'src', file: 'dist/src.tgz' }, files);
+  private createTarFromSrcFolderAndAddToDist(srcPath: string, distPath: string) {
+    const files = fs.readdirSync(srcPath);
+    return tar.c({ gzip: true, cwd: srcPath, file: join(distPath, 'src.tgz') }, files);
   }
 
-  private createTarFromDistFolder() {
-    const files = fs.readdirSync(getProjectDirectoryPath('dist'));
-    return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
+  private createTarFromDistFolder(distPath: string) {
+    const files = fs.readdirSync(distPath);
+    return tar.c({ gzip: true, cwd: distPath, file: 'bundle.tgz' }, files);
   }
 
   private async executeUpload(url: string, accessToken: string, proxy?: string) {

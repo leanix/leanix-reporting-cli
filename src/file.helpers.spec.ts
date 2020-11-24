@@ -7,8 +7,21 @@ describe('File Helpers', () => {
       const packageJson: PackageJson = {};
 
       expect(loadCliConfig(packageJson)).toEqual({
+        srcPath: './src',
         distPath: './dist',
         buildCommand: './node_modules/.bin/webpack'
+      });
+    });
+
+    it('loads override value for srcPath', () => {
+      const packageJson: PackageJson = {
+        leanixReportingCli: {
+          srcPath: './lib'
+        }
+      };
+
+      expect(loadCliConfig(packageJson)).toMatchObject({
+        srcPath: './lib'
       });
     });
 
