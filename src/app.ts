@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import * as program from 'commander';
 import { Builder } from './builder';
+import { Bundler } from './bundler';
 import { DevStarter } from './dev-starter';
 import { loadCliConfig, loadLxrConfig } from './file.helpers';
 import { Initializer } from './initializer';
@@ -46,13 +47,15 @@ program
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
 
     const builder = new Builder(console);
+    const bundler = new Bundler();
     const uploader = new Uploader();
 
     console.log(chalk.yellow(chalk.italic('Bundling and uploading your project...')));
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await uploader.upload(cliConfig.srcPath, cliConfig.distPath, url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL);
+      await bundler.bundle(cliConfig.srcPath, cliConfig.distPath);
+      await uploader.upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL);
     } catch (error) {
       handleError(error);
     }
@@ -72,13 +75,15 @@ program
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
 
     const builder = new Builder(console);
+    const bundler = new Bundler();
     const uploader = new Uploader();
 
     console.log(chalk.yellow(chalk.italic(msg)));
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await uploader.upload(cliConfig.srcPath, cliConfig.distPath, url, apitoken, tokenhost);
+      await bundler.bundle(cliConfig.srcPath, cliConfig.distPath);
+      await uploader.upload(url, apitoken, tokenhost);
     } catch (error) {
       handleError(error);
     }

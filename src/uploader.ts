@@ -1,56 +1,13 @@
 import * as chalk from 'chalk';
 import * as rp from 'request-promise-native';
-import * as tar from 'tar';
 import * as fs from 'fs';
-import { join } from 'path';
 import { ApiTokenResolver } from './api-token-resolver';
-import { writeFileAsync } from './async.helpers';
-import { loadPackageJson } from './file.helpers';
 import { getProjectDirectoryPath } from './path.helpers';
 
 export class Uploader {
-  public async upload(
-    srcPath: string,
-    distPath: string,
-    url: string,
-    apitoken: string,
-    tokenhost: string,
-    proxy?: string
-  ): Promise<boolean> {
-    await this.writeMetadataFile(distPath);
-    await this.createTarFromSrcFolderAndAddToDist(srcPath, distPath);
-    await this.createTarFromDistFolder(distPath);
+  public async upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
     const accessToken = await ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy);
     return await this.executeUpload(url, accessToken, proxy);
-  }
-
-  private writeMetadataFile(distPath: string) {
-    const packageJson = loadPackageJson();
-    const metadataFile = join(distPath, 'lxreport.json');
-
-    const metadata = Object.assign(
-      {},
-      {
-        name: packageJson.name,
-        version: packageJson.version,
-        author: packageJson.author,
-        description: packageJson.description,
-        documentationLink: packageJson.documentationLink
-      },
-      packageJson.leanixReport
-    );
-
-    return writeFileAsync(metadataFile, JSON.stringify(metadata));
-  }
-
-  private createTarFromSrcFolderAndAddToDist(srcPath: string, distPath: string) {
-    const files = fs.readdirSync(srcPath);
-    return tar.c({ gzip: true, cwd: srcPath, file: join(distPath, 'src.tgz') }, files);
-  }
-
-  private createTarFromDistFolder(distPath: string) {
-    const files = fs.readdirSync(distPath);
-    return tar.c({ gzip: true, cwd: distPath, file: 'bundle.tgz' }, files);
   }
 
   private async executeUpload(url: string, accessToken: string, proxy?: string) {
