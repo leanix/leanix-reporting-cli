@@ -3,6 +3,7 @@ import * as rp from 'request-promise-native';
 import * as tar from 'tar';
 import * as fs from 'fs';
 import { ApiTokenResolver } from './api-token-resolver';
+import { writeFileAsync } from './async.helpers';
 import { loadPackageJson } from './file.helpers';
 import { getProjectDirectoryPath } from './path.helpers';
 
@@ -19,31 +20,22 @@ export class Uploader {
   }
 
   private writeMetadataFile() {
-    return new Promise((resolve, reject) => {
-      const packageJson = loadPackageJson();
-      const metadataFile = getProjectDirectoryPath('dist/lxreport.json');
+    const packageJson = loadPackageJson();
+    const metadataFile = getProjectDirectoryPath('dist/lxreport.json');
 
-      const metadata = Object.assign(
-        {},
-        {
-          name: packageJson.name,
-          version: packageJson.version,
-          author: packageJson.author,
-          description: packageJson.description,
-          documentationLink: packageJson.documentationLink
-        },
-        packageJson.leanixReport
-      );
+    const metadata = Object.assign(
+      {},
+      {
+        name: packageJson.name,
+        version: packageJson.version,
+        author: packageJson.author,
+        description: packageJson.description,
+        documentationLink: packageJson.documentationLink
+      },
+      packageJson.leanixReport
+    );
 
-      fs.writeFile(metadataFile, JSON.stringify(metadata), function (err) {
-        if (err) {
-          console.log(err);
-          reject(err);
-        } else {
-          resolve(metadataFile);
-        }
-      });
-    });
+    return writeFileAsync(metadataFile, JSON.stringify(metadata));
   }
 
   private createTarFromSrcFolderAndAddToDist() {
