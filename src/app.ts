@@ -1,10 +1,10 @@
-import * as program from 'commander';
 import * as chalk from 'chalk';
-import { Initializer } from './initializer';
-import { DevStarter } from './dev-starter';
-import { Uploader } from './uploader';
+import * as program from 'commander';
 import { Builder } from './builder';
+import { DevStarter } from './dev-starter';
 import { loadCliConfig, loadLxrConfig } from './file.helpers';
+import { Initializer } from './initializer';
+import { Uploader } from './uploader';
 import { version } from './version';
 
 program.version(version);

@@ -1,9 +1,9 @@
 import * as chalk from 'chalk';
-import * as process from 'process';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
-import { TemplateExtractor } from './template-extractor';
+import * as process from 'process';
 import { UserInitInput } from './interfaces';
+import { TemplateExtractor } from './template-extractor';
 
 export class Initializer {
   private extractor = new TemplateExtractor();

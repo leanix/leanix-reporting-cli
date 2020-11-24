@@ -1,10 +1,10 @@
 import * as chalk from 'chalk';
-import { getProjectDirectoryPath } from './path.helpers';
-import { loadPackageJson } from './file.helpers';
-import * as fs from 'fs';
-import * as tar from 'tar';
 import * as rp from 'request-promise-native';
+import * as tar from 'tar';
+import * as fs from 'fs';
 import { ApiTokenResolver } from './api-token-resolver';
+import { loadPackageJson } from './file.helpers';
+import { getProjectDirectoryPath } from './path.helpers';
 
 /**
  * Builds and uploads the project.

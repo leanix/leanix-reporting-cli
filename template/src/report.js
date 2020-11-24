@@ -1,6 +1,6 @@
+import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import keys from 'lodash/keys';
-import find from 'lodash/find';
 import factSheetMapper from './fact-sheet-mapper';
 
 const ID_SORTING_DROPDOWN = 'SORTING_DROPDOWN';

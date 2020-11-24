@@ -1,9 +1,7 @@
-// Import css declarations for the report
-import './assets/main.css';
-
 // Importing '@leanix/reporting' makes the `lx` object globally available
 import '@leanix/reporting';
-
+// Import css declarations for the report
+import './assets/main.css';
 // We have declared our report class in a seperate file and import it here
 import { Report } from './report';
 

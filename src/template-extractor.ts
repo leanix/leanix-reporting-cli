@@ -1,9 +1,9 @@
 import * as chalk from 'chalk';
-import * as path from 'path';
-import * as fs from 'fs';
 import * as varReplace from 'variable-replacer';
-import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path.helpers';
+import * as fs from 'fs';
+import * as path from 'path';
 import { UserInitInput } from './interfaces';
+import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path.helpers';
 
 export class TemplateExtractor {
   public extractTemplateFiles(answers: UserInitInput): void {

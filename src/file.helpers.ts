@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
-
-import { getProjectDirectoryPath } from './path.helpers';
 import { CliConfig, LxrConfig, PackageJson } from './interfaces';
+import { getProjectDirectoryPath } from './path.helpers';
 
 export function readJsonFile<T>(path: string): T {
   const buffer = readFileSync(path);

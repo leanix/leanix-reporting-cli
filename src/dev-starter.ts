@@ -1,11 +1,11 @@
 import * as chalk from 'chalk';
-import * as opn from 'opn';
+import { spawn } from 'cross-spawn';
 import * as jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';
-import { spawn } from 'cross-spawn';
+import * as opn from 'opn';
 import { ApiTokenResolver } from './api-token-resolver';
-import { LxrConfig } from './interfaces';
 import { loadLxrConfig } from './file.helpers';
+import { LxrConfig } from './interfaces';
 
 interface DevServerStartResult {
   launchUrl: string;
