@@ -8,9 +8,6 @@ import { writeFileAsync } from './async.helpers';
 import { loadPackageJson } from './file.helpers';
 import { getProjectDirectoryPath } from './path.helpers';
 
-/**
- * Builds and uploads the project.
- */
 export class Uploader {
   public async upload(
     srcPath: string,
