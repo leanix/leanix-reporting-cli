@@ -9,12 +9,12 @@ export function readJsonFile<T>(path: string): T {
 }
 
 export function loadLxrConfig(): LxrConfig {
-  const lxrConfigPath = getProjectDirectoryPath('lxr.json')
+  const lxrConfigPath = getProjectDirectoryPath('lxr.json');
   return readJsonFile(lxrConfigPath);
 }
 
 export function loadPackageJson(): PackageJson {
-  const packageJsonPath = getProjectDirectoryPath('package.json')
+  const packageJsonPath = getProjectDirectoryPath('package.json');
   return readJsonFile(packageJsonPath);
 }
 

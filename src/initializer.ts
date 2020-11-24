@@ -3,24 +3,21 @@ import * as process from 'process';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
 import { TemplateExtractor } from './template-extractor';
-import { UserInitInput } from "./interfaces";
+import { UserInitInput } from './interfaces';
 
 export class Initializer {
-
   private extractor = new TemplateExtractor();
 
   public init(): Promise<void> {
     console.log(chalk.green('Initializing new project...'));
 
-    return inquirer.prompt(this.getInquirerQuestions())
-    .then(answers => {
+    return inquirer.prompt(this.getInquirerQuestions()).then((answers) => {
       answers = this.handleDefaultAnswers(answers);
       answers['node_version'] = process.versions.node;
       this.extractor.extractTemplateFiles(answers as UserInitInput);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
     });
-
   }
 
   private getInquirerQuestions(): inquirer.QuestionCollection {
@@ -78,7 +75,7 @@ export class Initializer {
         default: false
       },
       {
-        when: answers => answers.behindProxy,
+        when: (answers) => answers.behindProxy,
         type: 'input',
         name: 'proxyURL',
         message: 'Proxy URL?'
@@ -87,14 +84,14 @@ export class Initializer {
   }
 
   private handleDefaultAnswers(answers: inquirer.Answers) {
-    answers = _.mapValues(answers, (val) => val === '' ? undefined : val);
+    answers = _.mapValues(answers, (val) => (val === '' ? undefined : val));
     return _.defaults(answers, {
       licence: 'UNLICENSED',
       host: 'app.leanix.net',
       apitoken: '',
       workspace: '',
       proxyURL: '',
-      'readme_title': answers.title || answers.name
+      readme_title: answers.title || answers.name
     });
   }
 }

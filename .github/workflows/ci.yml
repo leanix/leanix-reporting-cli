@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout 
+      - name: Checkout
         uses: actions/checkout@v2
 
       - name: Install NodeJS
@@ -26,9 +26,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('npm-shrinkwrap.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
-      
+
       - name: Lint
         run: npm run lint
-      
+
       - name: Test
         run: npm test
