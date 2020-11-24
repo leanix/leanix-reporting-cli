@@ -2,8 +2,7 @@ import * as chalk from 'chalk';
 import { execAsync, rimrafAsync } from './async.helpers';
 
 export class Builder {
-
-  constructor (private logger: { log(string: string): void, error(string: string): void }) {}
+  constructor(private logger: { log(string: string): void; error(string: string): void }) {}
 
   public async build(distPath: string, buildCommand: string): Promise<void> {
     this.logger.log(chalk.yellow(chalk.italic('Building...')));

@@ -1,7 +1,6 @@
 import { readFileSync } from 'fs';
-
-import { getProjectDirectoryPath } from './path.helpers';
 import { CliConfig, LxrConfig, PackageJson } from './interfaces';
+import { getProjectDirectoryPath } from './path.helpers';
 
 export function readJsonFile<T>(path: string): T {
   const buffer = readFileSync(path);
@@ -9,12 +8,12 @@ export function readJsonFile<T>(path: string): T {
 }
 
 export function loadLxrConfig(): LxrConfig {
-  const lxrConfigPath = getProjectDirectoryPath('lxr.json')
+  const lxrConfigPath = getProjectDirectoryPath('lxr.json');
   return readJsonFile(lxrConfigPath);
 }
 
 export function loadPackageJson(): PackageJson {
-  const packageJsonPath = getProjectDirectoryPath('package.json')
+  const packageJsonPath = getProjectDirectoryPath('package.json');
   return readJsonFile(packageJsonPath);
 }
 

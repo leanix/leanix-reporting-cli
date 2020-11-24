@@ -28,7 +28,6 @@ It will take the specified API Token from `lxr.json` and automatically do a logi
 
 Builds the report and outputs the build result into `dist` folder.
 
-
 `npm run upload`
 
 Uploads the report to the workspace configured in `lxr.json`.

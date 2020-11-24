@@ -1,12 +1,11 @@
 import * as chalk from 'chalk';
-import * as path from 'path';
-import * as fs from 'fs';
 import * as varReplace from 'variable-replacer';
+import * as fs from 'fs';
+import * as path from 'path';
+import { UserInitInput } from './interfaces';
 import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path.helpers';
-import { UserInitInput } from "./interfaces";
 
 export class TemplateExtractor {
-
   public extractTemplateFiles(answers: UserInitInput): void {
     console.log(chalk.green('Extracting template files...'));
     const templateDir = getTemplateDirectoryPath();
@@ -14,8 +13,7 @@ export class TemplateExtractor {
   }
 
   private extractTemplateDir(templateDir: string, answers: UserInitInput) {
-    fs.readdirSync(templateDir)
-    .forEach(file => {
+    fs.readdirSync(templateDir).forEach((file) => {
       const filePath = path.resolve(templateDir, file);
       const isDir = fs.lstatSync(filePath).isDirectory();
       if (isDir) {
@@ -42,5 +40,4 @@ export class TemplateExtractor {
       logLevel: 'none' // info
     });
   }
-
 }

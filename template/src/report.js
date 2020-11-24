@@ -1,6 +1,6 @@
+import find from 'lodash/find';
 import groupBy from 'lodash/groupBy';
 import keys from 'lodash/keys';
-import find from 'lodash/find';
 import factSheetMapper from './fact-sheet-mapper';
 
 const ID_SORTING_DROPDOWN = 'SORTING_DROPDOWN';
@@ -12,7 +12,6 @@ const ID_SORTING_BY_COUNT = 'SORTING_BY_COUNT';
  * We have create several functions to split up the logic, which increases maintainability.
  */
 export class Report {
-
   constructor(setup) {
     this.setup = setup;
     this.sorting = ID_SORTING_BY_NAME;
@@ -26,15 +25,17 @@ export class Report {
       menuActions: {
         customDropdowns: this.createDropdownConfig()
       },
-      facets: [{
-        key: 'main',
-        attributes: ['displayName', 'type', 'description'],
-        callback: function (data) {
-          this.data = data;
-          this.groups = groupBy(data, 'type');
-          this.render();
-        }.bind(this)
-      }]
+      facets: [
+        {
+          key: 'main',
+          attributes: ['displayName', 'type', 'description'],
+          callback: function (data) {
+            this.data = data;
+            this.groups = groupBy(data, 'type');
+            this.render();
+          }.bind(this)
+        }
+      ]
     };
   }
 
@@ -42,7 +43,7 @@ export class Report {
     var fsTypes = keys(this.groups).sort(this.getSortComparer());
     var html = '<table>';
     for (var i = 0; i < fsTypes.length; i++) {
-      html += this.getHtmlForFsTypeBar(fsTypes[i])
+      html += this.getHtmlForFsTypeBar(fsTypes[i]);
     }
     html += '</table>';
     html += '<div id="clickOutput"></div>';
@@ -58,28 +59,30 @@ export class Report {
   }
 
   createDropdownConfig() {
-    return [{
-      id: ID_SORTING_DROPDOWN,
-      name: 'SORT',
-      entries: [
-        {
-          id: ID_SORTING_BY_NAME,
-          name: 'By Name',
-          callback: () => {
-            this.sorting = ID_SORTING_BY_NAME;
-          this.render();
+    return [
+      {
+        id: ID_SORTING_DROPDOWN,
+        name: 'SORT',
+        entries: [
+          {
+            id: ID_SORTING_BY_NAME,
+            name: 'By Name',
+            callback: () => {
+              this.sorting = ID_SORTING_BY_NAME;
+              this.render();
+            }
+          },
+          {
+            id: ID_SORTING_BY_COUNT,
+            name: 'By Count',
+            callback: () => {
+              this.sorting = ID_SORTING_BY_COUNT;
+              this.render();
+            }
           }
-        },
-        {
-          id: ID_SORTING_BY_COUNT,
-          name: 'By Count',
-          callback: () => {
-            this.sorting = ID_SORTING_BY_COUNT;
-            this.render();
-          }
-        }
-      ]
-    }];
+        ]
+      }
+    ];
   }
 
   getSortComparer() {
@@ -93,7 +96,7 @@ export class Report {
   getHtmlForFsTypeBar(type) {
     var fsVm = find(this.setup.settings.viewModel.factSheets, { type });
     var groupCount = this.groups[type].length;
-    var width = groupCount / this.data.length * 100;
+    var width = (groupCount / this.data.length) * 100;
     var barStyles = `width: ${width}%; background-color: ${fsVm.bgColor};`;
     return `
     <tr>
@@ -112,5 +115,4 @@ export class Report {
     var fsHtml = factSheets.map(factSheetMapper).join('');
     document.getElementById('clickOutput').innerHTML = `<h4>${clickedType}</h4>${fsHtml}`;
   }
-
 }

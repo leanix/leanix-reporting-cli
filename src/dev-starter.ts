@@ -1,11 +1,11 @@
 import * as chalk from 'chalk';
-import * as opn from 'opn';
+import { spawn } from 'cross-spawn';
 import * as jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';
-import { spawn } from 'cross-spawn';
+import * as opn from 'opn';
 import { ApiTokenResolver } from './api-token-resolver';
-import { LxrConfig } from './interfaces';
 import { loadLxrConfig } from './file.helpers';
+import { LxrConfig } from './interfaces';
 
 interface DevServerStartResult {
   launchUrl: string;
@@ -13,18 +13,21 @@ interface DevServerStartResult {
 }
 
 export class DevStarter {
-
   public start(): Promise<void> {
     const config = loadLxrConfig();
     return this.getAccessToken(config)
-    .then(accessToken => this.startLocalServer(config, accessToken))
-    .then(result => {
-      if (result) {
-        this.openUrlInBrowser(result.launchUrl);
-        console.log(chalk.green(`Open the following url to test your report:\n${result.launchUrl}`) + '\n');
-        console.log(chalk.yellow(`If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${result.localhostUrl}`));
-      }
-    });
+      .then((accessToken) => this.startLocalServer(config, accessToken))
+      .then((result) => {
+        if (result) {
+          this.openUrlInBrowser(result.launchUrl);
+          console.log(chalk.green(`Open the following url to test your report:\n${result.launchUrl}`) + '\n');
+          console.log(
+            chalk.yellow(
+              `If your report is not being loaded, please check if it opens outside of LeanIX via this url:\n${result.localhostUrl}`
+            )
+          );
+        }
+      });
   }
 
   private startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
@@ -34,10 +37,10 @@ export class DevStarter {
     const host = 'https://' + config.host;
 
     const accessTokenHash = accessToken ? `#access_token=${accessToken}` : '';
-    const workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) :  config.workspace;
+    const workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) : config.workspace;
 
     if (_.isEmpty(workspace)) {
-      console.error(chalk.red('Workspace not specified. The local server can\'t be started.'));
+      console.error(chalk.red("Workspace not specified. The local server can't be started."));
       return new Promise(null);
     }
     console.log(chalk.green(`Your workspace is ${workspace}`));

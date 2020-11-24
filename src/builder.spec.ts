@@ -1,5 +1,5 @@
-import { Builder } from './builder';
 import * as asyncHelpers from './async.helpers';
+import { Builder } from './builder';
 
 jest.mock('./async.helpers');
 

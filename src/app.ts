@@ -1,14 +1,13 @@
-import * as program from 'commander';
 import * as chalk from 'chalk';
-import { Initializer } from './initializer';
-import { DevStarter } from './dev-starter';
-import { Uploader } from './uploader';
+import * as program from 'commander';
 import { Builder } from './builder';
+import { DevStarter } from './dev-starter';
 import { loadCliConfig, loadLxrConfig } from './file.helpers';
+import { Initializer } from './initializer';
+import { Uploader } from './uploader';
 import { version } from './version';
 
-program
-  .version(version);
+program.version(version);
 
 program
   .command('init')
@@ -17,7 +16,6 @@ program
     new Initializer().init().catch(handleError);
   });
 
-
 program
   .command('start')
   .description('Start developing and testing your report')
@@ -25,17 +23,15 @@ program
     new DevStarter().start().catch(handleError);
   });
 
-
 program
   .command('build')
   .description('Builds the report into a folder named "dist"')
   .action(() => {
     const cliConfig = loadCliConfig();
-    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand).catch(err => {
+    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand).catch((err) => {
       console.error(chalk.red(err));
     });
   });
-
 
 program
   .command('upload')
@@ -45,18 +41,18 @@ program
     const cliConfig = loadCliConfig();
     const lxrConfig = loadLxrConfig();
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
-    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand)
+    new Builder(console)
+      .build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL))
       .catch(handleError);
   });
-
 
 program
   .command('store-upload <id> <apitoken>')
   .description('Bundles and uploads the report to the LeanIX Store')
   .option('--host <host>', 'Which store to use (default: store.leanix.net)')
   .option('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
-  .action((id: string, apitoken: string, options: { host: string, tokenhost: string }) => {
+  .action((id: string, apitoken: string, options: { host: string; tokenhost: string }) => {
     const cliConfig = loadCliConfig();
 
     const host = options.host || 'store.leanix.net';
@@ -65,7 +61,8 @@ program
     console.log(chalk.yellow(chalk.italic(msg)));
 
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
-    new Builder(console).build(cliConfig.distPath, cliConfig.buildCommand)
+    new Builder(console)
+      .build(cliConfig.distPath, cliConfig.buildCommand)
       .then(() => new Uploader().upload(url, apitoken, tokenhost))
       .catch(handleError);
   });

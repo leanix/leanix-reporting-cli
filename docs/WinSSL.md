@@ -8,7 +8,7 @@ After executing `npm start`, open the IE 11 browser to the defined URL direction
 
 We will have to click the **More information** button, and allow to load the page by clicking **Go on to the webpage (not recommended)**.
 
-You will see that the direction box is painted red, showing that the current page is not secure. You will have to trust the self-signed  SSL certificate. To do so, click on the red shield icon and click **View certificates**.
+You will see that the direction box is painted red, showing that the current page is not secure. You will have to trust the self-signed SSL certificate. To do so, click on the red shield icon and click **View certificates**.
 
 ![](img/ie-step2.png)
 

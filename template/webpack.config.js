@@ -39,9 +39,7 @@ module.exports = {
     /**
      * Copy assets into dist folder.
      */
-    new CopyWebpackPlugin([
-      { from: 'src/assets', to: 'assets' }
-    ]),
+    new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
 
     /**
      * Insert created bundles as script tags at the end
@@ -61,4 +59,4 @@ module.exports = {
       'Access-Control-Allow-Origin': '*'
     }
   }
-}
+};
