@@ -21,3 +21,21 @@ export interface UserInitInput {
   apitoken: string;
   proxyURL?: string;
 }
+
+export interface PackageJson {
+  name?: string;
+  version?: string;
+  author?: string;
+  description?: string;
+  documentationLink?: string;
+  leanixReport?: {
+    id?: string;
+    title?: string;
+  };
+  leanixReportingCli?: Partial<CliConfig>;
+}
+
+export interface CliConfig {
+  distPath: string;
+  buildCommand: string;
+}

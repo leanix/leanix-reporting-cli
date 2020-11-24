@@ -1,23 +1,18 @@
 import * as chalk from 'chalk';
-import { PathHelper } from './path-helper';
-import * as path from 'path';
+import { getProjectDirectoryPath } from './path.helpers';
+import { loadPackageJson } from './file.helpers';
 import * as fs from 'fs';
 import * as tar from 'tar';
 import * as rp from 'request-promise-native';
 import { ApiTokenResolver } from './api-token-resolver';
-import { Builder } from './builder';
 
 /**
  * Builds and uploads the project.
  */
 export class Uploader {
 
-  private projectDir = new PathHelper().getProjectDirectory();
-  private builder = new Builder();
-
   public upload(url: string, apitoken: string, tokenhost: string, proxy?: string): Promise<boolean> {
-    return this.builder.build()
-    .then(() => this.writeMetadataFile())
+    return this.writeMetadataFile()
     .then(() => this.createTarFromSrcFolderAndAddToDist())
     .then(() => this.createTarFromDistFolder())
     .then(() => ApiTokenResolver.getAccessToken(`https://${tokenhost}`, apitoken, proxy))
@@ -26,8 +21,8 @@ export class Uploader {
 
   private writeMetadataFile() {
     return new Promise((resolve, reject) => {
-      const packageJson = require(path.resolve(this.projectDir, 'package.json')); // eslint-disable-line @typescript-eslint/no-var-requires
-      const metadataFile = path.resolve(this.projectDir, 'dist/lxreport.json');
+      const packageJson = loadPackageJson();
+      const metadataFile = getProjectDirectoryPath('dist/lxreport.json');
 
       const metadata = Object.assign({}, {
         name: packageJson.name,
@@ -49,12 +44,12 @@ export class Uploader {
   }
 
   private createTarFromSrcFolderAndAddToDist() {
-    const files = fs.readdirSync(path.resolve(this.projectDir, 'src'));
+    const files = fs.readdirSync(getProjectDirectoryPath('src'));
     return tar.c({ gzip: true, cwd: 'src', file: 'dist/src.tgz' }, files);
   }
 
   private createTarFromDistFolder() {
-    const files = fs.readdirSync(path.resolve(this.projectDir, 'dist'));
+    const files = fs.readdirSync(getProjectDirectoryPath('dist'));
     return tar.c({ gzip: true, cwd: 'dist', file: 'bundle.tgz' }, files);
   }
 
@@ -66,7 +61,7 @@ export class Uploader {
         'Authorization': 'Bearer ' + accessToken
       },
       formData: {
-        file: fs.createReadStream(path.resolve(this.projectDir, 'bundle.tgz'))
+        file: fs.createReadStream(getProjectDirectoryPath('bundle.tgz'))
       }
     };
 

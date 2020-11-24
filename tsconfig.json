@@ -4,6 +4,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": false,
+    "rootDir": "src",
     "outDir": "lib"
   }
 }
