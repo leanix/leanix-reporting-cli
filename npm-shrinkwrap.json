@@ -861,6 +861,15 @@
       "integrity": "sha512-tHq6qdbT9U1IRSGf14CL0pUlULksvY9OZ+5eEgl1N7t+OA3tGvNpxJCzuKQlsNgCVwbAs670L1vcVQi8j9HjnA==",
       "dev": true
     },
+    "@types/minipass": {
+      "version": "2.2.0",
+      "resolved": "https://registry.npmjs.org/@types/minipass/-/minipass-2.2.0.tgz",
+      "integrity": "sha512-wuzZksN4w4kyfoOv/dlpov4NOunwutLA/q7uc00xU02ZyUY+aoM5PWIXEKBMnm0NHd4a+N71BMjq+x7+2Af1fg==",
+      "dev": true,
+      "requires": {
+        "@types/node": "*"
+      }
+    },
     "@types/node": {
       "version": "14.14.9",
       "resolved": "https://registry.npmjs.org/@types/node/-/node-14.14.9.tgz",
@@ -934,6 +943,16 @@
       "resolved": "https://registry.npmjs.org/@types/stack-utils/-/stack-utils-2.0.0.tgz",
       "integrity": "sha512-RJJrrySY7A8havqpGObOB4W92QXKJo63/jFLLgpvOtsGUqbQZ9Sbgl35KMm1DjC6j7AvmmU2bIno+3IyEaemaw==",
       "dev": true
+    },
+    "@types/tar": {
+      "version": "4.0.4",
+      "resolved": "https://registry.npmjs.org/@types/tar/-/tar-4.0.4.tgz",
+      "integrity": "sha512-0Xv+xcmkTsOZdIF4yCnd7RkOOyfyqPaqJ7RZFKnwdxfDbkN3eAAE9sHl8zJFqBz4VhxolW9EErbjR1oyH7jK2A==",
+      "dev": true,
+      "requires": {
+        "@types/minipass": "*",
+        "@types/node": "*"
+      }
     },
     "@types/through": {
       "version": "0.0.30",
