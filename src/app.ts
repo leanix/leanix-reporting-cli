@@ -26,7 +26,28 @@ program
 
 program
   .command('build')
-  .description('Builds the report into a folder named "dist"')
+  .description(`Builds the report`)
+  .on('--help', () => {
+    console.log(`
+By default, the report will be built by running "node_modules/.bin/webpack".
+Before the build, the dist folder ("dist" by default) will be deleted to
+ensure a clean build.
+
+These defaults can be changed by setting "distPath" and "buildCommand" in the
+"leanixReportingCli" section of package.json:
+
+{
+  "leanixReportingCli": {
+    "distPath": "output",
+    "buildCommand": "make"
+  }
+}
+
+Please note that the value provided for "distPath" needs to be aligned with
+configuration of the given build command. E.g., in the example above, "make"
+would need to configured in a way that it writes the report artefacts to the
+"output" folder.`);
+  })
   .action(async () => {
     const cliConfig = loadCliConfig();
     const builder = new Builder(console);
@@ -40,7 +61,14 @@ program
 
 program
   .command('upload')
-  .description('Bundles and uploads the report to the configured workspace')
+  .description('Uploads the report to the configured workspace')
+  .on('--help', () => {
+    console.log(`
+Before uploading, the report will be built – see "lxr help build" for details.
+
+The report will be uploaded to the workspace associated with the "apitoken" on
+the "host" given in lxr.json.`);
+  })
   .action(async () => {
     const cliConfig = loadCliConfig();
     const lxrConfig = loadLxrConfig();
@@ -63,7 +91,7 @@ program
 
 program
   .command('store-upload <id> <apitoken>')
-  .description('Bundles and uploads the report to the LeanIX Store')
+  .description('Uploads the report to the LeanIX Store')
   .option('--host <host>', 'Which store to use (default: store.leanix.net)')
   .option('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
   .action(async (id: string, apitoken: string, options: { host: string; tokenhost: string }) => {
