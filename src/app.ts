@@ -99,14 +99,13 @@ program
 
     const host = options.host || 'store.leanix.net';
     const tokenhost = options.tokenhost || 'app.leanix.net';
-    const msg = `Bundling and uploading your project to the LeanIX Store (${host})...`;
     const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`;
 
     const builder = new Builder(console);
     const bundler = new Bundler();
     const uploader = new Uploader();
 
-    console.log(chalk.yellow(chalk.italic(msg)));
+    console.log(chalk.yellow(chalk.italic(`Bundling and uploading your project to the LeanIX Store (${host})...`)));
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
