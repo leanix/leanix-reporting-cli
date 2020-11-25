@@ -54,7 +54,7 @@ program
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await bundler.bundle(cliConfig.srcPath, cliConfig.distPath);
+      await bundler.bundle(cliConfig.distPath);
       await uploader.upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL);
     } catch (error) {
       handleError(error);
@@ -82,7 +82,7 @@ program
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
-      await bundler.bundle(cliConfig.srcPath, cliConfig.distPath);
+      await bundler.bundle(cliConfig.distPath);
       await uploader.upload(url, apitoken, tokenhost);
     } catch (error) {
       handleError(error);

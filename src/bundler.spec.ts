@@ -20,17 +20,13 @@ describe('Bundler', () => {
     }
   });
 
-  jest.spyOn(fs, 'readdirSync').mockImplementation(((path) => {
-    if (path === 'source') {
-      return ['report.ts', 'style.scss'];
-    } else if (path === 'output') {
-      return ['report.js', 'style.css', 'index.html'];
-    }
-  }) as typeof fs.readdirSync);
+  // Jest uses the typing for the fs.Dirent[] overload of the function even though we use the
+  // one that returns string[], hence the forced type casting.
+  jest.spyOn(fs, 'readdirSync').mockReturnValue((['report.js', 'style.css', 'index.html'] as unknown) as fs.Dirent[]);
 
   beforeEach(async () => {
     const bundler = new Bundler();
-    await bundler.bundle('source', 'output');
+    await bundler.bundle('output');
   });
 
   afterEach(() => {
@@ -51,10 +47,6 @@ describe('Bundler', () => {
         title: 'My Report'
       })
     );
-  });
-
-  it('creates src.tgz', () => {
-    expect(tarC).toHaveBeenCalledWith({ gzip: true, cwd: 'source', file: 'output/src.tgz' }, ['report.ts', 'style.scss']);
   });
 
   it('creates bundle.tgz', () => {

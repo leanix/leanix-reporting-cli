@@ -21,7 +21,6 @@ export function loadCliConfig(packageJson = loadPackageJson()): CliConfig {
   const leanixReportingCli = packageJson.leanixReportingCli || {};
 
   return {
-    srcPath: leanixReportingCli.srcPath ?? './src',
     distPath: leanixReportingCli.distPath ?? './dist',
     buildCommand: leanixReportingCli.buildCommand ?? './node_modules/.bin/webpack'
   };

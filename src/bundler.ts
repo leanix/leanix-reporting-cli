@@ -5,9 +5,8 @@ import { writeFileAsync } from './async.helpers';
 import { loadPackageJson } from './file.helpers';
 
 export class Bundler {
-  public async bundle(srcPath: string, distPath: string): Promise<void> {
+  public async bundle(distPath: string): Promise<void> {
     await this.writeMetadataFile(distPath);
-    await this.createTarFromSrcFolderAndAddToDist(srcPath, distPath);
     await this.createTarFromDistFolder(distPath);
   }
 
@@ -28,11 +27,6 @@ export class Bundler {
     );
 
     return writeFileAsync(metadataFile, JSON.stringify(metadata));
-  }
-
-  private createTarFromSrcFolderAndAddToDist(srcPath: string, distPath: string) {
-    const files = fs.readdirSync(srcPath);
-    return tar.c({ gzip: true, cwd: srcPath, file: join(distPath, 'src.tgz') }, files);
   }
 
   private createTarFromDistFolder(distPath: string) {
