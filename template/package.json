@@ -10,6 +10,10 @@
     "title": "%title%",
     "defaultConfig": {}
   },
+  "leanixReportingCli": {
+    "distPath": "dist",
+    "buildCommand": "node_modules/.bin/webpack"
+  },
   "scripts": {
     "build": "lxr build",
     "start": "lxr start",

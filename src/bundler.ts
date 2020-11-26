@@ -1,0 +1,36 @@
+import * as tar from 'tar';
+import * as fs from 'fs';
+import { join } from 'path';
+import { writeFileAsync } from './async.helpers';
+import { loadPackageJson } from './file.helpers';
+
+export class Bundler {
+  public async bundle(distPath: string): Promise<void> {
+    await this.writeMetadataFile(distPath);
+    await this.createTarFromDistFolder(distPath);
+  }
+
+  private writeMetadataFile(distPath: string) {
+    const packageJson = loadPackageJson();
+    const metadataFile = join(distPath, 'lxreport.json');
+
+    const metadata = Object.assign(
+      {},
+      {
+        name: packageJson.name,
+        version: packageJson.version,
+        author: packageJson.author,
+        description: packageJson.description,
+        documentationLink: packageJson.documentationLink
+      },
+      packageJson.leanixReport
+    );
+
+    return writeFileAsync(metadataFile, JSON.stringify(metadata));
+  }
+
+  private createTarFromDistFolder(distPath: string) {
+    const files = fs.readdirSync(distPath);
+    return tar.c({ gzip: true, cwd: distPath, file: 'bundle.tgz' }, files);
+  }
+}

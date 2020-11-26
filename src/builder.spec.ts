@@ -1,8 +1,6 @@
 import * as asyncHelpers from './async.helpers';
 import { Builder } from './builder';
 
-jest.mock('./async.helpers');
-
 describe('Builder', () => {
   const logger = {
     log: jest.fn(),

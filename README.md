@@ -7,6 +7,9 @@ Please also have a look at the corresponding reporting library: https://github.c
 
 ## Documentation
 
+The usage of the command line interface is shown when running `lxr --help`. Detailed help for individual
+commands and their options can be obtained by running `lxr help [command]`.
+
 For information on how to create a custom report, please refer to our [documentation](https://dev.leanix.net/docs/build-a-custom-report).
 
 # For reporting-cli developers
