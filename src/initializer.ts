@@ -1,6 +1,5 @@
 import * as chalk from 'chalk';
 import * as inquirer from 'inquirer';
-import * as _ from 'lodash';
 import * as process from 'process';
 import { getTemplateDirectoryPath } from './path.helpers';
 import { TemplateExtractor } from './template-extractor';
@@ -12,7 +11,6 @@ export class Initializer {
     console.log(chalk.green('Initializing new project...'));
 
     return inquirer.prompt(this.getInquirerQuestions()).then((answers) => {
-      answers = this.handleDefaultAnswers(answers);
       answers.nodeVersion = process.versions.node;
       this.extractor.extractTemplateFiles(getTemplateDirectoryPath(), answers);
       console.log(chalk.green('\u2713 Your project is ready!'));
@@ -51,12 +49,14 @@ export class Initializer {
       {
         type: 'input',
         name: 'licence',
-        message: 'Which licence do you want to use for this project? (Default: UNLICENSED)'
+        default: 'UNLICENSED',
+        message: 'Which licence do you want to use for this project?'
       },
       {
         type: 'input',
         name: 'host',
-        message: 'Which host do you want to work with? (Default: app.leanix.net)'
+        default: 'app.leanix.net',
+        message: 'Which host do you want to work with?'
       },
       {
         type: 'input',
@@ -81,16 +81,5 @@ export class Initializer {
         message: 'Proxy URL?'
       }
     ];
-  }
-
-  private handleDefaultAnswers(answers: inquirer.Answers) {
-    answers = _.mapValues(answers, (val) => (val === '' ? undefined : val));
-    return _.defaults(answers, {
-      licence: 'UNLICENSED',
-      host: 'app.leanix.net',
-      apitoken: '',
-      workspace: '',
-      proxyURL: ''
-    });
   }
 }
