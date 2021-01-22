@@ -45,7 +45,7 @@ export class DevStarter {
     }
     console.log(chalk.green(`Your workspace is ${workspace}`));
 
-    const baseLaunchUrl = `${host}/${workspace}/reporting/dev?url=${urlEncoded}`;
+    const baseLaunchUrl = `${host}/${workspace}/reports/dev?url=${urlEncoded}`;
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
