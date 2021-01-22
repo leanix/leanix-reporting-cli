@@ -1,6 +1,7 @@
 import * as chalk from 'chalk';
 import { render } from 'ejs';
 import * as inquirer from 'inquirer';
+import { sync as mkdirpSync } from 'mkdirp';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getProjectDirectoryPath } from './path.helpers';
@@ -34,6 +35,7 @@ export class TemplateExtractor {
 
     const template = fs.readFileSync(sourcePath).toString('utf-8');
     const result = render(template, answers);
+    mkdirpSync(path.dirname(destPath));
     fs.writeFileSync(destPath, result);
   }
 }
