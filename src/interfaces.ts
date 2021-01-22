@@ -10,18 +10,6 @@ export interface LxrConfig {
   };
 }
 
-export interface UserInitInput {
-  name: string;
-  id: string;
-  author: string;
-  title: string;
-  description: string;
-  licence: string;
-  host: string;
-  apitoken: string;
-  proxyURL?: string;
-}
-
 export interface PackageJson {
   name?: string;
   version?: string;
