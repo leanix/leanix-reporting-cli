@@ -1,4 +1,4 @@
-# <%= readme_title %>
+# <%= title || name %>
 
 <%= description %>
 

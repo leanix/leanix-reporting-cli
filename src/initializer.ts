@@ -90,8 +90,7 @@ export class Initializer {
       host: 'app.leanix.net',
       apitoken: '',
       workspace: '',
-      proxyURL: '',
-      readme_title: answers.title || answers.name
+      proxyURL: ''
     });
   }
 }
