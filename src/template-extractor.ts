@@ -1,6 +1,6 @@
 import * as chalk from 'chalk';
+import { render } from 'ejs';
 import * as inquirer from 'inquirer';
-import * as varReplace from 'variable-replacer';
 import * as fs from 'fs';
 import * as path from 'path';
 import { getProjectDirectoryPath } from './path.helpers';
@@ -32,11 +32,8 @@ export class TemplateExtractor {
 
     console.log(sourcePath, destPath);
 
-    varReplace({
-      source: sourcePath,
-      dest: destPath,
-      inlineData: answers,
-      logLevel: 'none' // info
-    });
+    const template = fs.readFileSync(sourcePath).toString('utf-8');
+    const result = render(template, answers);
+    fs.writeFileSync(destPath, result);
   }
 }

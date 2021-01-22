@@ -1,6 +1,6 @@
-# %readme_title%
+# <%= readme_title %>
 
-%description%
+<%= description %>
 
 ## Table of Contents
 
