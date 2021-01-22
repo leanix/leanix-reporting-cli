@@ -13,7 +13,7 @@ export class Initializer {
 
     return inquirer.prompt(this.getInquirerQuestions()).then((answers) => {
       answers = this.handleDefaultAnswers(answers);
-      answers['node_version'] = process.versions.node;
+      answers.nodeVersion = process.versions.node;
       this.extractor.extractTemplateFiles(getTemplateDirectoryPath(), answers);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "<%= description %>",
   "engines": {
-    "node": ">=<%= node_version %>"
+    "node": ">=<%= nodeVersion %>"
   },
   "leanixReport": {
     "id": "<%= id %>",
