@@ -2,6 +2,7 @@ import * as chalk from 'chalk';
 import * as inquirer from 'inquirer';
 import * as _ from 'lodash';
 import * as process from 'process';
+import { getTemplateDirectoryPath } from './path.helpers';
 import { TemplateExtractor } from './template-extractor';
 
 export class Initializer {
@@ -13,7 +14,7 @@ export class Initializer {
     return inquirer.prompt(this.getInquirerQuestions()).then((answers) => {
       answers = this.handleDefaultAnswers(answers);
       answers['node_version'] = process.versions.node;
-      this.extractor.extractTemplateFiles(answers);
+      this.extractor.extractTemplateFiles(getTemplateDirectoryPath(), answers);
       console.log(chalk.green('\u2713 Your project is ready!'));
       console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
     });
