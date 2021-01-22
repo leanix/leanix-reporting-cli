@@ -25,11 +25,7 @@ export class TemplateExtractor {
   }
 
   private extractTemplateFile(sourcePath: string, baseTemplateDir: string, answers: inquirer.Answers) {
-    let destPath = sourcePath.replace(baseTemplateDir, getProjectDirectoryPath());
-
-    if (path.basename(sourcePath) === 'gitignore') {
-      destPath = getProjectDirectoryPath('.gitignore');
-    }
+    const destPath = sourcePath.replace(baseTemplateDir, getProjectDirectoryPath()).replace(/\.ejs$/, '');
 
     console.log(sourcePath, destPath);
 
