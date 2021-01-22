@@ -23,18 +23,18 @@ export class TemplateExtractor {
     });
   }
 
-  private extractTemplateFile(source: string, baseTemplateDir: string, answers: inquirer.Answers) {
-    let dest = source.replace(baseTemplateDir, getProjectDirectoryPath());
+  private extractTemplateFile(sourcePath: string, baseTemplateDir: string, answers: inquirer.Answers) {
+    let destPath = sourcePath.replace(baseTemplateDir, getProjectDirectoryPath());
 
-    if (path.basename(source) === 'gitignore') {
-      dest = getProjectDirectoryPath('.gitignore');
+    if (path.basename(sourcePath) === 'gitignore') {
+      destPath = getProjectDirectoryPath('.gitignore');
     }
 
-    console.log(source, dest);
+    console.log(sourcePath, destPath);
 
     varReplace({
-      source,
-      dest,
+      source: sourcePath,
+      dest: destPath,
       inlineData: answers,
       logLevel: 'none' // info
     });
