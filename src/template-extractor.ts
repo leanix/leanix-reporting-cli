@@ -1,43 +1,37 @@
 import * as chalk from 'chalk';
-import * as varReplace from 'variable-replacer';
+import { render } from 'ejs';
+import * as inquirer from 'inquirer';
+import { sync as mkdirpSync } from 'mkdirp';
 import * as fs from 'fs';
 import * as path from 'path';
-import { UserInitInput } from './interfaces';
-import { getProjectDirectoryPath, getTemplateDirectoryPath } from './path.helpers';
+import { getProjectDirectoryPath } from './path.helpers';
 
 export class TemplateExtractor {
-  public extractTemplateFiles(answers: UserInitInput): void {
+  public extractTemplateFiles(baseTemplateDir: string, answers: inquirer.Answers): void {
     console.log(chalk.green('Extracting template files...'));
-    const templateDir = getTemplateDirectoryPath();
-    this.extractTemplateDir(templateDir, answers);
+    this.extractTemplateDir(baseTemplateDir, baseTemplateDir, answers);
   }
 
-  private extractTemplateDir(templateDir: string, answers: UserInitInput) {
+  private extractTemplateDir(templateDir: string, baseTemplateDir: string, answers: inquirer.Answers) {
     fs.readdirSync(templateDir).forEach((file) => {
       const filePath = path.resolve(templateDir, file);
       const isDir = fs.lstatSync(filePath).isDirectory();
       if (isDir) {
-        this.extractTemplateDir(filePath, answers);
+        this.extractTemplateDir(filePath, baseTemplateDir, answers);
       } else {
-        this.extractTemplateFile(filePath, answers);
+        this.extractTemplateFile(filePath, baseTemplateDir, answers);
       }
     });
   }
 
-  private extractTemplateFile(source: string, answers: UserInitInput) {
-    let dest = source.replace(getTemplateDirectoryPath(), getProjectDirectoryPath());
+  private extractTemplateFile(sourcePath: string, baseTemplateDir: string, answers: inquirer.Answers) {
+    const destPath = sourcePath.replace(baseTemplateDir, getProjectDirectoryPath()).replace(/\.ejs$/, '');
 
-    if (path.basename(source) === 'gitignore') {
-      dest = getProjectDirectoryPath('.gitignore');
-    }
+    console.log(sourcePath, destPath);
 
-    console.log(source, dest);
-
-    varReplace({
-      source,
-      dest,
-      inlineData: answers,
-      logLevel: 'none' // info
-    });
+    const template = fs.readFileSync(sourcePath).toString('utf-8');
+    const result = render(template, answers);
+    mkdirpSync(path.dirname(destPath));
+    fs.writeFileSync(destPath, result);
   }
 }

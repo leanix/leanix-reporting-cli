@@ -1,13 +1,13 @@
 {
-  "name": "%name%",
+  "name": "<%= name %>",
   "version": "1.0.0",
-  "description": "%description%",
+  "description": "<%= description %>",
   "engines": {
-    "node": ">=%node_version%"
+    "node": ">=<%= nodeVersion %>"
   },
   "leanixReport": {
-    "id": "%id%",
-    "title": "%title%",
+    "id": "<%= id %>",
+    "title": "<%= title %>",
     "defaultConfig": {}
   },
   "leanixReportingCli": {
@@ -24,9 +24,9 @@
     "leanix",
     "custom-report"
   ],
-  "author": "%author%",
+  "author": "<%= author %>",
   "private": true,
-  "license": "%licence%",
+  "license": "<%= licence %>",
   "devDependencies": {
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
