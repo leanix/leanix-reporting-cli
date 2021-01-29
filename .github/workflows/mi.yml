@@ -1,0 +1,20 @@
+name: MI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  mi:
+    name: Update Microservice Intelligence Workspace
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get credentials
+        uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      - name: MI Update
+        uses: leanix/microservice-intelligence-action@master
