@@ -13,8 +13,8 @@ interface DevServerStartResult {
 }
 
 export class DevStarter {
-  public start(): Promise<void> {
-    const config = loadLxrConfig();
+  public async start(configPath?: string): Promise<void> {
+    const config = loadLxrConfig(configPath);
     return this.getAccessToken(config)
       .then((accessToken) => this.startLocalServer(config, accessToken))
       .then((result) => {
