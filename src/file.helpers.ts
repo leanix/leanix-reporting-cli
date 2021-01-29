@@ -7,8 +7,8 @@ export function readJsonFile<T>(path: string): T {
   return JSON.parse(buffer.toString('utf-8'));
 }
 
-export function loadLxrConfig(): LxrConfig {
-  const lxrConfigPath = getProjectDirectoryPath('lxr.json');
+export function loadLxrConfig(configPath = 'lxr.json'): LxrConfig {
+  const lxrConfigPath = getProjectDirectoryPath(configPath);
   return readJsonFile(lxrConfigPath);
 }
 

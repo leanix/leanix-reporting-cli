@@ -1,4 +1,6 @@
-import { loadCliConfig } from './file.helpers';
+import * as fs from 'fs';
+import { resolve } from 'path';
+import { loadCliConfig, loadLxrConfig } from './file.helpers';
 import { PackageJson } from './interfaces';
 
 describe('File Helpers', () => {
@@ -34,6 +36,36 @@ describe('File Helpers', () => {
       expect(loadCliConfig(packageJson)).toMatchObject({
         buildCommand: 'make report'
       });
+    });
+  });
+
+  describe('loadLxrConfig()', () => {
+    const rootDir = resolve(__dirname, '..');
+    let cwdSpy: jest.SpyInstance, readFileSyncSpy: jest.SpyInstance;
+
+    beforeEach(() => {
+      cwdSpy = jest.spyOn(process, 'cwd');
+      readFileSyncSpy = jest.spyOn(fs, 'readFileSync').mockImplementation();
+
+      cwdSpy.mockReturnValue(rootDir);
+      readFileSyncSpy.mockReturnValue(Buffer.from('{}'));
+    });
+
+    afterEach(() => {
+      cwdSpy.mockRestore();
+      readFileSyncSpy.mockRestore();
+    });
+
+    it('loads lxr.json from default location', () => {
+      loadLxrConfig();
+
+      expect(fs.readFileSync).toHaveBeenCalledWith(resolve(rootDir, 'lxr.json'));
+    });
+
+    it('loads lxr.json from given location', () => {
+      loadLxrConfig('./config/lxr.json');
+
+      expect(fs.readFileSync).toHaveBeenCalledWith(resolve(rootDir, './config/lxr.json'));
     });
   });
 });

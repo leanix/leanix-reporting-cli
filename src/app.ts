@@ -20,8 +20,9 @@ program
 program
   .command('start')
   .description('Start developing and testing your report')
-  .action(() => {
-    new DevStarter().start().catch(handleError);
+  .option('-c, --config <path>', 'Path to lxr.json config', 'lxr.json')
+  .action(async (options: { config?: string }) => {
+    new DevStarter().start(options.config).catch(handleError);
   });
 
 program
@@ -62,6 +63,7 @@ would need to configured in a way that it writes the report artefacts to the
 program
   .command('upload')
   .description('Uploads the report to the configured workspace')
+  .option('-c, --config <path>', 'Path to lxr.json config', 'lxr.json')
   .on('--help', () => {
     console.log(`
 Before uploading, the report will be built – see "lxr help build" for details.
@@ -69,9 +71,9 @@ Before uploading, the report will be built – see "lxr help build" for details.
 The report will be uploaded to the workspace associated with the "apitoken" on
 the "host" given in lxr.json.`);
   })
-  .action(async () => {
+  .action(async (options: { config?: string }) => {
     const cliConfig = loadCliConfig();
-    const lxrConfig = loadLxrConfig();
+    const lxrConfig = loadLxrConfig(options.config);
     const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`;
 
     const builder = new Builder(console);
