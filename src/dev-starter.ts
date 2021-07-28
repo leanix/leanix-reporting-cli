@@ -30,7 +30,7 @@ export class DevStarter {
       });
   }
 
-  private startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
+  private async startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
     const port = config.localPort || 8080;
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
@@ -56,7 +56,11 @@ export class DevStarter {
     }
 
     console.log('' + args.join(' '));
-    const serverProcess = spawn('node_modules/.bin/webpack', ['serve', ...args]);
+
+    const wpMajorVersion = await this.getCurrentWebpackMajorVersion();
+
+    const serverProcess =
+      wpMajorVersion === 5 ? spawn('node_modules/.bin/webpack', ['serve', ...args]) : spawn('node_modules/.bin/webpack-dev-server', args);
 
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
@@ -75,21 +79,7 @@ export class DevStarter {
 
       serverProcess.stdout.on('data', async (data) => {
         const output: string = data.toString();
-        const isOldWebpackVersion = output.indexOf('Would you like to install serve?') > -1;
 
-        if (isOldWebpackVersion) {
-          console.log(
-            chalk.red(`
-          You are still using webpack version >5.0.0 please consider updating your webpack version.
-          CLI will now start as fallback webpack-dev-server.
-          `)
-          );
-          serverProcess.kill();
-          if (await this.startFallbackServer(args)) {
-            projectRunning = true;
-            resolve({ launchUrl, localhostUrl });
-          }
-        }
         if (output.indexOf('Project is running') >= 0) {
           projectRunning = true;
         }
@@ -100,33 +90,14 @@ export class DevStarter {
     });
   }
 
-  private startFallbackServer(args: string[]) {
-    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
-
-    serverProcess.stdout.on('data', (data) => {
-      console.log('Fallback:', data.toString());
-    });
-
-    // output errors from webpack
-    serverProcess.stderr.on('data', (data) => {
-      console.error('Fallback:', chalk.red(data.toString()));
-    });
-
-    return new Promise<boolean>((resolve) => {
-      let projectRunning = false;
-      serverProcess.on('error', (err) => {
-        console.error('Fallback:', err);
-        resolve(false);
-      });
-
-      serverProcess.stdout.on('data', (data) => {
-        const output = data.toString();
-        if (output.indexOf('Project is running') >= 0) {
-          projectRunning = true;
-        }
-        if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
-          resolve(true);
-        }
+  private getCurrentWebpackMajorVersion(): Promise<number> {
+    return new Promise((resolve) => {
+      const webpackVersion = spawn('node_modules/.bin/webpack', ['-v']);
+      webpackVersion.stdout.on('data', (data) => {
+        const output: string = data.toString();
+        const matches = output.match(/\d+\.\d+\.\d+/gm);
+        const majorVersion = matches[0].match(/\d+/gm)[0];
+        resolve(Number.parseInt(majorVersion));
       });
     });
   }
