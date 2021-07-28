@@ -56,7 +56,8 @@ export class DevStarter {
     }
 
     console.log('' + args.join(' '));
-    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
+    const serverProcess = spawn('node_modules/.bin/webpack', ['serve', ...args]);
+
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
     });
@@ -66,10 +67,56 @@ export class DevStarter {
       console.error(chalk.red(data.toString()));
     });
 
-    return new Promise((resolve) => {
+    return new Promise<{ launchUrl: string; localhostUrl: string }>((resolve) => {
       let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
+      });
+
+      serverProcess.stdout.on('data', async (data) => {
+        const output: string = data.toString();
+        const isOldWebpackVersion = output.indexOf('Would you like to install serve?') > -1;
+
+        if (isOldWebpackVersion) {
+          console.log(
+            chalk.red(`
+          You are still using webpack version >5.0.0 please consider updating your webpack version.
+          CLI will now start as fallback webpack-dev-server.
+          `)
+          );
+          serverProcess.kill();
+          if (await this.startFallbackServer(args)) {
+            projectRunning = true;
+            resolve({ launchUrl, localhostUrl });
+          }
+        }
+        if (output.indexOf('Project is running') >= 0) {
+          projectRunning = true;
+        }
+        if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
+          resolve({ launchUrl, localhostUrl });
+        }
+      });
+    });
+  }
+
+  private startFallbackServer(args: string[]) {
+    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
+
+    serverProcess.stdout.on('data', (data) => {
+      console.log('Fallback:', data.toString());
+    });
+
+    // output errors from webpack
+    serverProcess.stderr.on('data', (data) => {
+      console.error('Fallback:', chalk.red(data.toString()));
+    });
+
+    return new Promise<boolean>((resolve) => {
+      let projectRunning = false;
+      serverProcess.on('error', (err) => {
+        console.error('Fallback:', err);
+        resolve(false);
       });
 
       serverProcess.stdout.on('data', (data) => {
@@ -78,7 +125,7 @@ export class DevStarter {
           projectRunning = true;
         }
         if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
-          resolve({ launchUrl, localhostUrl });
+          resolve(true);
         }
       });
     });
