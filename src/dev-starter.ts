@@ -30,7 +30,7 @@ export class DevStarter {
       });
   }
 
-  private startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
+  private async startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
     const port = config.localPort || 8080;
     const localhostUrl = `https://localhost:${port}`;
     const urlEncoded = encodeURIComponent(localhostUrl);
@@ -56,7 +56,12 @@ export class DevStarter {
     }
 
     console.log('' + args.join(' '));
-    const serverProcess = spawn('node_modules/.bin/webpack-dev-server', args);
+
+    const wpMajorVersion = await this.getCurrentWebpackMajorVersion();
+
+    const serverProcess =
+      wpMajorVersion === 5 ? spawn('node_modules/.bin/webpack', ['serve', ...args]) : spawn('node_modules/.bin/webpack-dev-server', args);
+
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
     });
@@ -66,20 +71,33 @@ export class DevStarter {
       console.error(chalk.red(data.toString()));
     });
 
-    return new Promise((resolve) => {
+    return new Promise<DevServerStartResult>((resolve) => {
       let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
       });
 
       serverProcess.stdout.on('data', (data) => {
-        const output = data.toString();
+        const output: string = data.toString();
+
         if (output.indexOf('Project is running') >= 0) {
           projectRunning = true;
         }
         if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
           resolve({ launchUrl, localhostUrl });
         }
+      });
+    });
+  }
+
+  private getCurrentWebpackMajorVersion(): Promise<number> {
+    return new Promise((resolve) => {
+      const webpackVersion = spawn('node_modules/.bin/webpack', ['-v']);
+      webpackVersion.stdout.on('data', (data) => {
+        const output: string = data.toString();
+        const matches = output.match(/(\d+)\.\d+\.\d+/);
+        const majorVersion = Number.parseInt(matches[0]);
+        resolve(majorVersion);
       });
     });
   }
