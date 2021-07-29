@@ -71,13 +71,13 @@ export class DevStarter {
       console.error(chalk.red(data.toString()));
     });
 
-    return new Promise<{ launchUrl: string; localhostUrl: string }>((resolve) => {
+    return new Promise<DevServerStartResult>((resolve) => {
       let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
       });
 
-      serverProcess.stdout.on('data', async (data) => {
+      serverProcess.stdout.on('data', (data) => {
         const output: string = data.toString();
 
         if (output.indexOf('Project is running') >= 0) {
@@ -95,9 +95,9 @@ export class DevStarter {
       const webpackVersion = spawn('node_modules/.bin/webpack', ['-v']);
       webpackVersion.stdout.on('data', (data) => {
         const output: string = data.toString();
-        const matches = output.match(/\d+\.\d+\.\d+/gm);
-        const majorVersion = matches[0].match(/\d+/gm)[0];
-        resolve(Number.parseInt(majorVersion));
+        const matches = output.match(/(\d+)\.\d+\.\d+/);
+        const majorVersion = Number.parseInt(matches[0]);
+        resolve(majorVersion);
       });
     });
   }
