@@ -1,0 +1,12 @@
+name: Notify PullRequest
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review]
+
+jobs:
+  pr-notification:
+    if: github.event.pull_request.draft == false
+    uses: leanix/pullrequest-notification/.github/workflows/notifypullrequest.yml@main
+    with:
+      channel: GQ0CS6ANL
+    secrets: inherit
