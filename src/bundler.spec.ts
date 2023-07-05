@@ -11,7 +11,7 @@ describe('Bundler', () => {
   jest.spyOn(fileHelpers, 'loadPackageJson').mockReturnValue({
     name: 'my-report',
     version: '1.0.0',
-    author: 'Jane Doe',
+    author: 'Jane Doe <jane.doe@mail.com>',
     description: 'My report description',
     documentationLink: 'https://example.com',
     leanixReport: {
@@ -40,7 +40,7 @@ describe('Bundler', () => {
       JSON.stringify({
         name: 'my-report',
         version: '1.0.0',
-        author: 'Jane Doe',
+        author: 'Jane Doe (jane.doe@mail.com)',
         description: 'My report description',
         documentationLink: 'https://example.com',
         id: 'com.example.myReport',

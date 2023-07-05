@@ -19,7 +19,7 @@ export class Bundler {
       {
         name: packageJson.name,
         version: packageJson.version,
-        author: packageJson.author,
+        author: this.getReportAuthor(packageJson.author),
         description: packageJson.description,
         documentationLink: packageJson.documentationLink
       },
@@ -27,6 +27,14 @@ export class Bundler {
     );
 
     return writeFileAsync(metadataFile, JSON.stringify(metadata));
+  }
+
+  private getReportAuthor(author: string | { name: string; email: string }): string {
+    if (typeof author === 'string') {
+      return author.replace('<', '(').replace('>', ')');
+    } else {
+      return `${author.name} (${author.email})`;
+    }
   }
 
   private createTarFromDistFolder(distPath: string) {
