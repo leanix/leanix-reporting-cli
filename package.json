@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@leanix/import-sort-style": "^1.0.6",
+    "@types/commander": "^2.12.2",
     "@types/ejs": "^3.0.5",
     "@types/inquirer": "^7.3.1",
     "@types/jest": "^26.0.15",
