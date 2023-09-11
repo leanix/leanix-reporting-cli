@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:js-app", "group:allNonMajor"],
+  "extends": ["config:js-lib", "group:allNonMajor"],
   "prHourlyLimit": 0,
   "prConcurrentLimit": 2
 }
