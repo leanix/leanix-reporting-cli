@@ -25,9 +25,6 @@
   ],
   "author": "LeanIX GmbH <support@leanix.net>",
   "license": "Apache-2.0",
-  "engines": {
-    "node": ">=8"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/leanix/leanix-reporting-cli.git"
