@@ -20,7 +20,7 @@ jobs:
         run: npm ci
 
       - name: Cache npm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('npm-shrinkwrap.json') }}
