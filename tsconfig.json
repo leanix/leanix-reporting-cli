@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "ES2015",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "sourceMap": false,
     "rootDir": "src",
-    "outDir": "lib"
+    "outDir": "lib",
+    "skipLibCheck": true
   }
 }

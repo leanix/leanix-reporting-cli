@@ -5,4 +5,4 @@ import { promisify } from 'util';
 
 export const execAsync = promisify(exec);
 export const writeFileAsync = promisify(writeFile);
-export const rimrafAsync = promisify(rimraf);
+export const rimrafAsync = promisify(rimraf as any);
