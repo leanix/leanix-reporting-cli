@@ -1,4 +1,4 @@
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as rp from 'request-promise-native';
 import * as fs from 'fs';
 import { ApiTokenResolver } from './api-token-resolver';

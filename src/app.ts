@@ -1,4 +1,4 @@
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import * as program from 'commander';
 import { Builder } from './builder';
 import { Bundler } from './bundler';
