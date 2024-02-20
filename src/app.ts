@@ -1,5 +1,5 @@
 import * as chalk from 'chalk';
-import * as program from 'commander';
+import { Command } from 'commander';
 import { Builder } from './builder';
 import { Bundler } from './bundler';
 import { DevStarter } from './dev-starter';
@@ -7,6 +7,8 @@ import { loadCliConfig, loadLxrConfig } from './file.helpers';
 import { Initializer } from './initializer';
 import { Uploader } from './uploader';
 import { version } from './version';
+
+const program = new Command();
 
 program.version(version);
 
