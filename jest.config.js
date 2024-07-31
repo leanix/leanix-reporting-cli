@@ -3,6 +3,6 @@ module.exports = {
   testEnvironment: 'node',
   testRegex: '.spec.ts$',
   moduleNameMapper: {
-    '^node:url$': 'url',
-  },
+    '^node:url$': '<rootDir>/__mocks__/node.js'
+  }
 };
