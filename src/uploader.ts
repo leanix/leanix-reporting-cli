@@ -22,7 +22,7 @@ export class Uploader {
         Authorization: 'Bearer ' + accessToken,
         ...formData.getHeaders()
       },
-      proxy: proxy ? { host: proxy, port: 8080 } : undefined
+      proxy: proxy ? { host: proxy.split(':')[0], port: parseInt(proxy.split(':')[1]) } : undefined
     };
 
     try {

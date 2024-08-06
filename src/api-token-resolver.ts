@@ -6,7 +6,7 @@ export class ApiTokenResolver {
     const data = { grant_type: 'client_credentials' };
     const config = {
       headers: { Authorization: 'Basic ' + base64ApiToken },
-      proxy: proxy ? { host: proxy, port: 8080 } : undefined
+      proxy: proxy ? { host: proxy.split(':')[0], port: parseInt(proxy.split(':')[1]) } : undefined
     };
     const url = host + '/services/mtm/v1/oauth2/token';
     return axios.post(url, data, config).then((response) => response.data['access_token']);
