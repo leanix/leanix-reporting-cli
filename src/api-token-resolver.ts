@@ -1,13 +1,15 @@
-import * as rp from 'request-promise-native';
+import axios from 'axios';
 
 export class ApiTokenResolver {
   public static getAccessToken(host: string, apiToken: string, proxy?: string): Promise<string> {
     const base64ApiToken = Buffer.from('apitoken:' + apiToken).toString('base64');
-    const options = {
-      url: host + '/services/mtm/v1/oauth2/token',
+    const data = { grant_type: 'client_credentials' };
+    const [proxyHost, proxyPort] = proxy?.split(':') ?? [];
+    const config = {
       headers: { Authorization: 'Basic ' + base64ApiToken },
-      form: { grant_type: 'client_credentials' }
+      proxy: proxyHost && proxyPort ? { host: proxyHost, port: parseInt(proxyPort) } : undefined
     };
-    return rp.post({ ...options, proxy }).then((response) => JSON.parse(response)['access_token']);
+    const url = host + '/services/mtm/v1/oauth2/token';
+    return axios.post(url, data, config).then((response) => response.data['access_token']);
   }
 }
