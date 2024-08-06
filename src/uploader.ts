@@ -1,6 +1,7 @@
+import axios from 'axios';
 import * as chalk from 'chalk';
-import * as rp from 'request-promise-native';
 import * as fs from 'fs';
+import FormData from 'form-data';
 import { ApiTokenResolver } from './api-token-resolver';
 import { getProjectDirectoryPath } from './path.helpers';
 
@@ -13,33 +14,31 @@ export class Uploader {
   private async executeUpload(url: string, accessToken: string, proxy?: string) {
     console.log(chalk.yellow(chalk.italic(`Uploading to ${url} ${proxy ? `through a proxy` : ``}...`)));
 
+    const formData = new FormData();
+    formData.append('file', fs.createReadStream(getProjectDirectoryPath('bundle.tgz')));
+
     const options = {
-      url,
       headers: {
-        Authorization: 'Bearer ' + accessToken
+        Authorization: 'Bearer ' + accessToken,
+        ...formData.getHeaders()
       },
-      formData: {
-        file: fs.createReadStream(getProjectDirectoryPath('bundle.tgz'))
-      }
+      proxy: proxy ? { host: proxy, port: 8080 } : undefined
     };
 
     try {
-      const response = await rp.post({ ...options, proxy });
-      const responseJson = JSON.parse(response);
-      if (responseJson.status === 'OK') {
+      const response = await axios.post(url, formData, options);
+      if (response.data.status === 'OK') {
         console.log(chalk.green('\u2713 Project successfully uploaded!'));
         return true;
-      } else if (responseJson.status === 'ERROR') {
-        console.log(chalk.red('ERROR: ' + responseJson.errorMessage));
+      } else if (response.data.status === 'ERROR') {
+        console.log(chalk.red('ERROR: ' + response.data.errorMessage));
         return false;
       }
     } catch (err) {
-      const responseBody = err.response.toJSON().body;
-      const errorJson = JSON.parse(responseBody);
-      if (errorJson.errorMessage) {
-        console.log(chalk.red('ERROR: ' + errorJson.errorMessage));
+      if (err.response && err.response.data && err.response.data.errorMessage) {
+        console.log(chalk.red('ERROR: ' + err.response.data.errorMessage));
       } else {
-        console.log(chalk.red('ERROR: ' + responseBody));
+        console.log(chalk.red('ERROR: ' + err.message));
       }
       return false;
     }
