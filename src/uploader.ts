@@ -17,12 +17,14 @@ export class Uploader {
     const formData = new FormData();
     formData.append('file', fs.createReadStream(getProjectDirectoryPath('bundle.tgz')));
 
+    const [proxyHost, proxyPort] = proxy?.split(':') ?? [];
+
     const options = {
       headers: {
         Authorization: 'Bearer ' + accessToken,
         ...formData.getHeaders()
       },
-      proxy: proxy ? { host: proxy.split(':')[0], port: parseInt(proxy.split(':')[1]) } : undefined
+      proxy: proxyHost && proxyPort ? { host: proxyHost, port: parseInt(proxyPort) } : undefined
     };
 
     try {
