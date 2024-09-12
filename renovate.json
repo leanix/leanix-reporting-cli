@@ -1,6 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:js-lib", "group:allNonMajor"],
-  "prHourlyLimit": 0,
+  "extends": ["config:js-app", "group:allNonMajor"],
+  "timezone": "Europe/Berlin",
+  "packageRules": [
+    {
+      "updateTypes": ["minor", "patch"],
+      "automerge": true,
+      "automergeSchedule": ["after 10am and before 4pm every weekday"]
+    }
+  ],
   "prConcurrentLimit": 2
 }
