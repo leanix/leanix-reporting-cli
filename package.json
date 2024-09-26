@@ -35,7 +35,7 @@
     "@types/inquirer": "7.3.3",
     "@types/jest": "29.5.12",
     "@types/lodash": "4.17.7",
-    "@types/mkdirp": "1.0.2",
+    "@types/mkdirp": "2.0.0",
     "@types/node": "20.16.9",
     "@types/request-promise-native": "1.0.21",
     "@types/rimraf": "3.0.2",
