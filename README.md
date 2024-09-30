@@ -1,5 +1,7 @@
 # leanix-reporting-cli
 
+[![REUSE status](https://api.reuse.software/badge/github.com/leanIX/leanix-reporting-cli)](https://api.reuse.software/info/github.com/leanIX/leanix-reporting-cli)
+
 [![npm version](https://badge.fury.io/js/%40leanix%2Freporting-cli.svg)](https://badge.fury.io/js/%40leanix%2Freporting-cli)
 
 Command line interface to initialise, develop and publish custom reports for LeanIX EAM Tool.
