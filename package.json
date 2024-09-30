@@ -30,6 +30,8 @@
     "url": "https://github.com/leanix/leanix-reporting-cli.git"
   },
   "devDependencies": {
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.11.1",
     "@leanix/import-sort-style": "1.0.6",
     "@types/ejs": "3.1.5",
     "@types/inquirer": "7.3.3",
@@ -40,9 +42,9 @@
     "@types/request-promise-native": "1.0.21",
     "@types/rimraf": "3.0.2",
     "@types/tar": "6.1.13",
-    "@typescript-eslint/eslint-plugin": "4.33.0",
-    "@typescript-eslint/parser": "4.33.0",
-    "eslint": "7.32.0",
+    "@typescript-eslint/eslint-plugin": "8.7.0",
+    "@typescript-eslint/parser": "8.7.0",
+    "eslint": "9.11.1",
     "husky": "4.3.8",
     "jest": "29.7.0",
     "prettier": "2.8.8",
