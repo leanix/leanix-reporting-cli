@@ -30,8 +30,8 @@
     "url": "https://github.com/leanix/leanix-reporting-cli.git"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.1.0",
-    "@eslint/js": "^9.11.1",
+    "@eslint/eslintrc": "3.1.0",
+    "@eslint/js": "9.11.1",
     "@leanix/import-sort-style": "1.0.6",
     "@types/ejs": "3.1.5",
     "@types/inquirer": "7.3.3",
