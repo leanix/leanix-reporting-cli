@@ -1,8 +1,8 @@
 import * as chalk from 'chalk';
 import { spawn } from 'cross-spawn';
-import * as jwtDecode from 'jwt-decode';
+import jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';
-import * as opn from 'opn';
+import opn from 'opn';
 import { ApiTokenResolver } from './api-token-resolver';
 import { loadLxrConfig } from './file.helpers';
 import { LxrConfig } from './interfaces';
@@ -49,7 +49,7 @@ export class DevStarter {
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
-    const args = ['--https', '--port', '' + port];
+    const args = ['--port', '' + port];
     if (config.ssl && config.ssl.cert && config.ssl.key) {
       args.push('--cert=' + config.ssl.cert);
       args.push('--key=' + config.ssl.key);
@@ -59,20 +59,24 @@ export class DevStarter {
 
     const wpMajorVersion = await this.getCurrentWebpackMajorVersion();
 
+    let projectRunning = false;
+
     const serverProcess =
       wpMajorVersion === 5 ? spawn('node_modules/.bin/webpack', ['serve', ...args]) : spawn('node_modules/.bin/webpack-dev-server', args);
 
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
     });
-
     // output errors from webpack
     serverProcess.stderr.on('data', (data) => {
+      const output: string = data.toString();
+      if (output.indexOf('Project is running') >= 0) {
+        projectRunning = true;
+      }
       console.error(chalk.red(data.toString()));
     });
 
     return new Promise<DevServerStartResult>((resolve) => {
-      let projectRunning = false;
       serverProcess.on('error', (err) => {
         console.error(err);
       });
@@ -80,10 +84,7 @@ export class DevStarter {
       serverProcess.stdout.on('data', (data) => {
         const output: string = data.toString();
 
-        if (output.indexOf('Project is running') >= 0) {
-          projectRunning = true;
-        }
-        if (projectRunning && output.indexOf('Compiled successfully') >= 0) {
+        if (projectRunning && output.indexOf('compiled successfully') >= 0) {
           resolve({ launchUrl, localhostUrl });
         }
       });
