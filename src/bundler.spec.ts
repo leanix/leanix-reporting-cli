@@ -1,5 +1,5 @@
-import * as tar from 'tar';
-import * as fs from 'fs';
+import tar from 'tar';
+import fs from 'fs';
 import * as asyncHelpers from './async.helpers';
 import { Bundler } from './bundler';
 import * as fileHelpers from './file.helpers';
@@ -22,7 +22,7 @@ describe('Bundler', () => {
 
   // Jest uses the typing for the fs.Dirent[] overload of the function even though we use the
   // one that returns string[], hence the forced type casting.
-  jest.spyOn(fs, 'readdirSync').mockReturnValue((['report.js', 'style.css', 'index.html'] as unknown) as fs.Dirent[]);
+  jest.spyOn(fs, 'readdirSync').mockReturnValue(['report.js', 'style.css', 'index.html'] as unknown as fs.Dirent[]);
 
   beforeEach(async () => {
     const bundler = new Bundler();

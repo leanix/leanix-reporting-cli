@@ -1,4 +1,4 @@
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { spawn } from 'cross-spawn';
 import jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';

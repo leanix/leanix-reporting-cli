@@ -1,4 +1,4 @@
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { render } from 'ejs';
 import * as inquirer from 'inquirer';
 import { sync as mkdirpSync } from 'mkdirp';
