@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-and-test:
+  lint-test-and-build:
     name: Lint & Test & Build
     runs-on: ubuntu-latest
 
