@@ -49,15 +49,16 @@ export class DevStarter {
     const launchUrl = baseLaunchUrl + accessTokenHash;
     console.log(chalk.green('Starting development server and launching with url: ' + baseLaunchUrl));
 
+    const wpMajorVersion = await this.getCurrentWebpackMajorVersion();
     const args = ['--port', '' + port];
+    if (wpMajorVersion < 5) args.push('--https');
+
     if (config.ssl && config.ssl.cert && config.ssl.key) {
       args.push('--cert=' + config.ssl.cert);
       args.push('--key=' + config.ssl.key);
     }
 
     console.log('' + args.join(' '));
-
-    const wpMajorVersion = await this.getCurrentWebpackMajorVersion();
 
     let projectRunning = false;
 
@@ -83,8 +84,11 @@ export class DevStarter {
 
       serverProcess.stdout.on('data', (data) => {
         const output: string = data.toString();
+        if (output.indexOf('Project is running') >= 0) {
+          projectRunning = true;
+        }
 
-        if (projectRunning && output.indexOf('compiled successfully') >= 0) {
+        if (projectRunning && output.toLowerCase().indexOf('compiled successfully') >= 0) {
           resolve({ launchUrl, localhostUrl });
         }
       });
