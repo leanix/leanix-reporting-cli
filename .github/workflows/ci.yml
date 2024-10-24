@@ -1,18 +1,36 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - snyk-upgrade-*
+      - renovate/*
+      - revert-*
+  pull_request:
+    branches:
+      - revert-**
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint & Test
+  lint-test-and-build:
+    name: Lint & Test & Build
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Use Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: '.node-version'
 
@@ -20,7 +38,7 @@ jobs:
         run: npm ci
 
       - name: Cache npm modules
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('npm-shrinkwrap.json') }}
@@ -32,3 +50,6 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - name: Build
+        run: npm run build

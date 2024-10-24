@@ -1,5 +1,4 @@
 var path = require('path');
-var webpack = require('webpack');
 var CopyWebpackPlugin = require('copy-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -39,7 +38,9 @@ module.exports = {
     /**
      * Copy assets into dist folder.
      */
-    new CopyWebpackPlugin([{ from: 'src/assets', to: 'assets' }]),
+    new CopyWebpackPlugin({
+      patterns: [{ from: 'src/assets', to: 'assets' }]
+    }),
 
     /**
      * Insert created bundles as script tags at the end
@@ -50,13 +51,9 @@ module.exports = {
       template: 'src/index.html'
     })
   ],
-
   devServer: {
-    // "disableHostCheck" added due to issue: https://github.com/webpack/webpack-dev-server/issues/1604
-    // Fix should be done with: https://github.com/webpack/webpack-dev-server/pull/1608
-    disableHostCheck: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*'
-    }
+    server: 'https',
+    historyApiFallback: true,
+    allowedHosts: 'all'
   }
 };

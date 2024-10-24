@@ -1,5 +1,5 @@
-import * as chalk from 'chalk';
-import * as program from 'commander';
+import chalk from 'chalk';
+import { Command } from 'commander';
 import { Builder } from './builder';
 import { Bundler } from './bundler';
 import { DevStarter } from './dev-starter';
@@ -7,6 +7,8 @@ import { loadCliConfig, loadLxrConfig } from './file.helpers';
 import { Initializer } from './initializer';
 import { Uploader } from './uploader';
 import { version } from './version';
+
+const program = new Command();
 
 program.version(version);
 
@@ -105,7 +107,7 @@ program
     const bundler = new Bundler();
     const uploader = new Uploader();
 
-    console.log(chalk.yellow(chalk.italic(`Bundling and uploading your project to the LeanIX Store (${host})...`)));
+    console.log(chalk.yellow(`Bundling and uploading your project to the LeanIX Store (${host})...`));
 
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand);
