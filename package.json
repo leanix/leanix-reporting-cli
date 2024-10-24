@@ -8,7 +8,7 @@
     "lxr": "./bin/lxr"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsup src/app.ts -d lib --format cjs",
     "lint": "eslint src",
     "test": "jest",
     "test-install": "npm run build && npm -g install .",
@@ -49,6 +49,7 @@
     "prettier-plugin-import-sort": "0.0.7",
     "pretty-quick": "3.3.1",
     "ts-jest": "29.2.5",
+    "tsup": "^8.3.0",
     "typescript": "4.9.5"
   },
   "dependencies": {

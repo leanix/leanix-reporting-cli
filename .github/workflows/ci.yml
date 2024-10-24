@@ -1,10 +1,28 @@
 name: CI
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+      - feature/*
+      - bugfix/*
+      - hotfix/*
+      - snyk-upgrade-*
+      - renovate/*
+      - revert-*
+  pull_request:
+    branches:
+      - revert-**
+
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  lint:
-    name: Lint & Test
+  lint-test-and-build:
+    name: Lint & Test & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -32,3 +50,6 @@ jobs:
 
       - name: Test
         run: npm test
+
+      - name: Build
+        run: npm run build

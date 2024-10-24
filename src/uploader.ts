@@ -1,7 +1,7 @@
 import axios from 'axios';
-import * as chalk from 'chalk';
-import * as FormData from 'form-data';
-import * as fs from 'fs';
+import chalk from 'chalk';
+import FormData from 'form-data';
+import fs from 'fs';
 import { ApiTokenResolver } from './api-token-resolver';
 import { getProjectDirectoryPath } from './path.helpers';
 

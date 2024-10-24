@@ -1,4 +1,4 @@
-import * as chalk from 'chalk';
+import chalk from 'chalk';
 import { execAsync, rimrafAsync } from './async.helpers';
 
 export class Builder {

@@ -1,0 +1,80 @@
+name: Release package
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-test-build-release:
+    name: Lint, Test, Build and Release
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Get credentials
+        uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ env.GITHUB_TOKEN }}
+          ref: develop
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache npm modules
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('npm-shrinkwrap.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Release library
+        run: |
+          # Set npm token for leanix user
+          npm set "//registry.npmjs.org/:_authToken=$NPM_TOKEN"
+
+          # Set commit user
+          git config --global user.name ${{ github.actor }}
+          git config --global user.email '${{ github.actor }}@users.noreply.github.com'
+
+          # Bump version
+          npm version --no-commit-hooks patch
+
+          # Read version
+          PACKAGE_VERSION=`npx -c 'echo "$npm_package_version"'`
+          TAG="report-lib@$PACKAGE_VERSION"
+
+          # Commit version
+          git commit -am "Release of @leanix/reporting-cli@$PACKAGE_VERSION"
+
+          # Add tag
+          git tag $TAG
+
+          # Rebase on remote version of develop & push
+          git pull origin develop --rebase
+          git push origin develop --follow-tags ||
+            git push origin develop --follow-tags
+
+          # Publish package
+          npm publish --access public
