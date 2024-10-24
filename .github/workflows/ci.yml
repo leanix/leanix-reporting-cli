@@ -76,6 +76,15 @@ jobs:
           echo "online-version=$(npm view ${{steps.package.outputs.name}}@latest version)" >> $GITHUB_OUTPUT
 
       - name: Print versions
+        id: print-versions
         run: |
           echo "ONLINE VERSION: ${{ steps.online-versions.outputs.online-version}}"
           echo "THIS VERSION: ${{ steps.package.outputs.version}}"
+
+      - name: Publish to NPM
+        if: steps.package.outputs.version != steps.online-versions.outputs.online-version
+        run: |
+          npm ci
+          npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
