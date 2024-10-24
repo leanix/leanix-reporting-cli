@@ -32,7 +32,7 @@
   "devDependencies": {
     "@leanix/import-sort-style": "1.0.6",
     "@types/ejs": "3.1.5",
-    "@types/inquirer": "7.3.3",
+    "@types/inquirer": "9.0.7",
     "@types/jest": "29.5.13",
     "@types/lodash": "4.17.9",
     "@types/mkdirp": "2.0.0",
