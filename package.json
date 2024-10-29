@@ -5,7 +5,7 @@
   "preferGlobal": true,
   "main": "./lib/app.js",
   "bin": {
-    "lxr": "./bin/lxr"
+    "lxr": "bin/lxr"
   },
   "scripts": {
     "build": "tsup src/app.ts -d lib --format cjs",
@@ -27,7 +27,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/leanix/leanix-reporting-cli.git"
+    "url": "git+https://github.com/leanix/leanix-reporting-cli.git"
   },
   "devDependencies": {
     "@leanix/import-sort-style": "1.0.6",
