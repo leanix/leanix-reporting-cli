@@ -38,7 +38,7 @@
     "@types/mkdirp": "2.0.0",
     "@types/node": "22.10.10",
     "@types/request-promise-native": "1.0.21",
-    "@types/rimraf": "3.0.2",
+    "@types/rimraf": "4.0.5",
     "@types/tar": "6.1.13",
     "@typescript-eslint/eslint-plugin": "4.33.0",
     "@typescript-eslint/parser": "4.33.0",
