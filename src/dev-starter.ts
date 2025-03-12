@@ -3,6 +3,7 @@ import { spawn } from 'cross-spawn';
 import jwtDecode from 'jwt-decode';
 import * as _ from 'lodash';
 import opn from 'opn';
+import { join } from 'path';
 import { ApiTokenResolver } from './api-token-resolver';
 import { loadLxrConfig } from './file.helpers';
 import { LxrConfig } from './interfaces';
@@ -62,8 +63,11 @@ export class DevStarter {
 
     let projectRunning = false;
 
-    const serverProcess =
-      wpMajorVersion === 5 ? spawn('node_modules/.bin/webpack', ['serve', ...args]) : spawn('node_modules/.bin/webpack-dev-server', args);
+    const webpackCmd = join(
+      ...(wpMajorVersion === 5 ? ['node_modules', '.bin', 'webpack'] : ['node_modules', '.bin', 'webpack-dev-server'])
+    );
+
+    const serverProcess = wpMajorVersion === 5 ? spawn(webpackCmd, ['serve', ...args]) : spawn(webpackCmd, args);
 
     serverProcess.stdout.on('data', (data) => {
       console.log(data.toString());
@@ -97,7 +101,7 @@ export class DevStarter {
 
   private getCurrentWebpackMajorVersion(): Promise<number> {
     return new Promise((resolve) => {
-      const webpackVersion = spawn('node_modules/.bin/webpack', ['-v']);
+      const webpackVersion = spawn(join(...['node_modules', '.bin', 'webpack']), ['-v']);
       webpackVersion.stdout.on('data', (data) => {
         const output: string = data.toString();
         const matches = output.match(/(\d+)\.\d+\.\d+/);

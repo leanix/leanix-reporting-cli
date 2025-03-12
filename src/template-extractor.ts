@@ -3,7 +3,7 @@ import { render } from 'ejs';
 import * as inquirer from 'inquirer';
 import { sync as mkdirpSync } from 'mkdirp';
 import * as fs from 'fs';
-import * as path from 'path';
+import { dirname, resolve } from 'path';
 import { getProjectDirectoryPath } from './path.helpers';
 
 export class TemplateExtractor {
@@ -14,7 +14,7 @@ export class TemplateExtractor {
 
   private extractTemplateDir(templateDir: string, baseTemplateDir: string, answers: inquirer.Answers) {
     fs.readdirSync(templateDir).forEach((file) => {
-      const filePath = path.resolve(templateDir, file);
+      const filePath = resolve(templateDir, file);
       const isDir = fs.lstatSync(filePath).isDirectory();
       if (isDir) {
         this.extractTemplateDir(filePath, baseTemplateDir, answers);
@@ -31,7 +31,7 @@ export class TemplateExtractor {
 
     const template = fs.readFileSync(sourcePath).toString('utf-8');
     const result = render(template, answers);
-    mkdirpSync(path.dirname(destPath));
+    mkdirpSync(dirname(destPath));
     fs.writeFileSync(destPath, result);
   }
 }

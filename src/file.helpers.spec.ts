@@ -1,4 +1,4 @@
-import { loadCliConfig } from './file.helpers';
+import { defaultBuildCmd, defaultDistPath, loadCliConfig } from './file.helpers';
 import { PackageJson } from './interfaces';
 
 describe('File Helpers', () => {
@@ -7,8 +7,8 @@ describe('File Helpers', () => {
       const packageJson: PackageJson = {};
 
       expect(loadCliConfig(packageJson)).toEqual({
-        distPath: './dist',
-        buildCommand: './node_modules/.bin/webpack'
+        distPath: defaultDistPath,
+        buildCommand: defaultBuildCmd
       });
     });
 

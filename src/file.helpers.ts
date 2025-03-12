@@ -1,4 +1,5 @@
 import { readFileSync } from 'fs';
+import { join } from 'path';
 import { CliConfig, LxrConfig, PackageJson } from './interfaces';
 import { getProjectDirectoryPath } from './path.helpers';
 
@@ -17,11 +18,13 @@ export function loadPackageJson(): PackageJson {
   return readJsonFile(packageJsonPath);
 }
 
+export const defaultBuildCmd = join(...['.', 'node_modules', '.bin', 'webpack']);
+export const defaultDistPath = 'dist';
 export function loadCliConfig(packageJson = loadPackageJson()): CliConfig {
   const leanixReportingCli = packageJson.leanixReportingCli || {};
 
   return {
-    distPath: leanixReportingCli.distPath ?? './dist',
-    buildCommand: leanixReportingCli.buildCommand ?? './node_modules/.bin/webpack'
+    distPath: leanixReportingCli.distPath ?? defaultDistPath,
+    buildCommand: leanixReportingCli.buildCommand ?? defaultBuildCmd
   };
 }
