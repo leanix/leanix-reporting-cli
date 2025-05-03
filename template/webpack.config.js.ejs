@@ -54,6 +54,7 @@ module.exports = {
   devServer: {
     server: 'https',
     historyApiFallback: true,
-    allowedHosts: 'all'
+    allowedHosts: 'all',
+    setupMiddlewares: middlewares => middlewares.filter(middleware => middleware.name !== "cross-origin-header-check")
   }
 };
