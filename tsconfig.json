@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
     "target": "ES2015",
+    "rootDir": "src",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "sourceMap": false,
-    "rootDir": "src",
     "outDir": "lib",
+    "sourceMap": false,
+    "esModuleInterop": true,
     "skipLibCheck": true
   }
 }

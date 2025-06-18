@@ -5,4 +5,4 @@ module.exports = {
   moduleNameMapper: {
     '^node:url$': '<rootDir>/__mocks__/node.js'
   }
-};
+}
