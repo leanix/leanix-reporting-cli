@@ -1,19 +1,14 @@
 {
   "name": "@leanix/reporting-cli",
+  "type": "commonjs",
   "version": "1.0.0-beta.25",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
   "preferGlobal": true,
-  "main": "./lib/app.js",
-  "bin": {
-    "lxr": "bin/lxr"
-  },
-  "scripts": {
-    "build": "tsup src/app.ts -d lib --format cjs",
-    "lint": "eslint src",
-    "test": "jest",
-    "test-install": "npm run build && npm -g install .",
-    "prepare": "npm run build",
-    "prepublishOnly": "npm run lint && npm test"
+  "author": "LeanIX GmbH <support@leanix.net>",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leanix/leanix-reporting-cli.git"
   },
   "keywords": [
     "leanix",
@@ -23,59 +18,49 @@
     "reporting",
     "reporting-cli"
   ],
-  "author": "LeanIX GmbH <support@leanix.net>",
-  "license": "Apache-2.0",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/leanix/leanix-reporting-cli.git"
+  "main": "./lib/app.js",
+  "bin": {
+    "lxr": "bin/lxr"
   },
-  "devDependencies": {
-    "@leanix/import-sort-style": "^1.0.6",
-    "@types/ejs": "^3.1.5",
-    "@types/inquirer": "^7.3.3",
-    "@types/jest": "^29.5.13",
-    "@types/lodash": "^4.17.9",
-    "@types/mkdirp": "^2.0.0",
-    "@types/node": "^22.10.10",
-    "@types/request-promise-native": "^1.0.21",
-    "@types/rimraf": "^3.0.2",
-    "@types/tar": "^6.1.13",
-    "@typescript-eslint/eslint-plugin": "^4.33.0",
-    "@typescript-eslint/parser": "^4.33.0",
-    "eslint": "^7.32.0",
-    "husky": "^4.3.8",
-    "jest": "29.7.0",
-    "prettier": "^2.8.8",
-    "prettier-plugin-import-sort": "^0.0.7",
-    "pretty-quick": "^3.3.1",
-    "ts-jest": "^29.2.5",
-    "tsup": "^8.3.0",
-    "typescript": "^4.9.5"
+  "scripts": {
+    "build": "tsup src/app.ts -d lib --format cjs",
+    "lint": "eslint",
+    "test": "jest",
+    "test-install": "npm run build && npm -g install .",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint && npm test"
   },
   "dependencies": {
-    "axios": "^1.9.0",
-    "chalk": "^4.1.2",
-    "commander": "^12.1.0",
+    "axios": "1.10.0",
+    "chalk": "4.1.2",
+    "commander": "12.1.0",
     "cross-spawn": "^7.0.6",
-    "ejs": "^3.1.10",
-    "form-data": "^4.0.0",
-    "inquirer": "^7.3.3",
-    "jwt-decode": "^2.2.0",
-    "lodash": "^4.17.21",
-    "mkdirp": "^3.0.1",
-    "opn": "^5.5.0",
-    "rimraf": "^6.0.1",
-    "tar": "^6.2.1"
+    "ejs": "3.1.10",
+    "form-data": "4.0.0",
+    "https-proxy-agent": "^7.0.6",
+    "inquirer": "7.3.3",
+    "jwt-decode": "2.2.0",
+    "lodash": "4.17.21",
+    "mkdirp": "3.0.1",
+    "opn": "5.5.0",
+    "rimraf": "6.0.1",
+    "tar": "6.2.1"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged"
-    }
-  },
-  "importSort": {
-    ".js, .ts": {
-      "style": "@leanix/import-sort-style",
-      "parser": "typescript"
-    }
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.14.1",
+    "@types/ejs": "3.1.5",
+    "@types/inquirer": "7.3.3",
+    "@types/jest": "29.5.13",
+    "@types/lodash": "4.17.9",
+    "@types/mkdirp": "2.0.0",
+    "@types/node": "22.10.10",
+    "@types/request-promise-native": "1.0.21",
+    "@types/rimraf": "3.0.2",
+    "@types/tar": "6.1.13",
+    "eslint": "^9.29.0",
+    "jest": "29.7.0",
+    "ts-jest": "29.4.0",
+    "tsup": "^8.5.0",
+    "typescript": "5.6.3"
   }
 }
