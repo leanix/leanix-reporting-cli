@@ -1,21 +1,22 @@
-import chalk from 'chalk';
-import * as inquirer from 'inquirer';
-import * as process from 'process';
-import { getTemplateDirectoryPath } from './path.helpers';
-import { TemplateExtractor } from './template-extractor';
+// eslint-disable-next-line node/prefer-global/process
+import { versions } from 'node:process'
+import chalk from 'chalk'
+import * as inquirer from 'inquirer'
+import { getTemplateDirectoryPath } from './path.helpers'
+import { TemplateExtractor } from './template-extractor'
 
 export class Initializer {
-  private extractor = new TemplateExtractor();
+  private extractor = new TemplateExtractor()
 
   public init(): Promise<void> {
-    console.log(chalk.green('Initializing new project...'));
+    console.log(chalk.green('Initializing new project...'))
 
     return inquirer.prompt(this.getInquirerQuestions()).then((answers) => {
-      answers.nodeVersion = process.versions.node;
-      this.extractor.extractTemplateFiles(getTemplateDirectoryPath(), answers);
-      console.log(chalk.green('\u2713 Your project is ready!'));
-      console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'));
-    });
+      answers.nodeVersion = versions.node
+      this.extractor.extractTemplateFiles(getTemplateDirectoryPath(), answers)
+      console.log(chalk.green('\u2713 Your project is ready!'))
+      console.log(chalk.green('Please run `npm install` to install dependencies and then run `npm start` to start developing!'))
+    })
   }
 
   private getInquirerQuestions(): inquirer.QuestionCollection {
@@ -75,11 +76,11 @@ export class Initializer {
         default: false
       },
       {
-        when: (answers) => answers.behindProxy,
+        when: answers => answers.behindProxy,
         type: 'input',
         name: 'proxyURL',
         message: 'Proxy URL?'
       }
-    ];
+    ]
   }
 }

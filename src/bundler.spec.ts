@@ -1,12 +1,12 @@
-import tar from 'tar';
-import fs from 'fs';
-import * as asyncHelpers from './async.helpers';
-import { Bundler } from './bundler';
-import * as fileHelpers from './file.helpers';
+import fs from 'node:fs'
+import tar from 'tar'
+import * as asyncHelpers from './async.helpers'
+import { Bundler } from './bundler'
+import * as fileHelpers from './file.helpers'
 
-describe('Bundler', () => {
-  const writeFileAsync = jest.spyOn(asyncHelpers, 'writeFileAsync').mockResolvedValue(undefined);
-  const tarC = jest.spyOn(tar, 'c').mockResolvedValue(undefined as never);
+describe('bundler', () => {
+  const writeFileAsync = jest.spyOn(asyncHelpers, 'writeFileAsync').mockResolvedValue(undefined)
+  const tarC = jest.spyOn(tar, 'c').mockResolvedValue(undefined as never)
 
   jest.spyOn(fileHelpers, 'loadPackageJson').mockReturnValue({
     name: 'my-report',
@@ -18,21 +18,21 @@ describe('Bundler', () => {
       id: 'com.example.myReport',
       title: 'My Report'
     }
-  });
+  })
 
   // Jest uses the typing for the fs.Dirent[] overload of the function even though we use the
   // one that returns string[], hence the forced type casting.
-  jest.spyOn(fs, 'readdirSync').mockReturnValue(['report.js', 'style.css', 'index.html'] as unknown as fs.Dirent[]);
+  jest.spyOn(fs, 'readdirSync').mockReturnValue(['report.js', 'style.css', 'index.html'] as unknown as fs.Dirent[])
 
   beforeEach(async () => {
-    const bundler = new Bundler();
-    await bundler.bundle('output');
-  });
+    const bundler = new Bundler()
+    await bundler.bundle('output')
+  })
 
   afterEach(() => {
-    writeFileAsync.mockClear();
-    tarC.mockClear();
-  });
+    writeFileAsync.mockClear()
+    tarC.mockClear()
+  })
 
   it('writes lxreport.json', async () => {
     expect(writeFileAsync).toHaveBeenCalledWith(
@@ -46,10 +46,10 @@ describe('Bundler', () => {
         id: 'com.example.myReport',
         title: 'My Report'
       })
-    );
-  });
+    )
+  })
 
   it('creates bundle.tgz', () => {
-    expect(tarC).toHaveBeenCalledWith({ gzip: true, cwd: 'output', file: 'bundle.tgz' }, ['report.js', 'style.css', 'index.html']);
-  });
-});
+    expect(tarC).toHaveBeenCalledWith({ gzip: true, cwd: 'output', file: 'bundle.tgz' }, ['report.js', 'style.css', 'index.html'])
+  })
+})
