@@ -1,4 +1,5 @@
-import axios, { type AxiosRequestConfig } from 'axios'
+import type { AxiosRequestConfig } from 'axios'
+import axios from 'axios'
 import { getAxiosProxyConfiguration } from './helpers'
 
 export class ApiTokenResolver {
