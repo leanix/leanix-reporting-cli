@@ -29,7 +29,7 @@ export class DevStarter {
 
   private async startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
     const port = config.localPort || 8080
-    const localhostUrl = `https://localhost:${port}`
+    const localhostUrl = `https://${config.localHostname || 'localhost'}:${port}`
     const urlEncoded = encodeURIComponent(localhostUrl)
     const host = `https://${config.host}`
 
