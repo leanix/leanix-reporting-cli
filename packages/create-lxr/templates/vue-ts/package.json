@@ -1,0 +1,31 @@
+{
+  "name": "vue-ts",
+  "type": "module",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "upload": "vite build --mode upload",
+    "build": "run-p type-check \"build-only {@}\" --",
+    "preview": "vite preview",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --build --force"
+  },
+  "dependencies": {
+    "@leanix/reporting": "^0.4.147",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.2.10",
+    "@tsconfig/node20": "^20.1.4",
+    "@types/node": "^20.17.0",
+    "@vitejs/plugin-vue": "^5.2.3",
+    "@vue/tsconfig": "^0.7.0",
+    "eslint": "^9.26.0",
+    "npm-run-all2": "^7.0.1",
+    "typescript": "~5.6.0",
+    "vite": "^6.3.4",
+    "vite-plugin-lxr": "^6.0.0",
+    "vue-tsc": "^2.2.10"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "lxr",
+  "private": true,
+  "workspaces": [
+    "./packages/*"
+  ],
+  "scripts": {
+    "clean:all": "npm run clean & rimraf \"**/node_modules\"",
+    "clean": "rimraf \"packages/**/dist\" \"**/*.tsbuildinfo\" \"**/*.tgz\" \"**/.temp\"",
+    "build:vite-plugin-lxr": "npm run build -w=vite-plugin-lxr",
+    "build:create-lxr": "npm run build -w=create-lxr",
+    "build": "npm run build:vite-plugin-lxr & npm run build:create-lxr",
+    "test:core": "jest --selectProjects @lxr/core",
+    "test:vite-plugin-lxr": "jest --selectProjects vite-plugin-lxr",
+    "test:create-lxr": "jest --selectProjects create-lxr",
+    "test": "jest",
+    "lint": "eslint --fix",
+    "update": "npx npm-check-updates@latest -u"
+  },
+  "dependencies": {
+    "tsup": "^8.5.0",
+    "zod": "^4.1.2"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.1",
+    "@babel/preset-env": "^7.28.3",
+    "@babel/preset-typescript": "^7.27.1",
+    "@jest/types": "^30.0.5",
+    "@swc/core": "^1.13.5",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.3.0",
+    "babel-jest": "^30.0.5",
+    "eslint": "^9.34.0",
+    "jest": "^30.0.5",
+    "rimraf": "^6.0.1",
+    "shx": "^0.4.0",
+    "tinygradient": "^2.0.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "vite": "^7"
+  }
+}

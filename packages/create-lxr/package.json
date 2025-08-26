@@ -1,0 +1,49 @@
+{
+  "name": "create-lxr",
+  "type": "module",
+  "version": "1.1.4",
+  "author": "Paulo dos Santos",
+  "license": "MIT",
+  "homepage": "https://github.com/fazendadosoftware/leanix/tree/main/packages/create-lxr#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fazendadosoftware/leanix.git",
+    "directory": "packages/create-lxr"
+  },
+  "bugs": {
+    "url": "https://github.com/fazendadosoftware/leanix/issues"
+  },
+  "main": "dist/index.cjs",
+  "bin": "dist/index.cjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "preinstall": "mkdir dist && [[ -f dist/index.js ]] || npx touch dist/index.js",
+    "clean": "rimraf dist",
+    "build": "tsup && shx cp -r ./templates/ ./dist && chmod -R 777 ./dist/",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.4",
+    "@vue/create-eslint-config": "^0.12.1",
+    "gradient-string": "^2",
+    "kleur": "^4.1.5",
+    "kolorist": "^1.8.0",
+    "minimist": "^1.2.8",
+    "npm": "^11.5.2",
+    "prompts": "^2.4.2",
+    "short-uuid": "^5.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/gradient-string": "^1.1.6",
+    "@types/minimist": "^1.2.5",
+    "@types/prompts": "^2.4.9",
+    "execa": "^8",
+    "fs-extra": "^11.3.1",
+    "package-json": "^10.0.1",
+    "semver": "^7.7.2",
+    "touch": "^3.1.1"
+  }
+}

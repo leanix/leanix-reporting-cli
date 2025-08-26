@@ -1,0 +1,28 @@
+{
+  "name": "vite-react-starter",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "upload": "vite build --mode upload",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "@leanix/reporting": "^0.4.147",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^4.2.10",
+    "@eslint-react/eslint-plugin": "^1.48.5",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.3",
+    "@vitejs/plugin-react": "^4.4.1",
+    "eslint": "^9.26.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "0.4.20",
+    "typescript": "^5.8.2",
+    "vite": "^6.3.4",
+    "vite-plugin-lxr": "^6.0.0"
+  }
+}
