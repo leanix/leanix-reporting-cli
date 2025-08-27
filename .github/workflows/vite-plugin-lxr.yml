@@ -7,7 +7,7 @@ on:
     paths:
       - packages/core/**
       - packages/vite-plugin-lxr/**
-      - .github/workflows/build-vite-plugin-lxr.yml
+      - .github/workflows/vite-plugin-lxr.yml
   workflow_dispatch:
     inputs:
       release:

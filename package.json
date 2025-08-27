@@ -11,8 +11,8 @@
     "build:create-lxr": "npm run build -w=create-lxr",
     "build": "npm run build:vite-plugin-lxr & npm run build:create-lxr",
     "test:core": "jest --selectProjects @lxr/core",
-    "test:vite-plugin-lxr": "jest --selectProjects @lxr/core vite-plugin-lxr",
-    "test:create-lxr": "jest --selectProjects @lxr/core vite-plugin-lxr create-lxr",
+    "test:vite-plugin-lxr": "jest --selectProjects @lxr/core",
+    "test:create-lxr": "jest --selectProjects @lxr/core create-lxr",
     "test": "jest",
     "lint": "eslint --fix",
     "update": "npx npm-check-updates@latest -u"
