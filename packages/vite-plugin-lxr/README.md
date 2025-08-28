@@ -1,6 +1,20 @@
 # vite-plugin-lxr
 
-A Vite plugin for developing LeanIX Custom Reports.
+A Vite plugin for developing LeanIX Custom Reports with hot reload, TypeScript support, and seamless deployment.
+
+## Features
+
+- 🚀 Fast development with Vite's hot module replacement
+- 📦 Automatic bundling and optimization for LeanIX reports
+- 🔧 Built-in TypeScript support
+- 📤 One-command deployment to LeanIX workspace
+- 🎯 Framework agnostic (works with vanilla JS, React, Vue, etc.)
+
+## Prerequisites
+
+- Node.js 16+ and npm/yarn/pnpm
+- A LeanIX workspace with API access
+- A valid LeanIX API token
 
 ## Get Started
 
@@ -81,7 +95,17 @@ export default defineConfig({
 }
 ```
 
+⚠️ **Security Note**: Add `lxr.json` to your `.gitignore` to avoid committing sensitive credentials.
+
 8. You are now ready to start developing your report by issuing the following command
 ```bash
 npm run dev
 ```
+
+## Troubleshooting
+
+**Common Issues:**
+
+- **Build fails**: Ensure all required package.json fields are present
+- **Upload fails**: Verify your API token and workspace URL in `lxr.json`
+- **Report not loading**: Check browser console for JavaScript errors
