@@ -20,6 +20,12 @@ on:
         required: true
         default: true
 
+env:
+  REPO_NAME: LeanIX Reporting CLI
+  SLACK_TOKEN: dummy
+  SLACK_CHANNEL: '#team-atlantis-status'
+  ACTION_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
 jobs:
   sap-security-scan:
     name: SAP Security Scan
@@ -46,7 +52,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version-file: .node-version
+          node-version: lts/*
 
       # JAVA is required for blackduck & mend scanners (min version 11)
       # JAVA: configure required java version used in your repository
@@ -79,14 +85,14 @@ jobs:
         uses: archive/github-actions-slack@v2.9.0
         with:
           slack-bot-user-oauth-access-token: ${{ env.SLACK_TOKEN }}
-          slack-channel: '#team-atlantis-status'
+          slack-channel: ${{ ENV.SLACK_CHANNEL}}
           slack-optional-blocks: >-
             [
               {
                 "type": "section",
                 "text": {
                   "type": "plain_text",
-                  "text": ":mag: Leanix Reporting CLI. Please find the links to our scan results below",
+                  "text": ":mag: ${{ env.REPO_NAME }}. Please find the links to our scan results below",
                   "emoji": true
                 }
               },
@@ -101,3 +107,16 @@ jobs:
                 }
               }
             ]
+
+      - name: Publish failure notification to Slack
+        if: failure()
+        uses: archive/github-actions-slack@v2.9.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ env.SLACK_TOKEN }}
+          slack-channel: ${{ env.SLACK_CHANNEL }}
+          slack-text: |
+            :x: *SAP Security Workflow failed to run*
+            • *Project:* ${{ env.REPO_NAME }}
+            • *Triggered by:* @${{ github.actor }}
+            • *Details:* <${{ env.ACTION_URL }}|View logs>
+
