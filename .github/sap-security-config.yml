@@ -1,0 +1,11 @@
+name: leanix-reporting-cli
+ppmsGroup: SAP_LEANIX_APPL_PORTFOLIO_MGMT
+distribution: SaaS
+configBlackduck:
+  additionalArgs: [--detect.detector.search.depth=5, --detect.accuracy.required=NONE]
+  preRunCommands: [npm install --legacy-peer-deps --package-lock-only --ignore-scripts]
+configCxone:
+  sastPresetName: SAP_Corp_MTA_JavaScript
+  fileFilters: '!*.spec.ts'
+  fileInclude: '*.ts,*.js'
+  enableDebug: false

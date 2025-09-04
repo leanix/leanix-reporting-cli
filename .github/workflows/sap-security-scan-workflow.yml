@@ -1,0 +1,122 @@
+name: SAP security scan
+on:
+  schedule:
+    - cron: '0 1 * * *' # Runs at 01 AM UTC Mo-So
+  workflow_dispatch: # Allows to run workflow on demand
+    inputs:
+      blackduck_foss_scan_enabled:
+        type: boolean
+        description: Enable Blackduck FOSS scan
+        required: true
+        default: true
+      blackduck_ctp_scan_enabled:
+        type: boolean
+        description: Enable Blackduck CTP scan
+        required: true
+        default: true
+      cxone_scan_enabled:
+        type: boolean
+        description: Enable CxOne scan
+        required: true
+        default: true
+
+env:
+  REPO_NAME: LeanIX Reporting CLI
+  SLACK_TOKEN: dummy
+  SLACK_CHANNEL: '#team-atlantis-status'
+  ACTION_URL: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+jobs:
+  sap-security-scan:
+    name: SAP Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      # checkout repo
+      - name: Checkout
+        uses: actions/checkout@v4.1.7
+
+      # required for secrets
+      - uses: leanix/secrets-action@master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+
+      # required for mend scan
+      - name: Login to ACR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.ACR_LOGIN }}
+          username: ${{ env.ACR_USERNAME }}
+          password: ${{ env.ACR_PASSWORD }}
+
+      # nodejs required to run action
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      # JAVA is required for blackduck & mend scanners (min version 11)
+      # JAVA: configure required java version used in your repository
+      - name: Setup Java 17
+        uses: actions/setup-java@v4.2.2
+        with:
+          distribution: temurin
+          java-version: 17
+
+      # sap security scan
+      - name: SAP Security Scan
+        id: sap-security-scan
+        uses: leanix/sap-security-action@main
+        with:
+          sap_security_config: .github/sap-security-config.yml
+          # Trigger method     | inputs value | input value resolves to
+          # workflow_dispatch  | true         | !contains('true', 'false') = true
+          # workflow_dispatch  | false        | !contains('false', 'false') = false
+          # schedule           | null         | !contains('', 'false') = true
+          # if input value is null apply true else apply input value
+          # use-case: 1 execute all scans on scheduled run
+          # use-case: 2 execute only selected scan on workflow_dispatch
+          blackduck_foss_scan_enabled: ${{ !contains(github.event.inputs.blackduck_foss_scan_enabled, 'false') }}
+          blackduck_ctp_scan_enabled: ${{ !contains(github.event.inputs.blackduck_ctp_scan_enabled, 'false') }}
+          mend_scan_enabled: false
+          cxone_scan_enabled: ${{ !contains(github.event.inputs.cxone_scan_enabled, 'false') }}
+
+      - name: Publish results to Slack
+        if: success()
+        uses: archive/github-actions-slack@v2.9.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ env.SLACK_TOKEN }}
+          slack-channel: ${{ ENV.SLACK_CHANNEL}}
+          slack-optional-blocks: >-
+            [
+              {
+                "type": "section",
+                "text": {
+                  "type": "plain_text",
+                  "text": ":mag: ${{ env.REPO_NAME }}. Please find the links to our scan results below",
+                  "emoji": true
+                }
+              },
+              {
+                "type": "divider"
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*Blackduck FOSS:* ${{ steps.sap-security-scan.outputs.blackduck_foss_results_link }}\n*Blackduck CTP:* ${{ steps.sap-security-scan.outputs.blackduck_ctp_results_link }}\n*CxOne:* ${{ steps.sap-security-scan.outputs.cxone_results_link }}"
+                }
+              }
+            ]
+
+      - name: Publish failure notification to Slack
+        if: failure()
+        uses: archive/github-actions-slack@v2.9.0
+        with:
+          slack-bot-user-oauth-access-token: ${{ env.SLACK_TOKEN }}
+          slack-channel: ${{ env.SLACK_CHANNEL }}
+          slack-text: |
+            :x: *SAP Security Workflow failed to run*
+            • *Project:* ${{ env.REPO_NAME }}
+            • *Triggered by:* @${{ github.actor }}
+            • *Details:* <${{ env.ACTION_URL }}|View logs>
+
