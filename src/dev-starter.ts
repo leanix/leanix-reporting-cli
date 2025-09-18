@@ -2,11 +2,10 @@ import type { LxrConfig } from './interfaces'
 import { join } from 'node:path'
 import chalk from 'chalk'
 import { spawn } from 'cross-spawn'
-import jwtDecode from 'jwt-decode'
-import * as _ from 'lodash'
 import opn from 'opn'
 import { ApiTokenResolver } from './api-token-resolver'
 import { loadLxrConfig } from './file.helpers'
+import { getJwtClaims } from './helpers'
 
 interface DevServerStartResult {
   launchUrl: string
@@ -27,24 +26,21 @@ export class DevStarter {
     )
   }
 
-  private async startLocalServer(config: LxrConfig, accessToken?: string): Promise<DevServerStartResult> {
+  private async startLocalServer(config: LxrConfig, accessToken: string): Promise<DevServerStartResult> {
     const port = config.localPort || 8080
     const localhostUrl = `https://localhost:${port}`
     const urlEncoded = encodeURIComponent(localhostUrl)
-    const host = `https://${config.host}`
+    const claims = getJwtClaims(accessToken)
 
-    const accessTokenHash = accessToken ? `#access_token=${accessToken}` : ''
-    const workspace = accessToken ? this.getWorkspaceFromAccesToken(accessToken) : config.workspace
+    const instanceUrl = claims.instanceUrl
+    const workspace = claims.principal.permission.workspaceName
 
-    if (_.isEmpty(workspace)) {
-      console.error(chalk.red('Workspace not specified. The local server can\'t be started.'))
-      return new Promise(null)
-    }
     console.log(chalk.green(`Your workspace is ${workspace}`))
 
-    const baseLaunchUrl = `${host}/${workspace}/reports/dev?url=${urlEncoded}`
-    const launchUrl = baseLaunchUrl + accessTokenHash
-    console.log(chalk.green(`Starting development server and launching with url: ${baseLaunchUrl}`))
+    const launchUrl = new URL(`${instanceUrl}/${workspace}/reports/dev?url=${urlEncoded}`)
+    launchUrl.hash = `access_token=${accessToken}`
+
+    console.log(chalk.green(`Starting development server and launching with url: ${launchUrl}`))
 
     const wpMajorVersion = await this.getCurrentWebpackMajorVersion()
     const args = ['--port', `${port}`]
@@ -91,7 +87,7 @@ export class DevStarter {
         }
 
         if (projectRunning && output.toLowerCase().includes('compiled successfully')) {
-          resolve({ launchUrl, localhostUrl })
+          resolve({ launchUrl: launchUrl.toString(), localhostUrl })
         }
       })
     })
@@ -109,19 +105,12 @@ export class DevStarter {
     })
   }
 
-  private getWorkspaceFromAccesToken(accessToken: string) {
-    const claims = jwtDecode(accessToken)
-    return claims.principal.permission.workspaceName
-  }
-
   private async getAccessToken(config: LxrConfig): Promise<string> {
-    if (!_.isEmpty(config.apitoken)) {
-      const token = await ApiTokenResolver.getAccessToken(`https://${config.host}`, config.apitoken, config.proxyURL)
-      return token
+    if (!config.apitoken) {
+      throw new Error('no api token provided, please include it in the lxr.json file')
     }
-    else {
-      return Promise.resolve(null)
-    }
+    const token = await ApiTokenResolver.getAccessToken(`https://${config.host}`, config.apitoken, config.proxyURL)
+    return token
   }
 
   private openUrlInBrowser(url: string) {
