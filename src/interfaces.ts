@@ -1,6 +1,5 @@
 export interface LxrConfig {
   host: string
-  workspace: string
   apitoken: string
   localPort?: string
   proxyURL?: string
