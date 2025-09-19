@@ -38,7 +38,7 @@
     "ejs": "3.1.10",
     "form-data": "4.0.4",
     "https-proxy-agent": "7.0.6",
-    "inquirer": "7.3.3",
+    "inquirer": "12.9.6",
     "jwt-decode": "2.2.0",
     "lodash": "4.17.21",
     "mkdirp": "3.0.1",
