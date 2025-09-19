@@ -1,13 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:js-app", "group:allNonMajor", "config:best-practices"],
+  "extends": ["config:js-app", "group:allNonMajor", "github>leanix/.github"],
   "timezone": "Europe/Berlin",
-  "packageRules": [
-    {
-      "matchDatasources": ["npm"],
-      "minimumReleaseAge": "3 days"
-    }
-  ],
-  "internalChecksFilter": "strict",
   "prConcurrentLimit": 2
 }
