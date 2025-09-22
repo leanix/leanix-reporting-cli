@@ -1,5 +1,5 @@
 import { HttpsProxyAgent } from 'https-proxy-agent'
-import jwtDecode from 'jwt-decode'
+import { InvalidTokenError, jwtDecode } from 'jwt-decode'
 import z, { ZodError } from 'zod'
 
 export const jwtClaimsPrincipalSchema = z.object({
@@ -34,19 +34,16 @@ export const getJwtClaims = (bearerToken: string): TJwtClaims => {
   let claimsUnchecked: unknown
   try {
     claimsUnchecked = jwtDecode(bearerToken)
-  }
-  catch (err) {
-    console.error('could not decode jwt token', err)
-    throw err
-  }
-  try {
     claims = jwtClaimsSchema.parse(claimsUnchecked)
   }
   catch (err) {
+    if (err instanceof InvalidTokenError) {
+      console.error('could not decode jwt token', err)
+    }
     if (err instanceof ZodError) {
       console.error('unexpected jwt claims schema', err.message)
-      throw err
     }
+    throw err
   }
   return claims
 }
