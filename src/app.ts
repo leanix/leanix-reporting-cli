@@ -76,7 +76,7 @@ the "host" given in lxr.json.`)
   .action(async () => {
     const cliConfig = loadCliConfig()
     const lxrConfig = loadLxrConfig()
-    const url = `https://${lxrConfig.host}/services/pathfinder/v1/reports/upload`
+    const { host: tokenhost, apitoken, proxyURL } = lxrConfig
 
     const builder = new Builder(console)
     const bundler = new Bundler()
@@ -87,7 +87,7 @@ the "host" given in lxr.json.`)
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand)
       await bundler.bundle(cliConfig.distPath)
-      await uploader.upload(url, lxrConfig.apitoken, lxrConfig.host, lxrConfig.proxyURL)
+      await uploader.upload({ tokenhost, apitoken, proxyURL })
     }
     catch (error) {
       handleError(error)
@@ -97,14 +97,12 @@ the "host" given in lxr.json.`)
 program
   .command('store-upload <id> <apitoken>')
   .description('Uploads the report to the LeanIX Store')
+  .requiredOption('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
   .option('--host <host>', 'Which store to use (default: store.leanix.net)')
-  .option('--tokenhost <tokenhost>', 'Where to resolve the apitoken (default: app.leanix.net)')
-  .action(async (id: string, apitoken: string, options: { host: string, tokenhost: string }) => {
+  .action(async (assetVersionId: string, apitoken: string, options: { host: string, tokenhost: string }) => {
     const cliConfig = loadCliConfig()
 
     const host = options.host || 'store.leanix.net'
-    const tokenhost = options.tokenhost || 'app.leanix.net'
-    const url = `https://${host}/services/torg/v1/assetversions/${id}/payload`
 
     const builder = new Builder(console)
     const bundler = new Bundler()
@@ -115,7 +113,7 @@ program
     try {
       await builder.build(cliConfig.distPath, cliConfig.buildCommand)
       await bundler.bundle(cliConfig.distPath)
-      await uploader.upload(url, apitoken, tokenhost)
+      await uploader.upload({ apitoken, tokenhost: options.tokenhost, store: { assetVersionId, host } })
     }
     catch (error) {
       handleError(error)

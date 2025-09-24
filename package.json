@@ -1,7 +1,7 @@
 {
   "name": "@leanix/reporting-cli",
   "type": "commonjs",
-  "version": "1.0.0-beta.27",
+  "version": "1.0.0-beta.28",
   "description": "Command line interface to develop custom reports for LeanIX EAM",
   "preferGlobal": true,
   "author": "LeanIX GmbH <support@leanix.net>",
@@ -28,28 +28,30 @@
     "test": "jest",
     "test-install": "npm run build && npm -g install .",
     "prepare": "npm run build",
-    "prepublishOnly": "npm run lint && npm test"
+    "prepublishOnly": "npm run lint && npm test",
+    "type-check": "npx tsc --noEmit"
   },
   "dependencies": {
-    "axios": "1.10.0",
+    "axios": "1.12.2",
     "chalk": "4.1.2",
     "commander": "12.1.0",
     "cross-spawn": "7.0.6",
     "ejs": "3.1.10",
     "form-data": "4.0.4",
     "https-proxy-agent": "7.0.6",
-    "inquirer": "7.3.3",
-    "jwt-decode": "2.2.0",
+    "inquirer": "8.2.7",
+    "jwt-decode": "4.0.0",
     "lodash": "4.17.21",
     "mkdirp": "3.0.1",
     "opn": "5.5.0",
     "rimraf": "6.0.1",
-    "tar": "6.2.1"
+    "tar": "6.2.1",
+    "zod": "^4.1.9"
   },
   "devDependencies": {
     "@antfu/eslint-config": "4.19.0",
     "@types/ejs": "3.1.5",
-    "@types/inquirer": "7.3.3",
+    "@types/inquirer": "8.2.7",
     "@types/jest": "29.5.13",
     "@types/lodash": "4.17.9",
     "@types/mkdirp": "2.0.0",
