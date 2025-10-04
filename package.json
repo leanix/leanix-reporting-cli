@@ -51,18 +51,18 @@
   "devDependencies": {
     "@antfu/eslint-config": "4.19.0",
     "@types/ejs": "3.1.5",
-    "@types/inquirer": "8.2.7",
+    "@types/inquirer": "8.2.12",
     "@types/jest": "29.5.13",
-    "@types/lodash": "4.17.9",
+    "@types/lodash": "4.17.20",
     "@types/mkdirp": "2.0.0",
-    "@types/node": "22.10.10",
+    "@types/node": "22.18.8",
     "@types/request-promise-native": "1.0.21",
     "@types/rimraf": "3.0.2",
     "@types/tar": "6.1.13",
     "eslint": "9.32.0",
     "jest": "29.7.0",
-    "ts-jest": "29.4.0",
+    "ts-jest": "29.4.4",
     "tsup": "8.5.0",
-    "typescript": "5.6.3"
+    "typescript": "5.9.3"
   }
 }
