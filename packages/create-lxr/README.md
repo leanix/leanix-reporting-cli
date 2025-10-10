@@ -25,31 +25,20 @@ $ pnpx create-lxr
 
 Then follow the prompts!
 
-You can also directly specify the project name and the template you want to use via additional command line options. For example, to scaffold a LeanIX Custom Report using Vue, run:
+You can also directly specify the project name via command line:
 
 ```bash
 # npm 6.x
-npm init lxr@latest my-custom-report --template vue
+npm init lxr@latest my-custom-report
 
 # npm 7+, extra double-dash is needed:
-npm init lxr@latest my-custom-report -- --template vue
+npm init lxr@latest my-custom-report --
 
 # yarn
-yarn create lxr my-custom-report --template vue
+yarn create lxr my-custom-report
 
 # pnpm
-pnpx create-lxr my-custom-report --template vue
+pnpx create-lxr my-custom-report
 ```
 
-Currently supported template presets include:
-
-- `vanilla`
-- `vanilla-ts`
-- `vue`
-- `vue-ts`
-- `react`
-- `react-ts`
-- `preact`
-- `preact-ts`
-- `svelte`
-- `svelte-ts`
+All projects are scaffolded using **React with TypeScript**, providing a modern, type-safe development experience with excellent IDE support and maintainability.
