@@ -2,7 +2,7 @@
 /* eslint-disable no-console */
 import { existsSync, mkdirSync } from 'node:fs'
 import { join, relative } from 'node:path'
-import { blue, cyan, green, red, yellow } from 'kolorist'
+import { red } from 'kolorist'
 import minimist from 'minimist'
 import prompts from 'prompts'
 import { canSkipEmptying, emptyDir, isValidPackageName, pkgFromUserAgent, toValidPackageName } from './helpers'
@@ -10,27 +10,10 @@ import banner from './utils/banner'
 import { deployTemplate } from './utils/deployTemplate'
 import { generateLeanIXFiles } from './utils/leanix'
 
-export type ColorFunc = (str: string | number) => string
-
-export interface IFrameworkBase {
-  name: string
-  display: string
-  color: ColorFunc
-}
-
-export interface IFrameworkVariant extends IFrameworkBase {
-  customCommand?: string
-}
-
-export interface IFramework extends IFrameworkBase {
-  variants?: IFrameworkVariant[]
-}
-
 export interface IProjectOptions {
   packageName?: string
   targetDir?: string
   overwrite?: boolean
-  template?: string
 }
 
 export interface ILeanIXOptions {
@@ -45,69 +28,12 @@ export interface ILeanIXOptions {
 
 export interface IPromptResult extends IProjectOptions, ILeanIXOptions {
   projectName?: string
-  framework?: IFramework
-  variant?: string
 }
 
 const cwd = process.cwd()
 
-const FRAMEWORKS: IFramework[] = [
-  {
-    name: 'vue',
-    display: 'Vue',
-    color: green,
-    variants: [
-      {
-        name: 'vue',
-        display: 'JavaScript',
-        color: yellow
-      },
-      {
-        name: 'vue-ts',
-        display: 'TypeScript',
-        color: blue
-      }
-    ]
-  },
-  {
-    name: 'react',
-    display: 'React',
-    color: cyan,
-    variants: [
-      {
-        name: 'react',
-        display: 'JavaScript',
-        color: yellow
-      },
-      {
-        name: 'react-ts',
-        display: 'TypeScript',
-        color: blue
-      }
-    ]
-  },
-  {
-    name: 'vanilla',
-    display: 'Vanilla',
-    color: yellow,
-    variants: [
-      {
-        name: 'vanilla',
-        display: 'JavaScript',
-        color: yellow
-      },
-      {
-        name: 'vanilla-ts',
-        display: 'TypeScript',
-        color: blue
-      }
-    ]
-  }
-]
-
-const TEMPLATES = FRAMEWORKS
-  .map(({ name, variants }) => Array.isArray(variants) ? variants.map(({ name }) => name) : [name])
-  .flat()
+// Fixed template: React with TypeScript
+const TEMPLATE = 'react-ts'
 
 const getLeanIXQuestions = (argv: minimist.ParsedArgs): Array<prompts.PromptObject<keyof ILeanIXOptions | 'behindProxy'>> => ([
   {
@@ -159,7 +85,7 @@ const getLeanIXQuestions = (argv: minimist.ParsedArgs): Array<prompts.PromptObje
 export const init = async (): Promise<void> => {
   console.log(`\n${banner}\n`)
   const argv = minimist(process.argv.slice(2), {
-    string: ['framework', 'variant', 'reportId', 'author', 'title', 'description', 'host', 'apitoken', 'proxyUrl'],
+    string: ['reportId', 'author', 'title', 'description', 'host', 'apitoken', 'proxyUrl'],
     boolean: ['overwrite'],
     default: {
       overwrite: false
@@ -170,7 +96,7 @@ export const init = async (): Promise<void> => {
   const defaultProjectName = targetDir ?? 'leanix-custom-report'
 
   // leanix-specific answers
-  let { id, author, title, description, host, apitoken, proxyURL, framework = null, variant = null, overwrite = false } = argv
+  let { id, author, title, description, host, apitoken, proxyURL, overwrite = false } = argv
 
   let result: IPromptResult = {}
   try {
@@ -207,34 +133,6 @@ export const init = async (): Promise<void> => {
           initial: () => toValidPackageName(targetDir),
           validate: dir => isValidPackageName(dir) ?? 'Invalid package.json name'
         },
-        {
-          type: typeof framework === 'string' && TEMPLATES.includes(framework) ? null : 'select',
-          name: 'framework',
-          message:
-            typeof framework === 'string' && !TEMPLATES.includes(framework)
-              ? `"${framework}" isn't a valid framework. Please choose from below: `
-              : 'Select a framework:',
-          choices: FRAMEWORKS.map((framework) => {
-            const frameworkColor = framework.color
-            return {
-              title: frameworkColor(framework.display ?? framework.name),
-              value: framework
-            }
-          })
-        },
-        {
-          type: (framework: IFramework) => framework?.variants?.includes(variant) ? null : Array.isArray(framework?.variants) ? 'select' : null,
-          name: 'variant',
-          message: 'Select a variant:',
-          choices: (framework: IFramework) => (framework?.variants ?? [])
-            .map((variant) => {
-              const variantColor = variant.color
-              return {
-                title: variantColor(variant.display ?? variant.name),
-                value: variant.name
-              }
-            })
-        },
         ...getLeanIXQuestions(argv)
       ],
       {
@@ -251,8 +149,6 @@ export const init = async (): Promise<void> => {
 
   // leanix-specific answers
   ({
-    framework = framework,
-    variant = variant,
     id = id,
     author = author,
     title = title,
@@ -268,6 +164,7 @@ export const init = async (): Promise<void> => {
   const root = join(cwd, targetDir ?? '')
 
   console.log(`🚀Scaffolding project in ${root}...`)
+  console.log(`Using React + TypeScript template`)
 
   if (overwrite === true) {
     emptyDir(root)
@@ -276,8 +173,8 @@ export const init = async (): Promise<void> => {
     mkdirSync(root)
   }
 
-  deployTemplate({ defaultProjectName, targetDir: root, result: { framework, variant, id, author, title, description, host, apitoken, proxyURL, overwrite } })
-  await generateLeanIXFiles({ targetDir: root, result: { packageName: defaultProjectName, framework, variant, id, author, title, description, host, apitoken, proxyURL, overwrite } })
+  deployTemplate({ defaultProjectName, targetDir: root, template: TEMPLATE, result: { id, author, title, description, host, apitoken, proxyURL, overwrite } })
+  await generateLeanIXFiles({ targetDir: root, result: { packageName: defaultProjectName, id, author, title, description, host, apitoken, proxyURL, overwrite } })
 
   console.log('\n🔥Done. Now run:\n')
   if (root !== cwd) {
