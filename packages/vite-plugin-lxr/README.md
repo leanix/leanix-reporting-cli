@@ -8,7 +8,7 @@ A Vite plugin for developing LeanIX Custom Reports with hot reload, TypeScript s
 - 📦 Automatic bundling and optimization for LeanIX reports
 - 🔧 Built-in TypeScript support
 - 📤 One-command deployment to LeanIX workspace
-- 🎯 Framework agnostic (works with vanilla JS, React, Vue, etc.)
+- ⚛️ Optimized for React with TypeScript
 
 ## Prerequisites
 
