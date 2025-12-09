@@ -1,11 +1,11 @@
 import type { IPromptResult } from '..'
 import { copyFileSync, mkdirSync, readdirSync, statSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
 
 export interface IDeployTemplateParams {
   targetDir: string
   defaultProjectName: string
+  template: string
   result: IPromptResult
 }
 
@@ -33,27 +33,21 @@ const copy = (src: string, dest: string): void => {
 }
 
 export const deployTemplate = (params: IDeployTemplateParams): void => {
-  const { targetDir, result } = params
-  const { variant, framework } = result
+  const { targetDir, template } = params
   if (targetDir === null) {
     throw new Error('invalid target dir')
-  }
-  // determine template
-  const template = variant ?? framework?.name ?? null
-  if (template === null) {
-    throw new Error('unknown template')
   }
 
   const templateDir = join(__dirname, 'templates', template)
   const write = (file: string, content?: string): void => {
     const targetPath = join(targetDir, renameFiles[file] ?? file)
     if (content !== undefined) {
-      writeFileSync(pathToFileURL(targetPath), content)
+      writeFileSync(targetPath, content)
     }
     else { copy(join(templateDir, file), targetPath) }
   }
 
-  const templateFiles = readdirSync(pathToFileURL(templateDir))
+  const templateFiles = readdirSync(templateDir)
   for (const file of templateFiles /* .filter(f => f !== 'package.json') */) {
     write(file)
   }

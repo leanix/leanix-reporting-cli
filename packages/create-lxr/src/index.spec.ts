@@ -39,8 +39,8 @@ const getAllFiles = (dirPath: string, arrayOfFiles: string[] = []): string[] => 
 
 const getPackageJson = (dirPath: string): any => JSON.parse(readFileSync(join(dirPath, 'package.json')).toString())
 
-// Vue 3 starter template plus 1 generated file: 'lxr.json'
-const templateFiles = [...getAllFiles(resolve(CLI_PATH, '..', 'templates', 'vue')), 'lxr.json']
+// React TypeScript template plus 1 generated file: 'lxr.json'
+const templateFiles = [...getAllFiles(resolve(CLI_PATH, '..', 'templates', 'react-ts')), 'lxr.json']
   .map(file => file === '_gitignore' ? '.gitignore' : file)
   .sort()
 
@@ -60,21 +60,6 @@ it('prompts for the project name if none supplied', () => {
   expect((stdout as string)?.includes('Project name:')).toBe(true)
 })
 
-it('prompts for the framework if none supplied', () => {
-  const { stdout } = run([projectName])
-  expect((stdout as string)?.includes('Select a framework:')).toBe(true)
-})
-
-it('prompts for the framework on not supplying a value for --template', () => {
-  const { stdout } = run([projectName, '--template'])
-  expect((stdout as string)?.includes('Select a framework:')).toBe(true)
-})
-
-it('prompts for the framework on supplying an invalid template', () => {
-  const { stdout } = run([projectName, '--framework', 'unknown'])
-  expect((stdout as string)?.includes('"unknown" isn\'t a valid framework. Please choose from below:')).toBe(true)
-})
-
 it('asks to overwrite non-empty target directory', () => {
   createNonEmptyDir()
   const { stdout } = run([projectName], { cwd: __dirname })
@@ -87,9 +72,7 @@ it('asks to overwrite non-empty current directory', () => {
   expect((stdout as string)?.includes('Current directory is not empty.')).toBe(true)
 })
 
-it('successfully scaffolds a project based on vue starter template', async () => {
-  const template = 'vue'
-  const variant = 'vue'
+it('successfully scaffolds a project based on react-ts template', async () => {
   const reportId = uuid()
   const author = uuid()
   const title = uuid()
@@ -100,10 +83,6 @@ it('successfully scaffolds a project based on vue starter template', async () =>
 
   const args = [
     '--overwrite',
-    '--framework',
-    template,
-    '--variant',
-    variant,
     '--id',
     reportId,
     '--author',
@@ -128,6 +107,7 @@ it('successfully scaffolds a project based on vue starter template', async () =>
 
   // Assertions
   expect((stdout as string)?.includes(`Scaffolding project in ${targetPath}`)).toBe(true)
+  expect((stdout as string)?.includes(`Using React + TypeScript template`)).toBe(true)
   expect(generatedFiles).toEqual(templateFiles)
 
   const pkg = getPackageJson(targetPath)
