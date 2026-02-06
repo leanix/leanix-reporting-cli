@@ -46,7 +46,7 @@
     "opn": "5.5.0",
     "rimraf": "6.0.1",
     "tar": "7.5.7",
-    "zod": "^4.1.9"
+    "zod": "4.1.9"
   },
   "devDependencies": {
     "@antfu/eslint-config": "4.19.0",
