@@ -1,5 +1,13 @@
 # leanix-reporting-cli
 
+---
+> [!WARNING]
+> **Deprecated — This repository and related artifacts are now read-only and will be archived shortly.**
+> It has been superseded by [github.com/SAP/leanix-custom-report-tools](https://github.com/SAP/leanix-custom-report-tools/).
+> **You must use the new repository going forward.**
+
+---
+
 [![npm version](https://badge.fury.io/js/%40leanix%2Freporting-cli.svg)](https://badge.fury.io/js/%40leanix%2Freporting-cli)
 
 Command line interface to initialise, develop and publish custom reports for LeanIX EAM Tool.
