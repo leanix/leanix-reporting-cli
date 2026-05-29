@@ -21,7 +21,14 @@ jobs:
           node-version: lts/*
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Get credentials
+        uses: leanix/secrets-action@aacfa4c7ee16d986785566b34b7a9a5a76b5bae3 # master
+        with:
+          secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
+          required-secrets: |
+            NPM_TOKEN
+
       - name: Deprecate
         run: npm deprecate "@leanix/reporting-cli@${{ inputs.version }}" "${{ inputs.message }}"
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ env.NPM_TOKEN }}
