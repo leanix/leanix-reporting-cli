@@ -22,7 +22,7 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Get credentials
-        uses: leanix/secrets-action@aacfa4c7ee16d986785566b34b7a9a5a76b5bae3 # master
+        uses: leanix/secrets-action@master
         with:
           secret-store-credentials: ${{ secrets.INJECTED_SECRET_STORE_CREDENTIALS }}
           required-secrets: |
