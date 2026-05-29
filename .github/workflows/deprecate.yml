@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version or glob pattern to deprecate (e.g. 1.0.0-beta.10 or 1.0.0-beta.*)'
+        description: Version or glob pattern to deprecate (e.g. 1.0.0-beta.10 or 1.0.0-beta.*)
         required: true
       message:
-        description: 'Deprecation message shown to users (leave empty to un-deprecate)'
+        description: Deprecation message shown to users (leave empty to un-deprecate)
         required: true
 
 jobs:
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
 
       - name: Deprecate
         run: npm deprecate "@leanix/reporting-cli@${{ inputs.version }}" "${{ inputs.message }}"
